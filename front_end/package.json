@@ -9,7 +9,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.16.0",
     "iview": "^2.0.0-rc.9",
+    "js-md5": "^0.4.2",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0"
   },
