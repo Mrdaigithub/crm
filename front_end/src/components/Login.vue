@@ -1,56 +1,73 @@
 <template>
-  <div>
-    <form>
-      <Poptip trigger="focus" title="提示标题" content="提示内容" placement="right">
-        <Input v-model="username" icon="person" placeholder="username"></Input>
-      </Poptip>
-      <br>
-      <Poptip trigger="focus" title="提示标题" content="提示内容" placement="right">
-        <Input type="password" v-model="sourcePassword" icon="locked" placeholder="username"></Input>
-      </Poptip>
-      <button type="button" @click="login">submit</button>
-    </form>
-  </div>
+  <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
+    <Form-item prop="user">
+      <Input type="text" v-model="formInline.user" placeholder="Username">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </Form-item>
+    <Form-item prop="password">
+      <Input type="password" v-model="formInline.password" placeholder="Password">
+      <Icon type="ios-locked-outline" slot="prepend"></Icon>
+      </Input>
+    </Form-item>
+    <Form-item>
+      <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
+    </Form-item>
+  </Form>
 </template>
 <script>
-  import md5 from 'js-md5'
+  import axios from 'axios'
+  import qs from 'qs'
   export default{
     name: 'login',
     data: function () {
       return {
-        username: '',
-        sourcePassword: '',
-      }
-    },
-    computed: {
-      md5Password: function () {
-        if (!this.sourcePassword) return ''
-        return this.sourcePassword
+        formInline: {
+          user: '',
+          password: ''
+        },
+        ruleInline: {
+          user: [
+            { required: true, message: '请填写用户名', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请填写密码', trigger: 'blur' },
+            { type: 'string', min: 1, message: '密码长度不能小于6位', trigger: 'blur' }
+          ]
+        }
       }
     },
     methods: {
-      login: function () {
-//        axios.post('/user', {
-//          firstName: 'Fred',
-//          lastName: 'Flintstone'
-//        })
-//          .then(function (response) {
-//            console.log(response);
-//          })
-//          .catch(function (error) {
-//            console.log(error);
-//          });
-      }
-    },
-    filters: {
-      clearSpace: function (value) {
-        return value.replace(/\s/g, '')
+      handleSubmit(name) {
+        this.isLoading = true
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            axios.post('http://localhost/crm/back_end/api/v1/token/', qs.stringify({
+              username: this.formInline.user.trim(),
+              password: this.formInline.password.trim()
+            }))
+              .then(response => {
+                let res = response.data
+                this.isLoading = false
+                if (res['token']){
+                  localStorage.token = res['token']
+                  this.$router.push('index')
+                }else {
+//                if (res.statusCode === 46004)
+                }
+              })
+              .catch(err =>{
+                this.isLoading = false
+                console.log(err)
+              })
+            this.$Message.success('提交成功!');
+          } else {
+            this.$Message.error('表单验证失败!');
+          }
+        })
       }
     }
   }
 </script>
 <style scoped>
-  .center-right {
-    float: right;
-  }
 </style>

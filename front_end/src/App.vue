@@ -14,6 +14,7 @@
     },
     mounted: function () {
       if (!this.token) this.$router.push('login')
+      else this.$router.push('index')
     }
   }
 </script>
