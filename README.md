@@ -10,7 +10,7 @@
 ## Installing
 
 
-###back end
+### Back end
 
 
 导入sql文件到数据库
@@ -18,7 +18,7 @@
 更改config.php 参数
 
 
-###front end
+### Front end
 
 
 ```bash
@@ -27,7 +27,7 @@ $ npm run dev
 ```
 
 
-##Error code
+## Error code
 
 
 
