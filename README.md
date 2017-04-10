@@ -23,6 +23,8 @@ $ npm run dev
 ```
 
 ##Error code
+
+
 | Code          | Description    |
 | ------------- |:---------------|
 | 40035         |用戶名或密碼不合法|
