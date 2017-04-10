@@ -87,31 +87,53 @@
 
   export default {
     name: 'home',
+    data: function () {
+      return {
+        menuData: []
+      }
+    },
     mounted: function () {
       let self = this
-      axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)
-        .then(function (response) {
-//            token过期，自动换个新的
-          if (response.data.stateCode === 42001) {
-            axios.post('http://localhost/crm/back_end/api/v1/token/', qs.stringify({
-              token: localStorage.token,
-            }))
-              .then(response => {
-                localStorage.token = response.data.token
-              })
-              .catch(err => {
-                console.log(err)
-              })
-          }
+      let getMenu = async () => {
+        let res = await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)
 
-          //              token错误，退回登陆界面
-          if (response.data.stateCode === 40014) {
-            self.$router.push('login')
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        //        token错误，退回登陆界面
+        if (res.data.stateCode === 40014) self.$router.push('login')
+
+        //        token过期，自动换个新的
+        if (res.data.stateCode === 42001) {
+          localStorage.token = (await axios.post(
+            'http://localhost/crm/back_end/api/v1/token/',
+            qs.stringify({token: localStorage.token})
+          )).data.token
+        }
+
+        this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+      }
+      getMenu()
+//      axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)
+//        .then(function (response) {
+////            token过期，自动换个新的
+//          if (response.data.stateCode === 42001) {
+//            axios.post('http://localhost/crm/back_end/api/v1/token/', qs.stringify({
+//              token: localStorage.token,
+//            }))
+//              .then(response => {
+//                localStorage.token = response.data.token
+//              })
+//              .catch(err => {
+//                console.log(err)
+//              })
+//          }
+//
+//          //              token错误，退回登陆界面
+//          if (response.data.stateCode === 40014) {
+//            self.$router.push('login')
+//          }
+//        })
+//        .catch(function (error) {
+//          console.log(error);
+//        })
     }
   }
 </script>
