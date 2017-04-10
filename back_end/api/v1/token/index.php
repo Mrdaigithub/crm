@@ -1,4 +1,3 @@
 <?php
-
-//print_r(__METHOD__);
-print_r(md5('5f4dcc3b5aa765d61d8327deb882cf99'));
+include '../../../core/core.php';
+print_r(json_encode(array('name'=>'xx','age'=>80)));

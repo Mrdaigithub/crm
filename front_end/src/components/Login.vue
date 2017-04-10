@@ -1,19 +1,21 @@
 <template>
   <div>
     <form>
-      <Poptip trigger="focus" title="提示标题" content="提示内容" placement="right">
+      <Poptip trigger="focus" title="username" content="username" placement="right">
         <Input v-model="username" icon="person" placeholder="username"></Input>
       </Poptip>
       <br>
-      <Poptip trigger="focus" title="提示标题" content="提示内容" placement="right">
+      <Poptip trigger="focus" title="password" content="password" placement="right">
         <Input type="password" v-model="sourcePassword" icon="locked" placeholder="username"></Input>
       </Poptip>
-      <button type="button" @click="login">submit</button>
+      <br>
+      <Button type="success" @click="login">login</Button>
     </form>
   </div>
 </template>
 <script>
   import md5 from 'js-md5'
+  import axios from 'axios'
   export default{
     name: 'login',
     data: function () {
@@ -30,16 +32,16 @@
     },
     methods: {
       login: function () {
-//        axios.post('/user', {
-//          firstName: 'Fred',
-//          lastName: 'Flintstone'
-//        })
-//          .then(function (response) {
-//            console.log(response);
-//          })
-//          .catch(function (error) {
-//            console.log(error);
-//          });
+        axios.post('http://127.0.0.1/crm/back_end/api/v1/token/', {
+          username: this.username,
+          md5Password: this.md5Password
+        })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
     },
     filters: {
@@ -50,7 +52,4 @@
   }
 </script>
 <style scoped>
-  .center-right {
-    float: right;
-  }
 </style>

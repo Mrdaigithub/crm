@@ -1,5 +1,7 @@
 <?php
 
+@header('Access-Control-Allow-Origin:*');
+@header("Content-type: text/json");
 error_reporting(0);
 ob_start();
 
