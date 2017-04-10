@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2017 年 04 月 08 日 02:33
+-- 生成日期: 2017 年 04 月 10 日 10:56
 -- 服务器版本: 5.5.15
 -- PHP 版本: 5.3.8
 
@@ -17,8 +17,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- 数据库: `guahao_spa`
+-- 数据库: `crm`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `admin`
+--
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `username` char(15) NOT NULL,
+  `password` char(40) NOT NULL,
+  `token` char(250) DEFAULT NULL,
+  `exp` int(10) DEFAULT NULL,
+  `power` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='用户信息' AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`, `token`, `exp`, `power`) VALUES
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxODE4NTM2fQ.OTE0NzI4MGU0NTdjZGU5OTI4ZWMyYzdjN2MxZWM2NjEwNDNiNDhjNGVmZGM0ZTUyNjExNjIwMjE1NjFjZTJhMA', 1491818536, 2),
+(2, 'admin', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsInN1YiI6Imp3dCIsImV4cCI6MTQ5MTgwNDAxMX0.NTEwYWJmMmE2YzhiZjI2MTBjZTc4YWVkNDk0MWIwOWI1OTNiMWQ1N2YzZDkwMGUzNjY2MTdjZTM5ZGQ3YjMwOQ', 1491804011, 1),
+(3, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxODA0MDI4fQ.NzQzZDNjMWRjZDNjMWU3NGQyNmVjMDJlOGI2NTY2MTdhZTBlNGRiMWUzMmFhODQ1NzJhNTBjYWVkZTczZWJkNw', 1491804028, 0);
 
 -- --------------------------------------------------------
 
@@ -29,6 +54,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `disease` (
   `id` tinyint(3) NOT NULL AUTO_INCREMENT,
   `name` char(10) NOT NULL,
+  `childs` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病种' AUTO_INCREMENT=1 ;
 
@@ -48,6 +74,21 @@ CREATE TABLE IF NOT EXISTS `doctors` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `log`
+--
+
+CREATE TABLE IF NOT EXISTS `log` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `ip` char(14) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `des` text COLLATE utf8mb4_unicode_ci,
+  `admin` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='行为日志' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `media`
 --
 
@@ -60,6 +101,45 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `menu`
+--
+
+CREATE TABLE IF NOT EXISTS `menu` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `title` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sub_menu` char(50) COLLATE utf8mb4_unicode_ci,
+  `power` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单' AUTO_INCREMENT=18 ;
+
+--
+-- 转存表中的数据 `menu`
+--
+
+INSERT INTO `menu` (`id`, `title`, `name`, `url`, `sub_menu`, `power`) VALUES
+(1, '仪表盘', '1', 'dashboard\r', '', 0),
+(2, '客户池', '2', 'patients', '[3]', 0),
+(3, '登记用户', '2-1', 'regsiter', '', 0),
+(4, '数据报表', '3', 'data', '[4,5]', 1),
+(5, '绩效数据', '3-1', 'effect', '', 1),
+(6, '业绩报表', '3-2', 'performance', '', 1),
+(7, '信息管理', '4', 'info', '[7,8,9,10]', 1),
+(8, '医生管理', '4-1', 'doctor', '', 1),
+(9, '病种科室', '4-2', 'disease', '', 1),
+(10, '来源渠道', '4-3', 'media', '', 1),
+(11, '咨询方式', '4-4', 'way', '', 1),
+(12, '系统设置', '5', 'system', '[12,13,14,15,16]', 1),
+(13, '菜单管理', '5-1', 'menu', '', 2),
+(14, '人员管理', '5-2', 'admin', '', 2),
+(15, '行为日志', '5-3', 'log', '', 1),
+(16, '通知管理', '5-4', 'notice', '', 1),
+(17, '参数设置', '5-5', 'config', '', 2);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `patients`
 --
 
@@ -68,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `name` char(10) NOT NULL,
   `sex` tinyint(1) DEFAULT '0',
   `age` tinyint(2) DEFAULT NULL,
-  `tel` int(15) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
   `wechat` char(20) DEFAULT NULL,
   `qq` int(10) DEFAULT NULL,
   `add_time` int(10) NOT NULL COMMENT '登记时间',
@@ -85,33 +165,6 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `remarks` text COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病患' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `users`
---
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `username` char(15) NOT NULL,
-  `password` char(20) NOT NULL,
-  `token` char(250) DEFAULT NULL,
-  `exp` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='用户信息' AUTO_INCREMENT=19 ;
-
---
--- 转存表中的数据 `users`
---
-
-INSERT INTO admin (`id`, `username`, `password`, `token`, `exp`) VALUES
-(13, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTEzODkyNzR9.YWU1ZjY4NTQxZmVlY2EzMzlmNGNjMGMzZjVkYjEyNmVjZTYxMjIyMTQ4NjNlN2M5OWNlZWJhM2YwMTU3ZDZmYQ', 1491389274),
-(14, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTEzODk3MTF9.YjIzNDdjMDFmYTlhODZiNjQ0N2M0M2UwOGU5ZWEyMWUwNjdkZDk0YzRkOWQ2YTNhNDQ2ZjAxMzQ0MzkzZGU0OA', 1491389711),
-(15, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTEzODk3NjZ9.ODk1YzdlNzNlNzc4MWE3NDk3YTFjYTdlZmRkZjE2ZWVkYTE0NWY2MWYzMDQwMDhlZDBmYjY4OTJmZjAxYTQ3Yw', 1491389766),
-(16, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTEzODk3OTR9.MGI1ZmNlYzE2NjY0MjdiN2UwMGMyZjZjMTc0ZmYxZjYzNzcxMTJmNjU5MDUwNzhmNmUzYTZlZDRlYmIyMTU4ZA', 1491389794),
-(17, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTE0NjQ5MDN9.ZjdkODEwMGI0NGU3NTEwMWI1OWZmNWQyNGM5YjM0OGNhMmE2OGY3MDUxZWVlNzZjNzI4NWRlZjVjYTM3ODU2Yg', 1491464903),
-(18, 'kefu', 'kefu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoibG9naW4iLCJleHAiOjE0OTE0NjY5NTN9.MDVhZjc2NGQ4OTUzZDBjMThhZmY4MTI2NTYwY2ZkY2M3YzI1NWU3MWI5YzM4NWQ2M2UwMjZiYThlYTYyM2UwOQ', 1491466953);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

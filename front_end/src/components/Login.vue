@@ -1,52 +1,76 @@
 <template>
-  <div>
-    <form>
-      <Poptip trigger="focus" title="username" content="username" placement="right">
-        <Input v-model="username" icon="person" placeholder="username"></Input>
-      </Poptip>
-      <br>
-      <Poptip trigger="focus" title="password" content="password" placement="right">
-        <Input type="password" v-model="sourcePassword" icon="locked" placeholder="username"></Input>
-      </Poptip>
-      <br>
-      <Button type="success" @click="login">login</Button>
-    </form>
-  </div>
+  <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
+    <Form-item prop="user">
+      <Input type="text" v-model="formInline.user" placeholder="Username">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </Form-item>
+    <Form-item prop="password">
+      <Input type="password" v-model="formInline.password" placeholder="Password">
+      <Icon type="ios-locked-outline" slot="prepend"></Icon>
+      </Input>
+    </Form-item>
+    <Form-item>
+      <Button type="primary" @click="handleSubmit('formInline')" :loading="isLoading">登录</Button>
+    </Form-item>
+  </Form>
 </template>
 <script>
-  import md5 from 'js-md5'
+  import qs from 'qs'
   import axios from 'axios'
+
   export default{
     name: 'login',
     data: function () {
       return {
-        username: '',
-        sourcePassword: '',
-      }
-    },
-    computed: {
-      md5Password: function () {
-        if (!this.sourcePassword) return ''
-        return this.sourcePassword
+        isLoading: false,
+        formInline: {
+          user: '',
+          password: ''
+        },
+        ruleInline: {
+          user: [
+            {required: true, message: '请填写用户名', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: '请填写密码', trigger: 'blur'},
+            {type: 'string', min: 3, message: '密码长度不能小于3位', trigger: 'blur'},
+            {type: 'string', max: 10, message: '密码长度不能大于10位', trigger: 'blur'}
+          ]
+        }
       }
     },
     methods: {
-      login: function () {
-        axios.post('http://127.0.0.1/crm/back_end/api/v1/token/', {
-          username: this.username,
-          md5Password: this.md5Password
+      handleSubmit(name) {
+        this.isLoading = true
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            axios.post('http://localhost/crm/back_end/api/v1/token/', qs.stringify({
+              username: this.formInline.user.trim(),
+              password: this.formInline.password.trim()
+            }))
+              .then(response => {
+                let res = response.data
+                if (res['token']) {
+                  localStorage.token = res['token']
+                  this.$router.push('home')
+                } else {
+                  if (res.stateCode === 46004) {
+                    this.$Message.error('不存在的用户')
+                  } else if (res.stateCode === 46005) {
+                    this.$Message.error('密码错误')
+                  }
+                }
+                this.isLoading = false
+              })
+              .catch(err => {
+                this.isLoading = false
+                this.$Message.error(`网络错误: ${err}`)
+              })
+          } else {
+            this.$Message.error('表单验证失败!')
+          }
         })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-    },
-    filters: {
-      clearSpace: function (value) {
-        return value.replace(/\s/g, '')
       }
     }
   }

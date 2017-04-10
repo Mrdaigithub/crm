@@ -6,10 +6,10 @@
  * Date: 17/04/08
  * Time: 8:19
  */
-class Jwt
+class class_jwt
 {
     /**
-     * 创建用户token
+     * 鍒涘缓鐢ㄦ埛token
      * @param $username
      * @param string $sub
      * @return string
@@ -23,8 +23,22 @@ class Jwt
             "exp" => time() + EXP
         ));
         $content = base64url_encode($headers) . '.' . base64url_encode($claims);
-        $signature = hash_hmac('sha256', $content, $GLOBALS['secret_key']);
+        $signature = hash_hmac('sha256', $content, SECRET_KEY);
         $token = $content . '.' . base64url_encode($signature);
         return $token;
+    }
+
+    /**
+     * 鏍￠獙token
+     * @param $token
+     * @return mixed
+     */
+    function verifyToken($token)
+    {
+        $sql = $GLOBALS['sql'];
+        $res = $sql->query("SELECT username, exp FROM admin WHERE token='" . $token . "';");
+        if (!$res) error_handler(40014); //鏃犳晥鐨則oken
+        if ($res[0]['exp'] <= time()) error_handler(42001); //token瓒呮椂
+        return $res[0]['username'];
     }
 }

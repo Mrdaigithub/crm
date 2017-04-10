@@ -1,15 +1,15 @@
 <?php
 
-//Êý¾Ý¿âÅäÖÃ
+//æ•°æ®åº“é…ç½®
 define('SERVERNAME', 'localhost');
-define('DBNAME', 'guahao_spa');
+define('DBNAME', 'crm');
 define('USERNAME', 'root');
 define('PASSWORD', '');
 
-//apiÓÃ»§ÈÏ
+//apiç”¨æˆ·è®¤
 
-//apiÓÃ»§ÈÏÖ¤Ë½Ô¿
+//apiç”¨æˆ·è®¤è¯ç§é’¥
 define('SECRET_KEY', 'guahao_spa' . time());
 
-//tokenÓÐÐ§Ê±¼ä (s)
+//tokenæœ‰æ•ˆæ—¶é—´ (s)
 define('EXP', 7200);
