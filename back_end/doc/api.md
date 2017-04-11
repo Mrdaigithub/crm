@@ -99,20 +99,40 @@
  ### 返回示例
 
 ``` 
-  {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxODgyODk5fQ.Y2IyNjQzOGY1OTBmMjc4N2MxNzFlNTkyODc2ZGRlYTQ2YzIyNjQwODkzODJjYTgwMTE3NjRmZmYxMDdmOWZlYg"
-  }
+  [
+    {
+      "title": "仪表盘",
+      "name": "1",
+      "url": "dashboard",
+      "child": []
+    },
+    {
+      "title": "客户池",
+      "name": "2",
+      "url": "patients",
+      "child": [
+        {
+          "id": "3",
+          "title": "登记用户",
+          "name": "2-1",
+          "url": "regsiter"
+        }
+      ]
+    }
+  ]
 ```
 
  ### 返回参数说明 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|menu_data|object|用户对应的菜单数据|
+|menu_data|array|用户对应的菜单数据|
 
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|40036|number|用戶名或密碼缺失|
+|41001|number|缺少token参数|
+|40014|number|无效的token|
+|42001|number|token超时|
