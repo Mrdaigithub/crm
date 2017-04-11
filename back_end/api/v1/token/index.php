@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //过期token更新
 if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
     parse_str(file_get_contents('php://input'), $reqArgs);
-
 //    缺少token参数
     if (!array_key_exists('token', $reqArgs)) error_handler(41001);
 
