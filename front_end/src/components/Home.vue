@@ -95,20 +95,21 @@
     mounted: function () {
       let self = this
       let getMenu = async () => {
-        let res = await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)
+//        let res = await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)
+        let res = await axios.patch(`http://localhost/crm/back_end/api/v1/token/`,`token=${localStorage.token}`)
 
         //        token错误，退回登陆界面
-        if (res.data.stateCode === 40014) self.$router.push('login')
-
-        //        token过期，自动换个新的
-        if (res.data.stateCode === 42001) {
-          localStorage.token = (await axios.post(
-            'http://localhost/crm/back_end/api/v1/token/',
-            qs.stringify({token: localStorage.token})
-          )).data.token
-        }
-
-        this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+//        if (res.data.stateCode === 40014) self.$router.push('login')
+//
+//        //        token过期，自动换个新的
+//        if (res.data.stateCode === 42001) {
+//          localStorage.token = (await axios.post(
+//            'http://localhost/crm/back_end/api/v1/token/',
+//            qs.stringify({token: localStorage.token})
+//          )).data.token
+//        }
+//
+//        this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
       }
       getMenu()
 //      axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)

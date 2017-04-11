@@ -4,6 +4,7 @@
 //ob_start();
 @header('Access-Control-Allow-Origin:http://localhost:8080');
 @header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie');
+@header("Access-Control-Allow-Methods: GET, POST,HEAD, OPTIONS, PATCH,PUT, DELETE");
 //@header("Content-type: text/json");
 
 define("ROOT", str_replace("\\", "/", dirname(dirname(__FILE__)))."/");
