@@ -4,10 +4,10 @@
       <i-col span="5" class="layout-menu-left">
         <Menu active-name="2-1" theme="dark" width="auto" :open-names="['2']">
           <div class="layout-logo-left"></div>
-          <Submenu v-for="menu of menuData" :key="menu.name" :name="menu.name">
-            <template slot="title">{{menu.title}}</template>
-            <Menu-item v-for="subMeun of menu.child" :key="subMeun.name" :name="subMeun.name">
-              <router-link :to="subMeun.url">{{subMeun.title}}</router-link>
+          <Submenu v-for="m of menu" :key="m.name" :name="m.name">
+            <template slot="title">{{m.title}}</template>
+            <Menu-item v-for="subM of m.child" :key="subM.name" :name="subM.name">
+              <router-link :to="getUrl(m.url,subM.url)">{{subM.title}}</router-link>
             </Menu-item>
           </Submenu>
         </Menu>
@@ -31,26 +31,46 @@
 
   export default {
     name: 'home',
-    computed:{
-        menu(){
-            return this.$store.menu
+    computed: {
+      menu(){
+        return this.$store.state.menu
+      }
+    },
+    methods:{
+        getUrl(pUrl, cUrl){
+            console.log(pUrl, cUrl)
+            return `${pUrl}/${cUrl}`
         }
     },
     mounted(){
-//      let getMenu = async () => {
-//        let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
-//        this.menuData = res['menu_data']
-//
-////        缺少token参数或无效的token，退回登陆界面
-//        if (res.stateCode === 41001 || res.stateCode === 40014) this.$router.push('login')
-//
-////        token超时
-//        if (res.stateCode === 42001) {
-//          localStorage.token = (await axios.patch('http://localhost/crm/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
-//          this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
-//        }
-//      }
-//      if (!this.menuData.length) getMenu()
+      let self = this
+      let getMenu = async () => {
+        let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+
+//        缺少token参数或无效的token，退回登陆界面
+        if (res['state_code'] === 41001 || res['state_code'] === 40014) {
+          this.$Modal.error({
+            content: '<p>系统监测到你的token不正确，将退回到登陆界面，bye~</p>',
+            onOk(){
+              localStorage.token = ''
+              self.$router.push('login')
+            },
+            onCancel(){
+              localStorage.token = ''
+              self.$router.push('login')
+            }
+          });
+
+        }
+
+//        token超时 更換token 重新獲取 menu data
+        if (res['state_code'] === 42001) {
+          localStorage.token = (await axios.patch('http://localhost/crm/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
+          res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+        }
+        this.$store.dispatch('saveMenu', res['menu_data'])
+      }
+      if (!this.menu.length) getMenu()
     }
   }
 </script>
