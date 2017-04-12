@@ -21,13 +21,13 @@ function base64url_decode($data)
 
 /**
  * 判断数据库是否已有此用户名
- * @param $sqlAllUsername
+ * @param $sql_all_username
  * @param $username
  * @return bool
  */
-function has_username($sqlAllUsername, $username)
+function has_username($sql_all_username, $username)
 {
-    foreach ($sqlAllUsername as $key) {
+    foreach ($sql_all_username as $key) {
         if ($key['username'] === $username) return $username;
     }
     return false;
@@ -35,10 +35,10 @@ function has_username($sqlAllUsername, $username)
 
 /**
  * api错误返回码
- * @param $stateCode
+ * @param $state_code
  */
-function error_handler($stateCode)
+function error_handler($state_code)
 {
-    echo json_encode(array('stateCode' => $stateCode));
+    echo json_encode(array('state_code' => $state_code));
     exit();
 }

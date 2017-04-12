@@ -235,7 +235,7 @@
 
 ```
   {
-    "newPatient": {
+    "new_patient": {
         "id": "1007",
         "name": "patient1",
         "sex": "0",
@@ -243,16 +243,16 @@
         "age": "20",
         "wechat": "patient1-13566666666",
         "qq": "666666",
-        "addTime": "1491983355",
-        "orderTime": null,
-        "reachTime": null,
-        "diseaseId": null,
-        "authorId": "1",
+        "add_time": "1491983355",
+        "order_time": null,
+        "reach_time": null,
+        "disease_id": null,
+        "author_id": "1",
         "state": "0",
-        "mediaFromId": null,
-        "doctorId": null,
-        "advisoryWay": null,
-        "advisoryContent": null,
+        "media_from_id": null,
+        "doctor_id": null,
+        "advisory_way": null,
+        "advisory_content": null,
         "area": "温州",
         "remarks": "苟..."
     }
@@ -263,7 +263,7 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|newPatient|object|新建的病患数据|
+|new_patient|object|新建的病患数据|
 
 
  ### 错误状态码 
