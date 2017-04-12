@@ -38,11 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //过期token更新
 if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
     parse_str(file_get_contents('php://input'), $reqArgs);
+
 //    缺少token参数
     if (!array_key_exists('token', $reqArgs)) error_handler(41001);
 
     $oldToken = $reqArgs['token'];
     $username = $sql->query("SELECT username FROM admin WHERE token='" . $oldToken . "';");
+
+//    无效的token
+    if (!$username) error_handler(40014);
     $username = $username[0]['username'];
 
     //    为用户创建新token
