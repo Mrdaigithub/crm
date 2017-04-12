@@ -15,7 +15,9 @@
       <i-col span="19">
         <div class="layout-header"></div>
         <div class="layout-content">
-          <div class="layout-content-main"><router-view></router-view></div>
+          <div class="layout-content-main">
+            <router-view></router-view>
+          </div>
         </div>
         <div class="layout-copy">2011-2016 &copy; TalkingData</div>
       </i-col>
@@ -29,12 +31,12 @@
 
   export default {
     name: 'home',
-    data: function () {
+    data(){
       return {
         menuData: []
       }
     },
-    mounted: function () {
+    mounted(){
       let getMenu = async () => {
         let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
         this.menuData = res['menu_data']

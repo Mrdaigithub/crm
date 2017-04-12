@@ -22,7 +22,7 @@ class class_mysql
 
     function exec($sql)
     {
-        $this->conn->exec($sql);
+        return $this->conn->exec($sql);
     }
 
     function query($sql)

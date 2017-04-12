@@ -21,7 +21,7 @@
 
   export default{
     name: 'login',
-    data: function () {
+    data(){
       return {
         isLoading: false,
         formInline: {
