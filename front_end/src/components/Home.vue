@@ -31,26 +31,26 @@
 
   export default {
     name: 'home',
-    data(){
-      return {
-        menuData: []
-      }
+    computed:{
+        menu(){
+            return this.$store.menu
+        }
     },
     mounted(){
-      let getMenu = async () => {
-        let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
-        this.menuData = res['menu_data']
-
-//        缺少token参数或无效的token，退回登陆界面
-        if (res.stateCode === 41001 || res.stateCode === 40014) this.$router.push('login')
-
-//        token超时
-        if (res.stateCode === 42001) {
-          localStorage.token = (await axios.patch('http://localhost/crm/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
-          this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
-        }
-      }
-      if (!this.menuData.length) getMenu()
+//      let getMenu = async () => {
+//        let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+//        this.menuData = res['menu_data']
+//
+////        缺少token参数或无效的token，退回登陆界面
+//        if (res.stateCode === 41001 || res.stateCode === 40014) this.$router.push('login')
+//
+////        token超时
+//        if (res.stateCode === 42001) {
+//          localStorage.token = (await axios.patch('http://localhost/crm/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
+//          this.menuData = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+//        }
+//      }
+//      if (!this.menuData.length) getMenu()
     }
   }
 </script>
