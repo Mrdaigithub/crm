@@ -14,7 +14,7 @@ class class_jwt
      * @param string $sub
      * @return string
      */
-    function createToken($username, $sub = 'jwt')
+    function create_token($username, $sub = 'jwt')
     {
         $headers = json_encode(array("typ" => "JWT", "alg" => "HS256"));
         $claims = json_encode(array(

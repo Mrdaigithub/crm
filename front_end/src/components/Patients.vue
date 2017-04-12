@@ -1,9 +1,12 @@
 <template>
   <div>
+    <Button type="primary" @click="addPatient">add</Button>
     <Table border :context="self" :columns="columns7" :data="data6"></Table>
   </div>
 </template>
 <script>
+  import qs from 'qs'
+  import axios from 'axios'
   export default {
     data () {
       return {
@@ -67,6 +70,29 @@
       },
       remove (index) {
         this.data6.splice(index, 1);
+      },
+      addPatient(){
+        let test = async ()=>{
+          let patient = await axios.post('http://localhost/crm/back_end/api/v1/patient/',qs.stringify({
+            token:localStorage.token,
+            name:'patient1',
+            sex:0,
+            age:20,
+            tel:13566666666,
+            wechat:'patient1-13566666666',
+            qq:'666666',
+            addTime:(new Date().getTime()).toString().split('').slice(0,-3).join(''),
+            disease_id:0,
+            state:0,
+            media_from_id:0,
+            doctor_id:0,
+            advisory_way:'swt',
+            advisory_content:'make a big news',
+            area:'温州',
+            remarks:'苟...'
+          }))
+        }
+        test()
       }
     }
   }
