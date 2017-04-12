@@ -15,6 +15,14 @@
     mounted: function () {
       if (!this.token) this.$router.push('login')
       else this.$router.push('home')
+      this.$router.beforeEach((to, from, next) => {
+        this.$Loading.start()
+        next()
+      })
+      this.$router.afterEach((to, from, next) => {
+        this.$Loading.finish()
+        next()
+      })
     }
   }
 </script>
