@@ -15,9 +15,9 @@ export default new Router({
       name: 'home',
       component: Home,
       children:[
-        {path: '/patients/regsiter', name: 'patient', component: Patient},
-        {path: '/doctor', name: 'doctor', component: Doctor},
-        {path: '/log', name: 'Log', component: Log}
+        {path: '/patients_regsiter', name: 'patient', component: Patient},
+        {path: '/info_doctor', name: 'doctor', component: Doctor},
+        {path: '/system_log', name: 'Log', component: Log}
       ]
     },
     {

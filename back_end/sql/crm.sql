@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2017 年 04 月 12 日 09:53
+-- 生成日期: 2017 年 04 月 14 日 16:26
 -- 服务器版本: 5.5.15
 -- PHP 版本: 5.3.8
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `token`, `exp`, `power`) VALUES
-(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTg0NzE4fQ.Y2I2YzIxZTRkNzg5NmEyZTc3NWFlODMxZDhhNTY1OGNiOGE4ZTk4MDI2ZmNiZmNhNWY3Nzg1MGIzOWQyMWM0Zg', 1491984718, 2),
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkyMTgwOTE2fQ.MDMwMDIxN2VjMzc5MDJlYmNhMDNhYWQ4NzhiYWViMjI1NWYzMGRlYmY1ODA4ZjVlOTUwMGY4NDQyM2E5MjgyMw', 1492180916, 2),
 (2, 'admin', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsInN1YiI6Imp3dCIsImV4cCI6MTQ5MTk3Mzg4MH0.MjYwY2QzZDE5ZGI3NGVlYWNmMWRhZTgzZTI1MjZlYWQ0N2QxYzgzYjllODE5MTdhNDM0ZWZjZWVmZjg0MzRlYw', 1491973880, 1),
 (3, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0);
 
@@ -120,22 +120,22 @@ CREATE TABLE IF NOT EXISTS `menu` (
 
 INSERT INTO `menu` (`id`, `title`, `name`, `url`, `power`) VALUES
 (1, '仪表盘', '1', 'dashboard', 0),
-(2, '客户池', '2', 'patients', 0),
-(3, '登记用户', '2-1', 'regsiter', 0),
-(4, '数据报表', '3', 'data', 1),
-(5, '绩效数据', '3-1', 'effect', 1),
-(6, '业绩报表', '3-2', 'performance', 1),
-(7, '信息管理', '4', 'info', 1),
-(8, '医生管理', '4-1', 'doctor', 1),
-(9, '病种科室', '4-2', 'disease', 1),
-(10, '来源渠道', '4-3', 'media', 1),
-(11, '咨询方式', '4-4', 'way', 1),
-(12, '系统设置', '5', 'system', 1),
-(13, '菜单管理', '5-1', 'menu', 2),
-(14, '人员管理', '5-2', 'admin', 2),
-(15, '行为日志', '5-3', 'log', 1),
-(16, '通知管理', '5-4', 'notice', 1),
-(17, '参数设置', '5-5', 'config', 2);
+(2, '客户池', '2', '', 0),
+(3, '登记用户', '2-1', 'patients_regsiter', 0),
+(4, '数据报表', '3', '', 1),
+(5, '绩效数据', '3-1', 'data_effect', 1),
+(6, '业绩报表', '3-2', 'data_performance', 1),
+(7, '信息管理', '4', '', 1),
+(8, '医生管理', '4-1', 'info_doctor', 1),
+(9, '病种科室', '4-2', 'info_disease', 1),
+(10, '来源渠道', '4-3', 'info_media', 1),
+(11, '咨询方式', '4-4', 'info_way', 1),
+(12, '系统设置', '5', '', 1),
+(13, '菜单管理', '5-1', 'system_menu', 2),
+(14, '人员管理', '5-2', 'system_admin', 2),
+(15, '行为日志', '5-3', 'system_log', 1),
+(16, '通知管理', '5-4', 'system_notice', 1),
+(17, '参数设置', '5-5', 'system_config', 2);
 
 -- --------------------------------------------------------
 
