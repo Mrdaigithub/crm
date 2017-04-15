@@ -52,6 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
     //    为用户创建新token
     $token = $jwt->create_token($username);
     $sql->exec("UPDATE admin SET token='" . $token . "', exp=" . (time() + EXP) . " WHERE username='" . $username . "';");
-    echo json_encode(array('token' => $token));
+    echo json_encode(array('token' => $token, 'username' => $username));
     exit();
 }

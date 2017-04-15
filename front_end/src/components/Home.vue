@@ -7,7 +7,7 @@
           <Submenu v-for="m of menu" :key="m.name" :name="m.name">
             <template slot="title">{{m.title}}</template>
             <Menu-item v-for="subM of m.child" :key="subM.name" :name="subM.name">
-              <router-link :to="getUrl(m.url,subM.url)">{{subM.title}}</router-link>
+              <router-link :to="subM.url">{{subM.title}}</router-link>
             </Menu-item>
           </Submenu>
         </Menu>
@@ -35,12 +35,6 @@
       menu(){
         return this.$store.state.menu
       }
-    },
-    methods:{
-        getUrl(pUrl, cUrl){
-            console.log(pUrl, cUrl)
-            return `${pUrl}/${cUrl}`
-        }
     },
     mounted(){
       let self = this
