@@ -36,6 +36,7 @@
         return this.$store.state.menu
       }
     },
+    methods: {},
     mounted(){
       let self = this
       let getMenu = async () => {
