@@ -27,9 +27,28 @@
           </Row>
         </Form-item>
         <Form-item label="咨询方式">
-          <Select v-model="patientData.advisoryWay" placeholder="请选择">
-            <Option v-for="item in patientData.advisoryWayData" :value="item.value" :key="item">{{ item.value }}</Option>
+          <Select v-model="patientData.advisoryWay" placeholder="请选择咨询方式">
+            <Option v-for="item in patientData.advisoryWayData" :value="item.value" :key="item">{{ item.value }}
+            </Option>
           </Select>
+        </Form-item>
+        <Form-item label="渠道来源">
+          <Select v-model="patientData.media" placeholder="请选择渠道来源">
+            <Option v-for="item in patientData.mediaData" :value="item.value" :key="item">{{ item.value }}</Option>
+          </Select>
+        </Form-item>
+        <Form-item label="预约病种">
+          <Select v-model="patientData.disease" placeholder="请选择预约病种">
+            <Option v-for="item in patientData.diseaseData" :value="item.value" :key="item">{{ item.value }}</Option>
+          </Select>
+        </Form-item>
+        <Form-item label="预约医生">
+          <Select v-model="patientData.doctor" placeholder="请选择预约医生">
+            <Option v-for="item in patientData.doctorData" :value="item.value" :key="item">{{ item.value }}</Option>
+          </Select>
+        </Form-item>
+        <Form-item label="客户预约备注" prop="marks">
+          <Input v-model="patientData.marks" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
         </Form-item>
       </Form>
       <div slot="footer"></div>
@@ -50,7 +69,7 @@
           date: '',
           time: '',
           advisoryWay: '',
-          advisoryWayData:[
+          advisoryWayData: [
             {
               value: '商务通'
             },
@@ -58,8 +77,50 @@
               value: '电话'
             }
           ],
+          media: '',
+          mediaData: [
+            {
+              value: '百度'
+            },
+            {
+              value: '搜狗'
+            },
+            {
+              value: '360'
+            }
+          ],
+          disease: '',
+          diseaseData: [
+            {
+              value: '近视眼'
+            },
+            {
+              value: '支气管'
+            },
+            {
+              value: '智障'
+            },
+            {
+              value: '中二'
+            }
+          ],
+          doctor: '',
+          doctorData: [
+            {
+              value: 'doctor1'
+            },
+            {
+              value: 'doctor2'
+            },
+            {
+              value: 'doctor3'
+            },
+            {
+              value: 'doctor4'
+            }
+          ],
+          marks:'',
           city: '',
-          gender: '',
           interest: [],
           desc: ''
         },
@@ -75,6 +136,9 @@
           ],
           time: [
             {required: true, type: 'date', message: '请选择时间', trigger: 'change'}
+          ],
+          media: [
+            {required: true, message: '请选择城市', trigger: 'change'}
           ],
           city: [
             {required: true, message: '请选择城市', trigger: 'change'}
