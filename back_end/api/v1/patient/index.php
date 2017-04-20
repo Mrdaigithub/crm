@@ -6,8 +6,12 @@ include '../../../core/core.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $count = $sql->query("SELECT count(*) FROM patient");
     $count = $count[0]['count(*)'];
-    $page = $sql->query("SELECT count(*) FROM patient");
-    print_r($count);
+//    if ($_GET['page'])
+//    $page = $sql->query("SELECT count(*) FROM patient");
+    print_r(json_encode(array(
+        'count'=>$count
+    )));
+    exit();
 }
 
 //new
@@ -17,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $jwt->verifyToken($_POST['token']);
     $user_id = $sql->query("SELECT id FROM admin WHERE username='" . $username . "';");
     $user_id = $user_id[0]['id'];
-
     $patient_info = array(
         'name' => array_key_exists('name', $post_data) ? $post_data['name'] : null,
         'sex' => array_key_exists('sex', $post_data) ? $post_data['sex'] : 0,
@@ -25,20 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'tel' => array_key_exists('tel', $post_data) ? $post_data['tel'] : null,
         'wechat' => array_key_exists('wechat', $post_data) ? $post_data['wechat'] : null,
         'qq' => array_key_exists('qq', $post_data) ? $post_data['qq'] : null,
-        'add_time' => array_key_exists('addTime', $post_data) ? $post_data['addTime'] : null,
-        'order_time' => array_key_exists('orderTime', $post_data) ? $post_data['orderTime'] : null,
-        'reach_time' => array_key_exists('reachTime', $post_data) ? $post_data['reachTime'] : null,
-        'disease_id' => array_key_exists('diseaseId', $post_data) ? $post_data['diseaseId'] : null,
+        'add_time' => array_key_exists('add_time', $post_data) ? $post_data['add_time'] : null,
+        'order_time' => array_key_exists('order_time', $post_data) ? $post_data['order_time'] : null,
+        'reach_time' => array_key_exists('reach_time', $post_data) ? $post_data['reach_time'] : null,
+        'disease_id' => array_key_exists('disease_id', $post_data) ? $post_data['disease_id'] : null,
         'author_id' => $user_id,
         'state' => array_key_exists('state', $post_data) ? $post_data['state'] : null,
-        'media_from_id' => array_key_exists('mediaFromId', $post_data) ? $post_data['mediaFromId'] : null,
-        'doctor_id' => array_key_exists('doctorId', $post_data) ? $post_data['doctorId'] : null,
-        'advisory_way' => array_key_exists('advisoryWay', $post_data) ? $post_data['advisoryWay'] : null,
-        'advisory_content' => array_key_exists('advisoryContent', $post_data) ? $post_data['advisoryContent'] : null,
+        'media_from_id' => array_key_exists('media_from_id', $post_data) ? $post_data['media_from_id'] : null,
+        'doctor_id' => array_key_exists('doctor_id', $post_data) ? $post_data['doctor_id'] : null,
+        'advisory_way' => array_key_exists('advisory_way', $post_data) ? $post_data['advisory_way'] : null,
+        'advisory_content' => array_key_exists('advisory_content', $post_data) ? $post_data['advisory_content'] : null,
         'area' => array_key_exists('area', $post_data) ? $post_data['area'] : null,
         'remarks' => array_key_exists('remarks', $post_data) ? $post_data['remarks'] : null
     );
-
     if ($patient_info['name'] === null
         || $patient_info['add_time'] === null
         || $patient_info['author_id'] === null
@@ -59,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($sql->exec($command)) {
         $res = $sql->query("SELECT * FROM patient WHERE name='" . $patient_info['name'] . "' AND add_time='" . $patient_info['add_time'] . "';");
         print_r(json_encode(array('new_patient'=>$res[0])));
-        exit();
     }
+    exit();
 }
+
+error_handler(43003);

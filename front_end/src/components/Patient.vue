@@ -53,6 +53,7 @@
       </Form>
       <div slot="footer"></div>
     </Modal>
+    <Page :total="pageTotal" show-elevator :page-size="perPage" @on-change="changePage"></Page>
   </div>
 </template>
 <script>
@@ -154,7 +155,9 @@
             {required: true, message: '请输入个人介绍', trigger: 'blur'},
             {type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur'}
           ]
-        }
+        },
+        pageTotal:100,
+        perPage:30
       }
     },
     methods: {
@@ -180,6 +183,9 @@
           }))
         }
         test()
+      },
+      changePage(currentPage){
+
       }
     }
   }
