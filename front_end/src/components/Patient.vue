@@ -48,12 +48,14 @@
           </Select>
         </Form-item>
         <Form-item label="客户预约备注" prop="marks">
-          <Input v-model="patientData.marks" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+          <Input v-model="patientData.marks" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                 placeholder="请输入..."></Input>
         </Form-item>
       </Form>
       <div slot="footer"></div>
     </Modal>
-    <Page :total="pageTotal" show-elevator :page-size="perPage" @on-change="changePage"></Page>
+    <Table :columns="patientCols" :data="patientData"></Table>
+    <Page :total="page.total" show-elevator :page-size="page.perPage" @on-change="changePage"></Page>
   </div>
 </template>
 <script>
@@ -120,7 +122,7 @@
               value: 'doctor4'
             }
           ],
-          marks:'',
+          marks: '',
           city: '',
           interest: [],
           desc: ''
@@ -156,8 +158,75 @@
             {type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur'}
           ]
         },
-        pageTotal:100,
-        perPage:30
+        page: {
+          total: 0,
+          pageData:[],
+          perPage: 30,
+          sortBy:'id',
+          order:'asc'
+        },
+        patientCols:[
+          {
+            title: 'id',
+            key: 'id'
+          },
+          {
+            title: '姓名',
+            key: 'name'
+          },
+          {
+            title: '性别',
+            key: 'sex'
+          },
+          {
+            title: '电话',
+            key: 'tel'
+          },
+          {
+            title: '年龄',
+            key: 'age'
+          },
+          {
+            title: '微信',
+            key: 'wechat'
+          },
+          {
+            title: 'qq',
+            key: 'qq'
+          },
+          {
+            title: '添加时间',
+            key: 'addTime'
+          },
+          {
+            title: '预约时间',
+            key: 'orderTime'
+          },
+          {
+            title: '到诊时间',
+            key: 'reachTime'
+          },
+          {
+            title: '病症id',
+            key: 'diseaseId'
+          },
+          {
+            title: '经办人',
+            key: 'authorId'
+          },
+          {
+            title: '病人状态',
+            key: 'state'
+          },
+          {
+            title: '医生id',
+            key: 'doctorId'
+          },
+          {
+            title: '来源',
+            key: 'advisoryWay'
+          }
+        ],
       }
     },
     methods: {
@@ -185,8 +254,19 @@
         test()
       },
       changePage(currentPage){
-
+        let url = `http://localhost/crm/back_end/api/v1/patient/?page=${currentPage}&per_page=${this.page.perPage}&sort_by=${this.page.sortBy}&order=${this.page.order}`
+        let getPageData = async ()=>{
+          let res = (await axios.get(url)).data
+        }
+        getPageData()
       }
+    },
+    mounted(){
+      let getPatients = async () => {
+        let res = (await axios.get('http://localhost/crm/back_end/api/v1/patient/?count=1')).data
+        this.page.total = parseInt(res.count)
+      }
+      getPatients()
     }
   }
 </script>
