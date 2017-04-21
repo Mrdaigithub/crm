@@ -19,7 +19,6 @@
             <router-view></router-view>
           </div>
         </div>
-        <div class="layout-copy">2011-2016 &copy; TalkingData</div>
       </i-col>
     </Row>
   </div>
@@ -85,21 +84,16 @@
   }
 
   .layout-content {
+    overflow-y: scroll;
     min-height: 200px;
+    height:90vh;
     margin: 15px;
-    overflow: hidden;
     background: #fff;
     border-radius: 4px;
   }
 
   .layout-content-main {
     padding: 50px 10px;
-  }
-
-  .layout-copy {
-    text-align: center;
-    padding: 10px 0 20px;
-    color: #9ea7b4;
   }
 
   .layout-menu-left {

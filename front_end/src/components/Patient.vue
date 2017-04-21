@@ -54,8 +54,13 @@
       </Form>
       <div slot="footer"></div>
     </Modal>
-    <Table :columns="patientCols" :data="patientData"></Table>
     <Page :total="page.total" show-elevator :page-size="page.perPage" @on-change="changePage"></Page>
+    <Table :columns="page.pageCols" :data="page.pageData" :border="true" :highlight-row="true" :no-data-text="null" ref="table"></Table>
+    <Button type="primary" size="large" @click="exportData">
+      <Icon type="ios-download-outline"></Icon>
+      导出原始数据
+    </Button>
+    <Spin size="large" fix v-if="spinShow"></Spin>
   </div>
 </template>
 <script>
@@ -160,73 +165,109 @@
         },
         page: {
           total: 0,
-          pageData:[],
-          perPage: 30,
-          sortBy:'id',
-          order:'asc'
+          pageData: [],
+          pageCols: [
+            {
+              title: 'id',
+              key: 'id',
+              width: 80
+            },
+            {
+              title: '姓名',
+              key: 'name',
+              width: 100
+            },
+            {
+              title: '性别',
+              key: 'sex',
+              width: 80
+            },
+            {
+              title: '电话',
+              key: 'tel',
+              width: 130
+            },
+            {
+              title: '年龄',
+              key: 'age',
+              width: 70
+            },
+            {
+              title: '微信',
+              key: 'wechat',
+              width: 200
+            },
+            {
+              title: 'qq',
+              key: 'qq',
+              width: 160
+            },
+            {
+              title: '添加时间',
+              key: 'add_time',
+              width: 160
+            },
+            {
+              title: '预约时间',
+              key: 'order_time',
+              width: 160
+            },
+            {
+              title: '到诊时间',
+              key: 'reach_time',
+              width: 160
+            },
+            {
+              title: '病症id',
+              key: 'disease_id',
+              width: 70
+            },
+            {
+              title: '经办人',
+              key: 'author_id',
+              width: 70
+            },
+            {
+              title: '病人状态',
+              key: 'state',
+              width: 100
+            },
+            {
+              title: '媒体来源',
+              key: 'mediaFrom_id',
+              width: 80
+            },
+            {
+              title: '医生id',
+              key: 'doctorId',
+              width: 80
+            },
+            {
+              title: '咨询方式',
+              key: 'advisory_way',
+              width: 100
+            },
+            {
+              title: '咨询内容',
+              key: 'advisory_content',
+              width: 500
+            },
+            {
+              title: '操作',
+              key: 'action',
+              width: 150,
+              align: 'center',
+              fixed: 'right',
+              render (row, column, index) {
+                return `<i-button type="primary" size="small" @click="show(${index})">查看</i-button> <i-button type="error" size="small" @click="remove(${index})">删除</i-button>`;
+              }
+            }
+          ],
+          perPage: 60,
+          sortBy: 'id',
+          order: 'asc'
         },
-        patientCols:[
-          {
-            title: 'id',
-            key: 'id'
-          },
-          {
-            title: '姓名',
-            key: 'name'
-          },
-          {
-            title: '性别',
-            key: 'sex'
-          },
-          {
-            title: '电话',
-            key: 'tel'
-          },
-          {
-            title: '年龄',
-            key: 'age'
-          },
-          {
-            title: '微信',
-            key: 'wechat'
-          },
-          {
-            title: 'qq',
-            key: 'qq'
-          },
-          {
-            title: '添加时间',
-            key: 'addTime'
-          },
-          {
-            title: '预约时间',
-            key: 'orderTime'
-          },
-          {
-            title: '到诊时间',
-            key: 'reachTime'
-          },
-          {
-            title: '病症id',
-            key: 'diseaseId'
-          },
-          {
-            title: '经办人',
-            key: 'authorId'
-          },
-          {
-            title: '病人状态',
-            key: 'state'
-          },
-          {
-            title: '医生id',
-            key: 'doctorId'
-          },
-          {
-            title: '来源',
-            key: 'advisoryWay'
-          }
-        ],
+        spinShow: false
       }
     },
     methods: {
@@ -254,17 +295,46 @@
         test()
       },
       changePage(currentPage){
+        this.spinShow = true
         let url = `http://localhost/crm/back_end/api/v1/patient/?page=${currentPage}&per_page=${this.page.perPage}&sort_by=${this.page.sortBy}&order=${this.page.order}`
-        let getPageData = async ()=>{
-          let res = (await axios.get(url)).data
+        let getPageData = async () => {
+          this.page.pageData = (await axios.get(url)).data
+          this.spinShow = false
         }
         getPageData()
+      },
+      show (index) {
+        this.$Modal.info({
+          title: '用户信息',
+          content: `姓名：${this.page.pageData[index].name}<br>
+                    年龄：${this.page.pageData[index].age}<br>
+                    电话：${this.page.pageData[index].tel}<br>
+                    状态：${this.page.pageData[index].state}<br>
+                    添加时间：${this.page.pageData[index]['add_time']}<br>`
+        })
+      },
+      remove (index) {
+        let rmPatient = async () => {
+          await (axios.delete('http://localhost/crm/back_end/api/v1/patient/', {data:qs.stringify({id:this.page.pageData[index]['id']})}))
+          this.page.pageData.splice(index, 1)
+          this.$Message.success('删除成功')
+        }
+        rmPatient()
+      },
+      exportData(){
+        this.$refs.table.exportCsv({
+          filename: 'csv'
+        })
       }
     },
     mounted(){
       let getPatients = async () => {
+        this.spinShow = true
         let res = (await axios.get('http://localhost/crm/back_end/api/v1/patient/?count=1')).data
         this.page.total = parseInt(res.count)
+        let url = `http://localhost/crm/back_end/api/v1/patient/?page=1&per_page=30&sort_by=id&order=asc`
+        this.page.pageData = (await axios.get(url)).data
+        this.spinShow = false
       }
       getPatients()
     }

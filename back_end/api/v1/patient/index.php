@@ -2,19 +2,45 @@
 
 include '../../../core/core.php';
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $res = array();
+
     $count = $sql->query("SELECT count(*) FROM patient");
     $count = $count[0]['count(*)'];
-//    if ($_GET['page'])
-//    $page = $sql->query("SELECT count(*) FROM patient");
-    print_r(json_encode(array(
-        'count'=>$count
-    )));
+    $res['count'] = $count;
+
+    if (!array_key_exists('page', $_GET) || !array_key_exists('per_page', $_GET)) error_handler(44001);
+
+    $page = $_GET['page'] ? $_GET['page'] : 1;
+    $per_page = $_GET['per_page'] ? $_GET['per_page'] : 30;
+    $sort_by = $_GET['sort_by'] ? $_GET['sort_by'] : 'id';
+    $order = $_GET['order'] ? $_GET['order'] : 'ASC';
+
+    $admin_list = array();
+    foreach ($sql->query("SELECT id,username FROM admin;") as $item){
+        $admin_list = array_merge($admin_list,array($item['id']=>$item['username']));
+    }
+
+    $media_list = array();
+    foreach ($sql->query("SELECT id,name FROM media;") as $item){
+        $admin_list = array_merge($admin_list,array($item['id']=>$item['name']));
+    }
+
+    $command = "SELECT * FROM patient ORDER BY $sort_by $order LIMIT " . ($page * $per_page - $per_page) . ",$per_page;";
+    $page_data = $sql->query($command);
+
+    for ($i = 0; $i < count($page_data); $i++) {
+        $page_data[$i]['add_time'] = $page_data[$i]['add_time'] === null ? $page_data[$i]['add_time'] : date('Y-m-d h:m:s', $page_data[$i]['add_time']);
+        $page_data[$i]['order_time'] = $page_data[$i]['order_time'] === null ? $page_data[$i]['order_time'] : date('Y-m-d h:m:s', $page_data[$i]['order_time']);
+        $page_data[$i]['reach_time'] = $page_data[$i]['reach_time'] === null ? $page_data[$i]['reach_time'] : date('Y-m-d h:m:s', $page_data[$i]['reach_time']);
+        $page_data[$i]['state'] = $GLOBALS['PATIENT_STATE'][$page_data[$i]['state']];
+        $page_data[$i]['author_id'] = $admin_list[$page_data[$i]['author_id']];
+        $page_data[$i]['sex'] = $page_data[$i]['sex'] === 0 ? '男' : '女';
+    }
+    print_r(json_encode($page_data));
     exit();
 }
 
-//new
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!array_key_exists('token', $_POST)) error_handler(41001);
     $post_data = $_POST;
@@ -60,8 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $command .= ');';
     if ($sql->exec($command)) {
         $res = $sql->query("SELECT * FROM patient WHERE name='" . $patient_info['name'] . "' AND add_time='" . $patient_info['add_time'] . "';");
-        print_r(json_encode(array('new_patient'=>$res[0])));
+        print_r(json_encode(array('new_patient' => $res[0])));
     }
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents('php://input'), $req_args);
+    $rm_patient_id = $req_args['id'];
+    $sql->exec("DELETE FROM patient WHERE id=$rm_patient_id;");
     exit();
 }
 
