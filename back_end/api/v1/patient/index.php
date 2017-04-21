@@ -6,10 +6,21 @@ include '../../../core/core.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $count = $sql->query("SELECT count(*) FROM patient");
     $count = $count[0]['count(*)'];
-//    if ($_GET['page'])
-//    $page = $sql->query("SELECT count(*) FROM patient");
+    if (array_key_exists('count',$_GET)){
+        print_r(json_encode(array(
+            'count'=>$count
+        )));
+        exit();
+    }
+    if (array_key_exists('page',$_GET)) $page = $_GET['page'] ? $_GET['page'] : 1;
+    if (array_key_exists('per_page',$_GET)) $per_page = $_GET['per_page'] ? $_GET['per_page'] : 20;
+    if (array_key_exists('sort_by',$_GET)) $sort_by = $_GET['sort_by'] ? $_GET['sort_by'] : 'id';
+    if (array_key_exists('order',$_GET)) $order = $_GET['order'] ? $_GET['order'] : 'asc';
+    $command = "SELECT * FROM patient ORDER BY $sort_by $order LIMIT ".($page*$per_page-$per_page).",$per_page";
+    $page_data = $sql->query($command);
     print_r(json_encode(array(
-        'count'=>$count
+        'count'=>$count,
+        'page_data'=>$page_data
     )));
     exit();
 }
