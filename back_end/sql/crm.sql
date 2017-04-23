@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2017 年 04 月 14 日 16:26
+-- 生成日期: 2017 年 04 月 21 日 10:38
 -- 服务器版本: 5.5.15
 -- PHP 版本: 5.3.8
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `token`, `exp`, `power`) VALUES
-(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkyMTgwOTE2fQ.MDMwMDIxN2VjMzc5MDJlYmNhMDNhYWQ4NzhiYWViMjI1NWYzMGRlYmY1ODA4ZjVlOTUwMGY4NDQyM2E5MjgyMw', 1492180916, 2),
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkyNzY3MDU4fQ.YTZlZjEyOTFkYmJiNmM4NTQzODdjY2FiMTY2YzYxZGNjYjU5NzAzOTU2NWRlYjk4MTI5YzczZDFjZDhmZmE1Mw', 1492767058, 2),
 (2, 'admin', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsInN1YiI6Imp3dCIsImV4cCI6MTQ5MTk3Mzg4MH0.MjYwY2QzZDE5ZGI3NGVlYWNmMWRhZTgzZTI1MjZlYWQ0N2QxYzgzYjllODE5MTdhNDM0ZWZjZWVmZjg0MzRlYw', 1491973880, 1),
 (3, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0);
 
@@ -67,10 +67,20 @@ CREATE TABLE IF NOT EXISTS `disease` (
 
 CREATE TABLE IF NOT EXISTS `doctors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` char(6) NOT NULL,
+  `name` char(20) NOT NULL,
   `introduction` text COMMENT '介绍',
+  `state` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='专家' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='专家' AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `doctors`
+--
+
+INSERT INTO `doctors` (`id`, `name`, `introduction`, `state`) VALUES
+(1, 'doctor1', '..', 1),
+(2, 'doctor2', '..', 1),
+(3, 'doctor3', '', 0);
 
 -- --------------------------------------------------------
 
@@ -97,7 +107,17 @@ CREATE TABLE IF NOT EXISTS `media` (
   `id` int(3) NOT NULL AUTO_INCREMENT,
   `name` char(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病患来源' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='病患来源' AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `media`
+--
+
+INSERT INTO `media` (`id`, `name`) VALUES
+(1, 'baidu'),
+(2, 'google'),
+(3, '360'),
+(4, 'sougou');
 
 -- --------------------------------------------------------
 
@@ -151,41 +171,28 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `age` tinyint(3) unsigned DEFAULT NULL,
   `wechat` char(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `qq` int(13) unsigned DEFAULT NULL,
-  `addTime` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderTime` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `reachTime` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `diseaseId` tinyint(3) unsigned DEFAULT NULL,
-  `authorId` tinyint(3) unsigned DEFAULT NULL,
+  `add_time` char(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '添加时间',
+  `order_time` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '预约时间',
+  `reach_time` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '到诊时间',
+  `disease_id` tinyint(3) unsigned DEFAULT NULL COMMENT '病人id',
+  `author_id` tinyint(3) unsigned DEFAULT NULL,
   `state` tinyint(3) unsigned NOT NULL,
-  `mediaFromId` tinyint(3) unsigned DEFAULT NULL,
-  `doctorId` tinyint(3) unsigned DEFAULT NULL,
-  `advisoryWay` tinyint(3) unsigned DEFAULT NULL,
-  `advisoryContent` text COLLATE utf8mb4_unicode_ci,
+  `mediaFrom_id` tinyint(3) unsigned DEFAULT NULL,
+  `doctor_id` tinyint(3) unsigned DEFAULT NULL,
+  `advisory_way` tinyint(3) unsigned DEFAULT NULL,
+  `advisory_content` text COLLATE utf8mb4_unicode_ci,
   `area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remarks` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1008 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1038 ;
 
 --
 -- 转存表中的数据 `patient`
 --
 
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTime`, `orderTime`, `reachTime`, `diseaseId`, `authorId`, `state`, mediaId, `doctorId`, `advisoryWay`, `advisoryContent`, `area`, `remarks`) VALUES
-(6, 'patient1', 0, '13566666666', 20, NULL, NULL, '1491978025', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(7, 'patient1', 0, '13566666666', 20, NULL, NULL, '1491978043', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(8, 'patient1', 0, '13566666666', 20, NULL, NULL, '1491978194', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(9, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979259', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(10, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979265', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(11, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979266', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(12, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979266', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(13, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979266', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(14, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979266', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(15, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979267', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(16, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979267', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(17, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979324', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (18, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979349', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (19, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979414', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(20, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979934', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (21, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979934', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (22, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979934', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (23, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979934', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -496,8 +503,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (328, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (329, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (330, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(331, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTime`, `orderTime`, `reachTime`, `diseaseId`, `authorId`, `state`, mediaId, `doctorId`, `advisoryWay`, `advisoryContent`, `area`, `remarks`) VALUES
+(331, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (332, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (333, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (334, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -509,7 +515,8 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (340, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (341, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (342, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(343, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(343, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (344, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (345, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (346, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -822,8 +829,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (653, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (654, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (655, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(656, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTime`, `orderTime`, `reachTime`, `diseaseId`, `authorId`, `state`, mediaId, `doctorId`, `advisoryWay`, `advisoryContent`, `area`, `remarks`) VALUES
+(656, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (657, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (658, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (659, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -835,7 +841,8 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (665, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (666, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (667, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(668, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(668, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (669, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (670, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (671, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -1148,8 +1155,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (978, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (979, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (980, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(981, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTime`, `orderTime`, `reachTime`, `diseaseId`, `authorId`, `state`, mediaId, `doctorId`, `advisoryWay`, `advisoryContent`, `area`, `remarks`) VALUES
+(981, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (982, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (983, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (984, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -1161,7 +1167,8 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (990, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (991, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (992, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(993, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(993, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (994, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (995, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (996, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -1175,7 +1182,29 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `addTi
 (1004, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (1005, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (1006, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491983314', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(1007, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491983355', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+(1007, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491983355', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1008, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985421', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1009, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985445', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1010, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985445', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1011, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985563', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1012, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985581', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1013, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985587', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1014, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985627', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1015, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985652', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1016, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491985671', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1017, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153701', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1018, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153702', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1019, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153702', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1020, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153703', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1021, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153703', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1022, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153703', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1023, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153703', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1024, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153703', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1025, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153704', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1026, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1027, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1028, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(1029, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

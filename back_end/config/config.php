@@ -13,3 +13,6 @@ define('SECRET_KEY', 'crm' . time());
 
 //token有效时间 (s)
 define('EXP', 7200);
+
+//病人状态
+$PATIENT_STATE = array('0'=>'未到','1'=>'已到','2'=>'流失');
