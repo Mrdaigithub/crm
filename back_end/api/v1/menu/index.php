@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!array_key_exists('token', $_GET)) error_handler(41001);
 
     $username = $jwt->verifyToken($_GET['token']);
-    $power = $sql->query("SELECT power FROM admin WHERE username='" . $username . "';");
+    $power = $sql->query("SELECT power FROM users WHERE username='" . $username . "';");
     $power = $power[0]['power'];
     $menu_data = $sql->query("SELECT id,title,name,url FROM menu WHERE power<=" . $power . ";");
     $menu_json = array();
