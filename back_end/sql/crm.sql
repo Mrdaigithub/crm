@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2017 年 04 月 21 日 10:38
+-- 生成日期: 2017 年 04 月 23 日 04:26
 -- 服务器版本: 5.5.15
 -- PHP 版本: 5.3.8
 
@@ -19,32 +19,6 @@ SET time_zone = "+00:00";
 --
 -- 数据库: `crm`
 --
-
--- --------------------------------------------------------
-
---
--- 表的结构 `admin`
---
-
-CREATE TABLE IF NOT EXISTS `admin` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `username` char(15) NOT NULL,
-  `password` char(40) NOT NULL,
-  `token` char(250) DEFAULT NULL,
-  `exp` int(10) unsigned DEFAULT NULL,
-  `power` tinyint(4) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `admin_username_uindex` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='用户信息' AUTO_INCREMENT=4 ;
-
---
--- 转存表中的数据 `admin`
---
-
-INSERT INTO `admin` (`id`, `username`, `password`, `token`, `exp`, `power`) VALUES
-(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkyNzY3MDU4fQ.YTZlZjEyOTFkYmJiNmM4NTQzODdjY2FiMTY2YzYxZGNjYjU5NzAzOTU2NWRlYjk4MTI5YzczZDFjZDhmZmE1Mw', 1492767058, 2),
-(2, 'admin', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsInN1YiI6Imp3dCIsImV4cCI6MTQ5MTk3Mzg4MH0.MjYwY2QzZDE5ZGI3NGVlYWNmMWRhZTgzZTI1MjZlYWQ0N2QxYzgzYjllODE5MTdhNDM0ZWZjZWVmZjg0MzRlYw', 1491973880, 1),
-(3, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0);
 
 -- --------------------------------------------------------
 
@@ -151,8 +125,8 @@ INSERT INTO `menu` (`id`, `title`, `name`, `url`, `power`) VALUES
 (10, '来源渠道', '4-3', 'info_media', 1),
 (11, '咨询方式', '4-4', 'info_way', 1),
 (12, '系统设置', '5', '', 1),
-(13, '菜单管理', '5-1', 'system_menu', 2),
-(14, '人员管理', '5-2', 'system_admin', 2),
+(13, '权限组管理', '5-1', 'system_permission', 2),
+(14, '用户列表', '5-2', 'system_user', 2),
 (15, '行为日志', '5-3', 'system_log', 1),
 (16, '通知管理', '5-4', 'system_notice', 1),
 (17, '参数设置', '5-5', 'system_config', 2);
@@ -184,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remarks` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1038 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1030 ;
 
 --
 -- 转存表中的数据 `patient`
@@ -1205,6 +1179,128 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (1027, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (1028, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (1029, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1492153708', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `permission`
+--
+
+CREATE TABLE IF NOT EXISTS `permission` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限名称',
+  `des` char(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限说明',
+  `level` char(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限的层级关系',
+  `must` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否为必须',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permission_name_uindex` (`name`),
+  UNIQUE KEY `permission_level_uindex` (`level`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表' AUTO_INCREMENT=50 ;
+
+--
+-- 转存表中的数据 `permission`
+--
+
+INSERT INTO `permission` (`id`, `name`, `des`, `level`, `must`) VALUES
+(1, 'index', '系统后台', '1', 1),
+(2, 'index/welcome', '控制台', '1-1', 0),
+(3, 'index/rank', '排行', '1-2', 0),
+(4, 'edit', '客户信息编辑操作', '2', 0),
+(5, 'edit_name', '允许修改客户姓名', '2-1', 0),
+(6, 'edit_sex', '允许修改客户性别', '2-2', 0),
+(7, 'edit_tel', '允许修改客户电话', '2-4', 0),
+(8, 'edit_age', '允许修改客户年龄', '2-5', 0),
+(9, 'edit_wechat', '允许修改客户微信', '2-6', 0),
+(10, 'edit_qq', '允许修改客户QQ', '2-7', 0),
+(11, 'edit_order_time', '允许修改客户预约时间', '2-8', 0),
+(12, 'edit_reach_time', '允许修改客户到诊时间', '2-9', 0),
+(13, 'edit_disease', '允许修改客户预约病种', '2-10', 0),
+(14, 'edit_media', '允许修改客户渠道来源', '2-11', 0),
+(15, 'edit_doctor', '允许修改客户预约医生', '2-12', 0),
+(16, 'edit_advisory_way', '允许修改客户咨询方式', '2-13', 0),
+(17, 'edit_advisory_content', '允许修改客户咨询内容', '2-14', 0),
+(18, 'edit_area', '允许修改客户所在地址', '2-15', 0),
+(19, 'edit_remark', '允许修改客户预约备注', '2-16', 0),
+(20, 'info', '信息管理', '3', 0),
+(21, 'doctor_info', '医生管理', '3-1', 0),
+(22, 'add_doctor_info', '新增医生', '3-1-1', 0),
+(23, 'rm_doctor_info', '删除医生', '3-1-2', 0),
+(24, 'edit_doctor_info', '编辑医生详情', '3-1-3', 0),
+(25, 'info_disease', '病种科室管理', '3-2', 0),
+(26, 'add_disease_info', '新增病种科室', '3-2-1', 0),
+(27, 'rm_disease_info', '删除病种科室', '3-2-2', 0),
+(28, 'edit_disease_info', '编辑病种科室', '3-2-3', 0),
+(29, 'media_info', '来源渠道管理', '3-3', 0),
+(30, 'add_media_info', '新增来源渠道', '3-3-1', 0),
+(31, 'rm_media_info', '删除来源渠道', '3-3-2', 0),
+(32, 'edit_media_info', '编辑来源渠道', '3-3-3', 0),
+(33, 'advisory_info', '咨询方式管理', '3-4', 0),
+(34, 'add_advisory_info', '新增咨询方式', '3-4-1', 0),
+(35, 'rm_advisory_info', '删除咨询方式', '3-4-2', 0),
+(36, 'edit_advisory_info', '编辑咨询方式', '3-4-3', 0),
+(37, 'data', '数据中心', '4', 0),
+(38, 'group_data', '分组数据', '4-1', 0),
+(39, 'group_data_mid', '客服数据', '4-1-1', 0),
+(40, 'group_data_disease', '病种数据', '4-1-2', 0),
+(41, 'group_data_media', '渠道数据', '4-1-3', 0),
+(42, 't_report_data', '绩效数据(文本)', '4-2', 0),
+(43, 't_report_data_mid', '客服数据', '4-2-1', 0),
+(44, 't_report_data_disease', '病种数据', '4-2-2', 0),
+(45, 't_report_data_media', '渠道数据', '4-2-3', 0),
+(46, 'c_report_data', '绩效数据(图形)', '4-3', 0),
+(47, 'c_report_data_mid', '客服数据', '4-3-1', 0),
+(48, 'c_report_data_disease', '病种数据', '4-3-2', 0),
+(49, 'c_report_data_media', '渠道数据', '4-3-3', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `role`
+--
+
+CREATE TABLE IF NOT EXISTS `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permission_group_name_uindex` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表' AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'root组'),
+(3, '录入用户组'),
+(2, '普通管理员组');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `username` char(15) NOT NULL,
+  `password` char(40) NOT NULL,
+  `token` char(250) DEFAULT NULL,
+  `exp` int(10) unsigned DEFAULT NULL,
+  `power` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `role_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin_username_uindex` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='用户信息' AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `token`, `exp`, `power`, `role_id`) VALUES
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkyODQ5NTQ4fQ.YWZmNTY3ZTg1MDkwMDQ0MzkwMmMyYmEyOGQ5MDNlMmIwYzMzNjNkMjIxYzEzYWM4YzNjNDkyNjMzYTA1NDlkMQ', 1492849548, 2, 1),
+(2, 'admin', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsInN1YiI6Imp3dCIsImV4cCI6MTQ5MTk3Mzg4MH0.MjYwY2QzZDE5ZGI3NGVlYWNmMWRhZTgzZTI1MjZlYWQ0N2QxYzgzYjllODE5MTdhNDM0ZWZjZWVmZjg0MzRlYw', 1491973880, 1, 2),
+(3, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0, 3),
+(4, 'kefu2', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0, 3);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

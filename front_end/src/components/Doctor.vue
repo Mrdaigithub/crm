@@ -24,6 +24,13 @@
         ],
         doctorData: []
       }
+    },
+    mounted(){
+      let asyncFun = async () => {
+        let doctor = (await axios.get(
+          'http://localhost/crm/back_end/api/v1/doctor',
+        ))
+      }
     }
   }
 </script>

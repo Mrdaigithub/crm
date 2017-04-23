@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $order = $_GET['order'] ? $_GET['order'] : 'ASC';
 
     $admin_list = array();
-    foreach ($sql->query("SELECT id,username FROM admin;") as $item){
+    foreach ($sql->query("SELECT id,username FROM users;") as $item){
         $admin_list = array_merge($admin_list,array($item['id']=>$item['username']));
     }
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!array_key_exists('token', $_POST)) error_handler(41001);
     $post_data = $_POST;
     $username = $jwt->verifyToken($_POST['token']);
-    $user_id = $sql->query("SELECT id FROM admin WHERE username='" . $username . "';");
+    $user_id = $sql->query("SELECT id FROM users WHERE username='" . $username . "';");
     $user_id = $user_id[0]['id'];
     $patient_info = array(
         'name' => array_key_exists('name', $post_data) ? $post_data['name'] : null,
