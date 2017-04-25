@@ -8,6 +8,7 @@
  */
 class class_jwt
 {
+
     /**
      * 创建用户token
      * @param $username
@@ -31,14 +32,13 @@ class class_jwt
     /**
      * 校验token
      * @param $token
-     * @return mixed
+     * @return bool
      */
     function verifyToken($token)
     {
-        $sql = $GLOBALS['sql'];
-        $res = $sql->query("SELECT username, exp FROM users WHERE token='" . $token . "';");
+        $res = $GLOBALS['sql']->query("SELECT exp FROM users WHERE token='" . $token . "';");
         if (!$res) error_handler(40014); //无效的token
         if ($res[0]['exp'] <= time()) error_handler(42001); //token超时
-        return $res[0]['username'];
+        return true;
     }
 }

@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $count = $sql->query("SELECT count(*) FROM patient");
     $count = $count[0]['count(*)'];
-<<<<<<< HEAD
+
     if (array_key_exists('count',$_GET)){
         print_r(json_encode(array(
             'count'=>$count
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'count'=>$count,
         'page_data'=>$page_data
     )));
-=======
+
     $res['count'] = $count;
 
     if (!array_key_exists('page', $_GET) || !array_key_exists('per_page', $_GET)) error_handler(44001);
@@ -56,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $page_data[$i]['sex'] = $page_data[$i]['sex'] === 0 ? '男' : '女';
     }
     print_r(json_encode($page_data));
->>>>>>> e1fca208e33b9b9cf24deb9bacc137ae8cc24f94
     exit();
 }
 
