@@ -1,5 +1,5 @@
 <?php
-include '../../../core/core.php';
+include '../../../core/login_core.php';
 
 //以帐号密码方式新建token
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
