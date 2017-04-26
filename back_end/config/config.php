@@ -4,7 +4,7 @@
 define('SERVERNAME', 'localhost');
 define('DBNAME', 'crm');
 define('USERNAME', 'root');
-define('PASSWORD', '');
+define('PASSWORD', 'root');
 
 //api用户认
 
