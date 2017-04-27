@@ -1,23 +1,25 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.3.2
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
--- 主机: 127.0.0.1
--- 生成日期: 2017 年 04 月 25 日 09:53
--- 服务器版本: 5.5.15
--- PHP 版本: 5.3.8
+-- Host: localhost
+-- Generation Time: 2017-04-27 08:59:02
+-- 服务器版本： 5.7.18-log
+-- PHP Version: 5.6.30
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库: `crm`
+-- Database: `crm`
 --
 
 -- --------------------------------------------------------
@@ -26,12 +28,11 @@ SET time_zone = "+00:00";
 -- 表的结构 `disease`
 --
 
-CREATE TABLE IF NOT EXISTS `disease` (
-  `id` tinyint(3) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `disease` (
+  `id` tinyint(3) NOT NULL,
   `name` char(10) NOT NULL,
-  `childs` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病种' AUTO_INCREMENT=1 ;
+  `childs` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病种';
 
 -- --------------------------------------------------------
 
@@ -39,13 +40,12 @@ CREATE TABLE IF NOT EXISTS `disease` (
 -- 表的结构 `doctors`
 --
 
-CREATE TABLE IF NOT EXISTS `doctors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `doctors` (
+  `id` int(11) NOT NULL,
   `name` char(20) NOT NULL,
   `introduction` text COMMENT '介绍',
-  `state` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='专家' AUTO_INCREMENT=4 ;
+  `state` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='专家';
 
 --
 -- 转存表中的数据 `doctors`
@@ -59,17 +59,27 @@ INSERT INTO `doctors` (`id`, `name`, `introduction`, `state`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `json`
+--
+
+CREATE TABLE `json` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
+  `json` json DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `log`
 --
 
-CREATE TABLE IF NOT EXISTS `log` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `log` (
+  `id` tinyint(4) NOT NULL,
   `ip` char(14) COLLATE utf8mb4_unicode_ci NOT NULL,
   `des` text COLLATE utf8mb4_unicode_ci,
   `admin` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='行为日志' AUTO_INCREMENT=1 ;
+  `date` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='行为日志';
 
 -- --------------------------------------------------------
 
@@ -77,11 +87,10 @@ CREATE TABLE IF NOT EXISTS `log` (
 -- 表的结构 `media`
 --
 
-CREATE TABLE IF NOT EXISTS `media` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
-  `name` char(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='病患来源' AUTO_INCREMENT=5 ;
+CREATE TABLE `media` (
+  `id` int(3) NOT NULL,
+  `name` char(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='病患来源';
 
 --
 -- 转存表中的数据 `media`
@@ -99,14 +108,13 @@ INSERT INTO `media` (`id`, `name`) VALUES
 -- 表的结构 `menu`
 --
 
-CREATE TABLE IF NOT EXISTS `menu` (
-  `id` tinyint(4) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu` (
+  `id` tinyint(4) UNSIGNED NOT NULL,
   `title` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `power` tinyint(4) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单' AUTO_INCREMENT=18 ;
+  `power` tinyint(4) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单';
 
 --
 -- 转存表中的数据 `menu`
@@ -137,28 +145,27 @@ INSERT INTO `menu` (`id`, `title`, `name`, `url`, `power`) VALUES
 -- 表的结构 `patient`
 --
 
-CREATE TABLE IF NOT EXISTS `patient` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `patient` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sex` tinyint(4) NOT NULL DEFAULT '0',
   `tel` char(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `age` tinyint(3) unsigned DEFAULT NULL,
+  `age` tinyint(3) UNSIGNED DEFAULT NULL,
   `wechat` char(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `qq` int(13) unsigned DEFAULT NULL,
+  `qq` int(13) UNSIGNED DEFAULT NULL,
   `add_time` char(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '添加时间',
   `order_time` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '预约时间',
   `reach_time` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '到诊时间',
-  `disease_id` tinyint(3) unsigned DEFAULT NULL COMMENT '病人id',
-  `author_id` tinyint(3) unsigned DEFAULT NULL,
-  `state` tinyint(3) unsigned NOT NULL,
-  `mediaFrom_id` tinyint(3) unsigned DEFAULT NULL,
-  `doctor_id` tinyint(3) unsigned DEFAULT NULL,
-  `advisory_way` tinyint(3) unsigned DEFAULT NULL,
+  `disease_id` tinyint(3) UNSIGNED DEFAULT NULL COMMENT '病人id',
+  `author_id` tinyint(3) UNSIGNED DEFAULT NULL,
+  `state` tinyint(3) UNSIGNED NOT NULL,
+  `mediaFrom_id` tinyint(3) UNSIGNED DEFAULT NULL,
+  `doctor_id` tinyint(3) UNSIGNED DEFAULT NULL,
+  `advisory_way` tinyint(3) UNSIGNED DEFAULT NULL,
   `advisory_content` text COLLATE utf8mb4_unicode_ci,
   `area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remarks` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1030 ;
+  `remarks` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- 转存表中的数据 `patient`
@@ -489,8 +496,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (340, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (341, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (342, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(343, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
+(343, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (344, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (345, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (346, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -504,7 +510,8 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (354, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (355, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (356, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(357, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(357, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (358, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (359, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (360, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -815,8 +822,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (665, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (666, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (667, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(668, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
+(668, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (669, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (670, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (671, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -843,7 +849,8 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (692, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (693, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (694, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(695, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
+(695, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
+INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
 (696, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (697, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (698, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -1141,8 +1148,7 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 (990, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (991, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (992, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
-(993, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...');
-INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_time`, `order_time`, `reach_time`, `disease_id`, `author_id`, `state`, `mediaFrom_id`, `doctor_id`, `advisory_way`, `advisory_content`, `area`, `remarks`) VALUES
+(993, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (994, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (995, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
 (996, 'patient1', 0, '13566666666', 20, 'patient1-13566666666', 666666, '1491979941', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, '温州', '苟...'),
@@ -1186,80 +1192,85 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 -- 表的结构 `permission`
 --
 
-CREATE TABLE IF NOT EXISTS `permission` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `permission` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限名称',
-  `des` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限说明',
-  `level` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限的层级关系',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `permission_name_uindex` (`name`),
-  UNIQUE KEY `permission_level_uindex` (`level`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表' AUTO_INCREMENT=60 ;
+  `title` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限说明',
+  `parent_id` int(10) UNSIGNED NOT NULL COMMENT '父节点id',
+  `level` tinyint(4) UNSIGNED NOT NULL DEFAULT '1' COMMENT '权限的层级关系',
+  `key` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
 
 --
 -- 转存表中的数据 `permission`
 --
 
-INSERT INTO `permission` (`id`, `name`, title, `level`) VALUES
-(1, 'index', '系统后台', '1'),
-(2, 'index/home', '控制台', '1-1'),
-(3, 'index/rank', '排行', '1-2'),
-(4, 'patient', '客户信息查看编辑操作', '2'),
-(5, 'patient_edit_info', '允许编辑客户信息', '2-1'),
-(6, 'patient_edit_name', '允许修改客户姓名', '2-1-1'),
-(7, 'patient_edit_sex', '允许修改客户性别', '2-1-2'),
-(8, 'patient_edit_tel', '允许修改客户电话', '2-1-3'),
-(9, 'patient_edit_age', '允许修改客户年龄', '2-1-4'),
-(10, 'patient_edit_wechat', '允许修改客户微信', '2-1-5'),
-(11, 'patient_edit_qq', '允许修改客户QQ', '2-1-6'),
-(12, 'patient_edit_order_time', '允许修改客户预约时间', '2-1-7'),
-(13, 'patient_edit_reach_time', '允许修改客户到诊时间', '2-1-8'),
-(14, 'patient_edit_disease', '允许修改客户预约病种', '2-1-9'),
-(15, 'patient_edit_media', '允许修改客户渠道来源', '2-1-10'),
-(16, 'patient_edit_doctor', '允许修改客户预约医生', '2-1-11'),
-(17, 'patient_edit_advisory_way', '允许修改客户咨询方式', '2-1-12'),
-(18, 'patient_edit_advisory_content', '允许修改客户咨询内容', '2-1-13'),
-(19, 'patient_edit_area', '允许修改客户所在地址', '2-1-14'),
-(20, 'patient_edit_remark', '允许修改客户预约备注', '2-1-15'),
-(21, 'patient_edit_oth', '允许编辑TA人登记信息', '2-2'),
-(22, 'patient_add_info', '允许新增客户信息', '2-3'),
-(23, 'patient_show_info', '允许查看客户信息', '2-4'),
-(24, 'patient_show_oth', '允许查看TA人登记信息', '2-4-1'),
-(25, 'patient_show_tell', '允许查看客户完整电话', '2-4-2'),
-(26, 'patient_huif_info', '允许回访客户', '2-5'),
-(27, 'patient_huif_oth', '允许回访TA人客户', '2-6'),
-(28, 'patient_check_info', '允许确认状态', '2-7'),
-(29, 'patient_check_doc', '允许设置客户接诊医生', '2-8'),
-(30, 'info', '信息管理', '3'),
-(31, 'info_doctor', '医生管理', '3-1'),
-(32, 'add_info_doctor', '新增医生', '3-1-1'),
-(33, 'rm_info_doctor', '删除医生', '3-1-2'),
-(34, 'edit_info_doctor', '编辑医生详情', '3-1-3'),
-(35, 'info_disease', '病种科室管理', '3-2'),
-(36, 'add_info_disease', '新增病种科室', '3-2-1'),
-(37, 'rm_info_disease', '删除病种科室', '3-2-2'),
-(38, 'edit_info_disease', '编辑病种科室', '3-2-3'),
-(39, 'info_media', '来源渠道管理', '3-3'),
-(40, 'add_info_media', '新增来源渠道', '3-3-1'),
-(41, 'rm_info_media', '删除来源渠道', '3-3-2'),
-(42, 'edit_info_media', '编辑来源渠道', '3-3-3'),
-(43, 'info_advisory', '咨询方式管理', '3-4'),
-(44, 'add_info_advisory', '新增咨询方式', '3-4-1'),
-(45, 'rm_info_advisory', '删除咨询方式', '3-4-2'),
-(46, 'edit_info_advisory', '编辑咨询方式', '3-4-3'),
-(47, 'data', '数据中心', '4'),
-(48, 'group_data', '分组数据', '4-1'),
-(49, 'group_data_mid', '客服数据', '4-1-1'),
-(50, 'group_data_disease', '病种数据', '4-1-2'),
-(51, 'group_data_media', '渠道数据', '4-1-3'),
-(52, 't_report_data', '绩效数据(文本)', '4-2'),
-(53, 't_report_data_mid', '客服数据', '4-2-1'),
-(54, 't_report_data_disease', '病种数据', '4-2-2'),
-(55, 't_report_data_media', '渠道数据', '4-2-3'),
-(56, 'c_report_data', '绩效数据(图形)', '4-3'),
-(57, 'c_report_data_mid', '客服数据', '4-3-1'),
-(58, 'c_report_data_disease', '病种数据', '4-3-2'),
-(59, 'c_report_data_media', '渠道数据', '4-3-3');
+INSERT INTO `permission` (`id`, `name`, `title`, `parent_id`, `level`, `key`) VALUES
+(1, 'index', '系统后台', 0, 1, '-'),
+(2, 'index/home', '控制台', 1, 2, '1-'),
+(3, 'index/rank', '排行', 1, 2, '1-'),
+(4, 'patient', '客户信息查看编辑操作', 0, 1, '-'),
+(5, 'patient_edit_info', '允许编辑客户信息', 4, 2, '2-'),
+(6, 'patient_edit_name', '允许修改客户姓名', 5, 3, '2-1-'),
+(7, 'patient_edit_sex', '允许修改客户性别', 5, 3, '2-1-'),
+(8, 'patient_edit_tel', '允许修改客户电话', 5, 3, '2-1-'),
+(9, 'patient_edit_age', '允许修改客户年龄', 5, 3, '2-1-'),
+(10, 'patient_edit_wechat', '允许修改客户微信', 5, 3, '2-1-'),
+(11, 'patient_edit_qq', '允许修改客户QQ', 5, 3, '2-1-'),
+(12, 'patient_edit_order_time', '允许修改客户预约时间', 5, 3, '2-1-'),
+(13, 'patient_edit_reach_time', '允许修改客户到诊时间', 5, 3, '2-1-'),
+(14, 'patient_edit_disease', '允许修改客户预约病种', 5, 3, '2-1-'),
+(15, 'patient_edit_media', '允许修改客户渠道来源', 5, 3, '2-1-'),
+(16, 'patient_edit_doctor', '允许修改客户预约医生', 5, 3, '2-1-'),
+(17, 'patient_edit_advisory_way', '允许修改客户咨询方式', 5, 3, '2-1-'),
+(18, 'patient_edit_advisory_content', '允许修改客户咨询内容', 5, 3, '2-1-'),
+(19, 'patient_edit_area', '允许修改客户所在地址', 5, 3, '2-1-'),
+(20, 'patient_edit_remark', '允许修改客户预约备注', 5, 3, '2-1-'),
+(21, 'patient_edit_oth', '允许编辑TA人登记信息', 4, 2, '2-'),
+(22, 'patient_add_info', '允许新增客户信息', 4, 2, '2-'),
+(23, 'patient_show_info', '允许查看客户信息', 4, 2, '2-'),
+(24, 'patient_show_oth', '允许查看TA人登记信息', 23, 3, '2-4-'),
+(25, 'patient_show_tell', '允许查看客户完整电话', 23, 3, '2-4-'),
+(26, 'patient_huif_info', '允许回访客户', 4, 2, '2-'),
+(27, 'patient_huif_oth', '允许回访TA人客户', 4, 2, '2-'),
+(28, 'patient_check_info', '允许确认状态', 4, 2, '2-'),
+(29, 'patient_check_doc', '允许设置客户接诊医生', 4, 2, '2-'),
+(30, 'info', '信息管理', 0, 1, '-'),
+(31, 'info_doctor', '医生管理', 30, 2, '3-'),
+(32, 'add_info_doctor', '新增医生', 31, 3, '3-1-'),
+(33, 'rm_info_doctor', '删除医生', 31, 3, '3-1-'),
+(34, 'edit_info_doctor', '编辑医生详情', 31, 3, '3-1-'),
+(35, 'info_disease', '病种科室管理', 30, 2, '3-'),
+(36, 'add_info_disease', '新增病种科室', 35, 3, '3-2-'),
+(37, 'rm_info_disease', '删除病种科室', 35, 3, '3-2-'),
+(38, 'edit_info_disease', '编辑病种科室', 35, 3, '3-2-'),
+(39, 'info_media', '来源渠道管理', 30, 2, '3-'),
+(40, 'add_info_media', '新增来源渠道', 39, 3, '3-3-'),
+(41, 'rm_info_media', '删除来源渠道', 39, 3, '3-3-'),
+(42, 'edit_info_media', '编辑来源渠道', 39, 3, '3-3-'),
+(43, 'info_advisory', '咨询方式管理', 30, 2, '3-'),
+(44, 'add_info_advisory', '新增咨询方式', 43, 3, '3-4-'),
+(45, 'rm_info_advisory', '删除咨询方式', 43, 3, '3-4-'),
+(46, 'edit_info_advisory', '编辑咨询方式', 43, 3, '3-4-'),
+(47, 'data', '数据中心', 0, 1, '-'),
+(48, 'group_data', '分组数据', 47, 2, '4-'),
+(49, 'group_data_mid', '客服数据', 48, 3, '4-1-'),
+(50, 'group_data_disease', '病种数据', 48, 3, '4-1-'),
+(51, 'group_data_media', '渠道数据', 48, 3, '4-1-'),
+(52, 't_report_data', '绩效数据(文本)', 47, 3, '4-'),
+(53, 't_report_data_mid', '客服数据', 52, 3, '4-2-'),
+(54, 't_report_data_disease', '病种数据', 52, 3, '4-2-'),
+(55, 't_report_data_media', '渠道数据', 52, 3, '4-2-'),
+(56, 'c_report_data', '绩效数据(图形)', 47, 2, '4-'),
+(57, 'c_report_data_mid', '客服数据', 56, 3, '4-3-'),
+(58, 'c_report_data_disease', '病种数据', 56, 3, '4-3-'),
+(59, 'c_report_data_media', '渠道数据', 56, 3, '4-3-'),
+(60, 'system', '系统设置', 0, 1, '-'),
+(61, 'system_permission', '权限组管理', 60, 2, '5-'),
+(62, 'system_user', '用户列表', 60, 2, '5-'),
+(63, 'system_log', '行为日志', 60, 2, '5-'),
+(64, 'system_notice', '通知管理', 60, 2, '5-'),
+(65, 'system_config', '参数设置', 60, 2, '5-');
 
 -- --------------------------------------------------------
 
@@ -1267,21 +1278,19 @@ INSERT INTO `permission` (`id`, `name`, title, `level`) VALUES
 -- 表的结构 `role`
 --
 
-CREATE TABLE IF NOT EXISTS `role` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `role` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色组名称',
-  `permission` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `permission_group_name_uindex` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表' AUTO_INCREMENT=3 ;
+  `permission` varchar(65) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表';
 
 --
 -- 转存表中的数据 `role`
 --
 
 INSERT INTO `role` (`id`, `name`, `permission`) VALUES
-(1, 'root组', '11111111111111111111111111111111111111111111111111111111111'),
-(2, '录入用户组', '11111111111111111111111111111000000000000000000000000000000');
+(1, 'root组', '11111111111111111111111111111111111111111111111111111111111111111'),
+(2, '录入用户组', '11111111111111111111111111111000000000000000000000000000000000000');
 
 -- --------------------------------------------------------
 
@@ -1289,26 +1298,145 @@ INSERT INTO `role` (`id`, `name`, `permission`) VALUES
 -- 表的结构 `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `username` char(15) NOT NULL,
-  `password` char(40) NOT NULL,
-  `token` char(250) DEFAULT NULL,
-  `exp` int(10) unsigned DEFAULT NULL,
-  `power` tinyint(4) unsigned NOT NULL DEFAULT '0',
-  `role_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `admin_username_uindex` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='用户信息' AUTO_INCREMENT=4 ;
+CREATE TABLE `users` (
+  `id` tinyint(3) UNSIGNED NOT NULL COMMENT '用户id',
+  `username` varchar(15) NOT NULL COMMENT '用户名',
+  `password` varchar(40) NOT NULL COMMENT '密码',
+  `token` char(250) DEFAULT NULL COMMENT '用户认证识别短期密令',
+  `exp` int(10) UNSIGNED DEFAULT NULL COMMENT 'token有效期限',
+  `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色id'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='用户信息';
 
 --
 -- 转存表中的数据 `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `token`, `exp`, `power`, `role_id`) VALUES
-(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTEzODk0fQ.YmRiNmRjMmJjNWJmNjc0MzA2NjU4NjJlM2NhNjMzNjMzNDFmNzNkMmRmMDIyZjU4MDE3MmJjNjFhNDA3MGRlYg', 1493113894, 2, 1),
-(2, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTEzOTMxfQ.YTYzMzliNDc0OTI1YWRlZmE2MjI4NjJkOGI2Y2EzMWY3NjM1MDgxODg3NDA1YTY4MGM3YjEyNDAyZDY5N2M2MA', 1493113931, 0, 2),
-(3, 'kefu2', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 0, 2);
+INSERT INTO `users` (`id`, `username`, `password`, `token`, `exp`, `role_id`) VALUES
+(1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTk3OTQ1fQ.OTZmNGUxZTY4NDRkZTc0YTllNmNmODUwMDI1OGM5MDI0YWRlYzY1MmU4MTQxNGJhOWY1OTVlMzYyMWE2YjBjYw', 2493197945, 1),
+(2, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTc1NTY0fQ.Y2Y1NTAzMDZlN2U2NjYwYTcxMjE0ZjMxM2UzOWM5ZTE5Y2JjMWQxMTBhNWQ0NmE0NWUwMzIzOTdmYmI3MjQ3OA', 1493175564, 2),
+(3, 'kefu2', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 2);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `disease`
+--
+ALTER TABLE `disease`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `doctors`
+--
+ALTER TABLE `doctors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `json`
+--
+ALTER TABLE `json`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `log`
+--
+ALTER TABLE `log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `media`
+--
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `patient`
+--
+ALTER TABLE `patient`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `permission`
+--
+ALTER TABLE `permission`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permission_name_uindex` (`name`);
+
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permission_group_name_uindex` (`name`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `admin_username_uindex` (`username`);
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `disease`
+--
+ALTER TABLE `disease`
+  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `doctors`
+--
+ALTER TABLE `doctors`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `json`
+--
+ALTER TABLE `json`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `log`
+--
+ALTER TABLE `log`
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `media`
+--
+ALTER TABLE `media`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- 使用表AUTO_INCREMENT `patient`
+--
+ALTER TABLE `patient`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1030;
+--
+-- 使用表AUTO_INCREMENT `permission`
+--
+ALTER TABLE `permission`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+--
+-- 使用表AUTO_INCREMENT `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id', AUTO_INCREMENT=4;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
