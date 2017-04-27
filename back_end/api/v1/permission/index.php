@@ -2,53 +2,27 @@
 
 include '../../../core/core.php';
 
+//获取权限树
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!$permission->has_permission('system_permission')) error_handler(48001);
-    $permission_data = $sql->query("SELECT id,des,level FROM permission;");
     $permission_json = array();
-    foreach ($permission_data as $item) {
-        if (strlen($item['level']) === 1)
-            array_push($permission_json, array(
-                'title' => $item['des'],
-                'level' => $item['level'],
-                'expand' => true,
-                'children' => array()
-            ));
-    }
-    foreach ($permission_data as $item) {
-        if (preg_match('/^\d-\d+$/', $item['level'])) {
-            $root_level = $item['level'][0];
-            for ($i = 0; $i < count($permission_json); $i++) {
-                if ($permission_json[$i]['level'] === $root_level) {
-                    array_push($permission_json[$i]['children'], array(
-                        'title' => $item['des'],
-                        'level' => $item['level'],
-                        'expand' => true,
-                        'children' => array()
-                    ));
+    $root_permission_node = $sql->query("SELECT id, title, level FROM permission WHERE level=1");
+    foreach ($root_permission_node as $r_item) {
+        $r_item = array_merge($r_item, array('expand' => true));
+        $parent_permission_node = $sql->query("select id,title,level from permission where level=2 AND parent_id='" . $r_item['id'] . "';");
+        foreach ($parent_permission_node as $p_item) {
+            $p_item = array_merge($p_item, array('children' => array(), 'expand' => true));
+            $permission_node = $sql->query("select id,title,level from permission where level=3 AND parent_id='" . $p_item['id'] . "';");
+            if (count($permission_node)) {
+                foreach ($permission_node as $item) {
+                    array_push($p_item['children'], $item);
                 }
             }
+            array_push($r_item['children'], $p_item);
         }
+        array_push($permission_json, $r_item);
     }
-    foreach ($permission_data as $item) {
-        if (preg_match('/^\d-\d+-\d+$/', $item['level'])) {
-            $level = explode('-', $item['level']);
-            $root_level = $level[0];
-            $parent_level = $level[1];
-            for ($i = 0; $i < count($permission_json); $i++) {
-                if ($permission_json[$i]['level'][0] === $root_level){
-//                    for ($j = 0; $j < count($permission_json[$i]['children']); $j++)
-//                    array_push($permission_json[$i]['children'],array(
-//                        'title' => $item['des'],
-//                        'level' => $item['level'],
-//                        'expand' => true,
-//                        'children' => array()
-//                    ));
-                }
-            }
-        }
-    }
-//    print_r(json_encode($permission_json));
+    print_r($permission_json);
     exit();
 }
 

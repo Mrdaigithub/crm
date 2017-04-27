@@ -1200,7 +1200,7 @@ CREATE TABLE IF NOT EXISTS `permission` (
 -- 转存表中的数据 `permission`
 --
 
-INSERT INTO `permission` (`id`, `name`, `des`, `level`) VALUES
+INSERT INTO `permission` (`id`, `name`, title, `level`) VALUES
 (1, 'index', '系统后台', '1'),
 (2, 'index/home', '控制台', '1-1'),
 (3, 'index/rank', '排行', '1-2'),

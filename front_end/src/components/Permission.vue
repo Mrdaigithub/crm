@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>permission</h1>
-    <Tree :data="baseData" show-checkbox></Tree>
+    <Tree :data="permissionData" show-checkbox></Tree>
   </div>
 </template>
 <script>
@@ -11,42 +11,70 @@
     name: 'permission',
     data () {
       return {
-        baseData: [
+        permissionData: [
           {
-            expand: true,
-            title: 'parent 1',
-            children: [
+            "title": "系统后台",
+            "children": [
               {
-                title: 'parent 1-0',
-                expand: true,
-                disabled: true,
-                children: [
-                  {
-                    title: 'leaf',
-                    disableCheckbox: true,
-                    children:[]
-                  },
-                  {
-                    title: 'leaf',
-                  }
-                ]
+                "title": "控制台",
+                "expand": true
               },
               {
-                title: 'parent 1-1',
-                expand: true,
-                checked: true,
-                children: [
-                  {
-                    title: '<span style="color: red">leaf</span>',
-                    children:[
-                    ]
-                  }
-                ]
+                "title": "排行",
+                "expand": true
               }
-            ]
+            ],
+            "expand": true
+          },
+          {
+            "id": "4",
+            "title": "客户信息查看编辑操作",
+            "level": "1",
+            "children": [
+              {
+                "id": "21",
+                "title": "允许编辑TA人登记信息",
+                "level": "2",
+                "expand": true
+              },
+              {
+                "id": "22",
+                "title": "允许新增客户信息",
+                "level": "2",
+                "expand": true
+              },
+            ],
+            "expand": true
+          },
+          {
+            "title": "系统设置",
+            "children": [
+              {
+                "title": "权限组管理",
+              },
+              {
+                "title": "用户列表",
+              },
+              {
+                "title": "行为日志",
+              },
+              {
+                "title": "通知管理",
+              },
+              {
+                "title": "参数设置",
+              }
+            ],
+            "expand": true
           }
         ]
       }
+    },
+    mounted(){
+      let getPermissionData = async () => {
+//        this.permissionData = (await axios.get(`http://localhost/crm/back_end/api/v1/permission/?token=${localStorage.token}`)).data
+      }
+      getPermissionData()
     }
   }
 </script>
