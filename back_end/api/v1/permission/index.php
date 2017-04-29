@@ -2,10 +2,11 @@
 
 include '../../../core/core.php';
 
+if (!$permission->has_permission('system_permission')) error_handler(48001);
+if (!array_key_exists('role_name',$_GET)) error_handler(44001);
+
 //获取权限组所拥有的权限
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!$permission->has_permission('system_permission')) error_handler(48001);
-    if (!array_key_exists('role_name',$_GET)) error_handler(44001);
 
     $role_permission = $sql->query("SELECT permission FROM role WHERE name='".$_GET['role_name']."'");
     $role_permission = $role_permission[0]['permission'];
@@ -23,6 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         array_push($permission_json, $p_json);
     }
     print_r(json_encode($permission_json));
+    exit();
+}
+
+//更新某个权限值
+if ($_SERVER['REQUEST_METHOD'] === 'PATCH'){
+    print_r('patch');
     exit();
 }
 

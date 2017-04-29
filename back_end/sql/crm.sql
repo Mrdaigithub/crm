@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017-04-27 08:59:02
+-- Generation Time: 2017-04-29 08:02:28
 -- 服务器版本： 5.7.18-log
 -- PHP Version: 5.6.30
 
@@ -55,17 +55,6 @@ INSERT INTO `doctors` (`id`, `name`, `introduction`, `state`) VALUES
 (1, 'doctor1', '..', 1),
 (2, 'doctor2', '..', 1),
 (3, 'doctor3', '', 0);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `json`
---
-
-CREATE TABLE `json` (
-  `id` tinyint(3) UNSIGNED NOT NULL,
-  `json` json DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1195,82 +1184,79 @@ INSERT INTO `patient` (`id`, `name`, `sex`, `tel`, `age`, `wechat`, `qq`, `add_t
 CREATE TABLE `permission` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限名称',
-  `title` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限说明',
-  `parent_id` int(10) UNSIGNED NOT NULL COMMENT '父节点id',
-  `level` tinyint(4) UNSIGNED NOT NULL DEFAULT '1' COMMENT '权限的层级关系',
-  `key` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '-'
+  `title` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限说明'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
 
 --
 -- 转存表中的数据 `permission`
 --
 
-INSERT INTO `permission` (`id`, `name`, `title`, `parent_id`, `level`, `key`) VALUES
-(1, 'index', '系统后台', 0, 1, '-'),
-(2, 'index/home', '控制台', 1, 2, '1-'),
-(3, 'index/rank', '排行', 1, 2, '1-'),
-(4, 'patient', '客户信息查看编辑操作', 0, 1, '-'),
-(5, 'patient_edit_info', '允许编辑客户信息', 4, 2, '2-'),
-(6, 'patient_edit_name', '允许修改客户姓名', 5, 3, '2-1-'),
-(7, 'patient_edit_sex', '允许修改客户性别', 5, 3, '2-1-'),
-(8, 'patient_edit_tel', '允许修改客户电话', 5, 3, '2-1-'),
-(9, 'patient_edit_age', '允许修改客户年龄', 5, 3, '2-1-'),
-(10, 'patient_edit_wechat', '允许修改客户微信', 5, 3, '2-1-'),
-(11, 'patient_edit_qq', '允许修改客户QQ', 5, 3, '2-1-'),
-(12, 'patient_edit_order_time', '允许修改客户预约时间', 5, 3, '2-1-'),
-(13, 'patient_edit_reach_time', '允许修改客户到诊时间', 5, 3, '2-1-'),
-(14, 'patient_edit_disease', '允许修改客户预约病种', 5, 3, '2-1-'),
-(15, 'patient_edit_media', '允许修改客户渠道来源', 5, 3, '2-1-'),
-(16, 'patient_edit_doctor', '允许修改客户预约医生', 5, 3, '2-1-'),
-(17, 'patient_edit_advisory_way', '允许修改客户咨询方式', 5, 3, '2-1-'),
-(18, 'patient_edit_advisory_content', '允许修改客户咨询内容', 5, 3, '2-1-'),
-(19, 'patient_edit_area', '允许修改客户所在地址', 5, 3, '2-1-'),
-(20, 'patient_edit_remark', '允许修改客户预约备注', 5, 3, '2-1-'),
-(21, 'patient_edit_oth', '允许编辑TA人登记信息', 4, 2, '2-'),
-(22, 'patient_add_info', '允许新增客户信息', 4, 2, '2-'),
-(23, 'patient_show_info', '允许查看客户信息', 4, 2, '2-'),
-(24, 'patient_show_oth', '允许查看TA人登记信息', 23, 3, '2-4-'),
-(25, 'patient_show_tell', '允许查看客户完整电话', 23, 3, '2-4-'),
-(26, 'patient_huif_info', '允许回访客户', 4, 2, '2-'),
-(27, 'patient_huif_oth', '允许回访TA人客户', 4, 2, '2-'),
-(28, 'patient_check_info', '允许确认状态', 4, 2, '2-'),
-(29, 'patient_check_doc', '允许设置客户接诊医生', 4, 2, '2-'),
-(30, 'info', '信息管理', 0, 1, '-'),
-(31, 'info_doctor', '医生管理', 30, 2, '3-'),
-(32, 'add_info_doctor', '新增医生', 31, 3, '3-1-'),
-(33, 'rm_info_doctor', '删除医生', 31, 3, '3-1-'),
-(34, 'edit_info_doctor', '编辑医生详情', 31, 3, '3-1-'),
-(35, 'info_disease', '病种科室管理', 30, 2, '3-'),
-(36, 'add_info_disease', '新增病种科室', 35, 3, '3-2-'),
-(37, 'rm_info_disease', '删除病种科室', 35, 3, '3-2-'),
-(38, 'edit_info_disease', '编辑病种科室', 35, 3, '3-2-'),
-(39, 'info_media', '来源渠道管理', 30, 2, '3-'),
-(40, 'add_info_media', '新增来源渠道', 39, 3, '3-3-'),
-(41, 'rm_info_media', '删除来源渠道', 39, 3, '3-3-'),
-(42, 'edit_info_media', '编辑来源渠道', 39, 3, '3-3-'),
-(43, 'info_advisory', '咨询方式管理', 30, 2, '3-'),
-(44, 'add_info_advisory', '新增咨询方式', 43, 3, '3-4-'),
-(45, 'rm_info_advisory', '删除咨询方式', 43, 3, '3-4-'),
-(46, 'edit_info_advisory', '编辑咨询方式', 43, 3, '3-4-'),
-(47, 'data', '数据中心', 0, 1, '-'),
-(48, 'group_data', '分组数据', 47, 2, '4-'),
-(49, 'group_data_mid', '客服数据', 48, 3, '4-1-'),
-(50, 'group_data_disease', '病种数据', 48, 3, '4-1-'),
-(51, 'group_data_media', '渠道数据', 48, 3, '4-1-'),
-(52, 't_report_data', '绩效数据(文本)', 47, 3, '4-'),
-(53, 't_report_data_mid', '客服数据', 52, 3, '4-2-'),
-(54, 't_report_data_disease', '病种数据', 52, 3, '4-2-'),
-(55, 't_report_data_media', '渠道数据', 52, 3, '4-2-'),
-(56, 'c_report_data', '绩效数据(图形)', 47, 2, '4-'),
-(57, 'c_report_data_mid', '客服数据', 56, 3, '4-3-'),
-(58, 'c_report_data_disease', '病种数据', 56, 3, '4-3-'),
-(59, 'c_report_data_media', '渠道数据', 56, 3, '4-3-'),
-(60, 'system', '系统设置', 0, 1, '-'),
-(61, 'system_permission', '权限组管理', 60, 2, '5-'),
-(62, 'system_user', '用户列表', 60, 2, '5-'),
-(63, 'system_log', '行为日志', 60, 2, '5-'),
-(64, 'system_notice', '通知管理', 60, 2, '5-'),
-(65, 'system_config', '参数设置', 60, 2, '5-');
+INSERT INTO `permission` (`id`, `name`, `title`) VALUES
+(1, 'index', '系统后台'),
+(2, 'index/home', '控制台'),
+(3, 'index/rank', '排行'),
+(4, 'patient', '客户信息查看编辑操作'),
+(5, 'patient_edit_info', '允许编辑客户信息'),
+(6, 'patient_edit_name', '允许修改客户姓名'),
+(7, 'patient_edit_sex', '允许修改客户性别'),
+(8, 'patient_edit_tel', '允许修改客户电话'),
+(9, 'patient_edit_age', '允许修改客户年龄'),
+(10, 'patient_edit_wechat', '允许修改客户微信'),
+(11, 'patient_edit_qq', '允许修改客户QQ'),
+(12, 'patient_edit_order_time', '允许修改客户预约时间'),
+(13, 'patient_edit_reach_time', '允许修改客户到诊时间'),
+(14, 'patient_edit_disease', '允许修改客户预约病种'),
+(15, 'patient_edit_media', '允许修改客户渠道来源'),
+(16, 'patient_edit_doctor', '允许修改客户预约医生'),
+(17, 'patient_edit_advisory_way', '允许修改客户咨询方式'),
+(18, 'patient_edit_advisory_content', '允许修改客户咨询内容'),
+(19, 'patient_edit_area', '允许修改客户所在地址'),
+(20, 'patient_edit_remark', '允许修改客户预约备注'),
+(21, 'patient_edit_oth', '允许编辑TA人登记信息'),
+(22, 'patient_add_info', '允许新增客户信息'),
+(23, 'patient_show_info', '允许查看客户信息'),
+(24, 'patient_show_oth', '允许查看TA人登记信息'),
+(25, 'patient_show_tell', '允许查看客户完整电话'),
+(26, 'patient_huif_info', '允许回访客户'),
+(27, 'patient_huif_oth', '允许回访TA人客户'),
+(28, 'patient_check_info', '允许确认状态'),
+(29, 'patient_check_doc', '允许设置客户接诊医生'),
+(30, 'info', '信息管理'),
+(31, 'info_doctor', '医生管理'),
+(32, 'add_info_doctor', '新增医生'),
+(33, 'rm_info_doctor', '删除医生'),
+(34, 'edit_info_doctor', '编辑医生详情'),
+(35, 'info_disease', '病种科室管理'),
+(36, 'add_info_disease', '新增病种科室'),
+(37, 'rm_info_disease', '删除病种科室'),
+(38, 'edit_info_disease', '编辑病种科室'),
+(39, 'info_media', '来源渠道管理'),
+(40, 'add_info_media', '新增来源渠道'),
+(41, 'rm_info_media', '删除来源渠道'),
+(42, 'edit_info_media', '编辑来源渠道'),
+(43, 'info_advisory', '咨询方式管理'),
+(44, 'add_info_advisory', '新增咨询方式'),
+(45, 'rm_info_advisory', '删除咨询方式'),
+(46, 'edit_info_advisory', '编辑咨询方式'),
+(47, 'data', '数据中心'),
+(48, 'group_data', '分组数据'),
+(49, 'group_data_mid', '客服数据'),
+(50, 'group_data_disease', '病种数据'),
+(51, 'group_data_media', '渠道数据'),
+(52, 't_report_data', '绩效数据(文本)'),
+(53, 't_report_data_mid', '客服数据'),
+(54, 't_report_data_disease', '病种数据'),
+(55, 't_report_data_media', '渠道数据'),
+(56, 'c_report_data', '绩效数据(图形)'),
+(57, 'c_report_data_mid', '客服数据'),
+(58, 'c_report_data_disease', '病种数据'),
+(59, 'c_report_data_media', '渠道数据'),
+(60, 'system', '系统设置'),
+(61, 'system_permission', '权限组管理'),
+(62, 'system_user', '用户列表'),
+(63, 'system_log', '行为日志'),
+(64, 'system_notice', '通知管理'),
+(65, 'system_config', '参数设置');
 
 -- --------------------------------------------------------
 
@@ -1314,7 +1300,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `token`, `exp`, `role_id`) VALUES
 (1, 'root', '63a9f0ea7bb98050796b649e85481845', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb290Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTk3OTQ1fQ.OTZmNGUxZTY4NDRkZTc0YTllNmNmODUwMDI1OGM5MDI0YWRlYzY1MmU4MTQxNGJhOWY1OTVlMzYyMWE2YjBjYw', 2493197945, 1),
 (2, 'kefu', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkzMTc1NTY0fQ.Y2Y1NTAzMDZlN2U2NjYwYTcxMjE0ZjMxM2UzOWM5ZTE5Y2JjMWQxMTBhNWQ0NmE0NWUwMzIzOTdmYmI3MjQ3OA', 1493175564, 2),
-(3, 'kefu2', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 1491906230, 2);
+(3, 'kefu2', '0444e11e0501438bda1af664f36974de', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZWZ1Iiwic3ViIjoiand0IiwiZXhwIjoxNDkxOTA2MjMwfQ.ZWY2ZjFmYWFlMTViYmMyYWVlN2M0NDNiYmQ1ZmYyMzM5NmQ5YWQ5N2I3NGRlYzljZmY3MDYwNTJlOTA1NGY3Zg', 2491906230, 2);
 
 --
 -- Indexes for dumped tables
@@ -1330,12 +1316,6 @@ ALTER TABLE `disease`
 -- Indexes for table `doctors`
 --
 ALTER TABLE `doctors`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `json`
---
-ALTER TABLE `json`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1397,11 +1377,6 @@ ALTER TABLE `disease`
 --
 ALTER TABLE `doctors`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- 使用表AUTO_INCREMENT `json`
---
-ALTER TABLE `json`
-  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `log`
 --
