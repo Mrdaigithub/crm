@@ -273,3 +273,66 @@
 |41001|number|缺少token参数|
 |40014|number|无效的token|
 |42001|number|token超时|
+
+
+
+
+## Permission接口
+
+
+### 请求URL： 
+- ` http://xx.com/back_end/api/v1/permission/`
+
+---
+
+### 请求方式：
+- GET 
+
+### 参数： 
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|token |是  |string |用户密钥   |
+|role_name |是  |string |权限组名称   |
+
+
+ ### 返回示例
+
+``` 
+  [
+    {
+      "title": "系统后台",
+      "expand": true,
+      "checked": true
+    },
+    {
+      "title": "允许修改客户预约医生",
+      "expand": true,
+      "checked": true
+    },
+    {
+      "title": "参数设置",
+      "expand": true,
+      "checked": false
+    }
+    ...
+  ]
+```
+
+ ### 返回参数说明 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|menu_data|array|权限组对应的权限数据|
+
+
+ ### 错误状态码 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|41001|number|缺少token参数|
+|40014|number|无效的token|
+|42001|number|token超时|
+|48001|number|此用户无权访问|
+|44001|number|缺少权限组参数|
+|43003|number|请求方法错误|
