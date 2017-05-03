@@ -38,33 +38,24 @@
     methods: {},
     mounted(){
       let self = this
-      let getMenu = async () => {
-        let res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+      if (!this.menu || !this.menu.length) {
+        !async function () {
+          let res = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/menu/?token=${localStorage.token}`)).data
 
-//        缺少token参数或无效的token，退回登陆界面
-        if (res['state_code'] === 41001 || res['state_code'] === 40014) {
-          this.$Modal.error({
-            content: '<p>系统监测到你的token不正确，将退回到登陆界面，bye~</p>',
-            onOk(){
-              localStorage.token = ''
-              self.$router.push('login')
-            },
-            onCancel(){
-              localStorage.token = ''
-              self.$router.push('login')
-            }
-          });
+//          缺少token参数或无效的token，退回登陆界面
+          if (res['state_code'] === 41001 || res['state_code'] === 40014) {
+            localStorage.token = ''
+            self.$router.push('login')
+          }
 
-        }
-
-//        token超时 更換token 重新獲取 menu data
-        if (res['state_code'] === 42001) {
-          localStorage.token = (await axios.patch('http://localhost/crm/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
-          res = (await axios.get(`http://localhost/crm/back_end/api/v1/menu/?token=${localStorage.token}`)).data
-        }
-        this.$store.dispatch('saveMenu', res['menu_data'])
+//          token超时 更換token 重新獲取 menu data
+          if (res['state_code'] === 42001) {
+            localStorage.token = (await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
+            res = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+          }
+          self.$store.dispatch('saveMenu', res['menu_data'])
+        }()
       }
-      if (!this.menu.length) getMenu()
     }
   }
 </script>
@@ -86,7 +77,7 @@
   .layout-content {
     overflow-y: scroll;
     min-height: 200px;
-    height:90vh;
+    height: 90vh;
     margin: 15px;
     background: #fff;
     border-radius: 4px;

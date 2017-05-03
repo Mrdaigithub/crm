@@ -46,28 +46,27 @@
     },
     methods: {
       handleSubmit(name) {
+        let self = this
         this.isLoading = true
         this.$refs[name].validate((valid) => {
           if (valid) {
-              let login = async ()=>{
-                let res = await axios.post('http://localhost/crm/back_end/api/v1/token/', qs.stringify({
-                  username: this.formInline.user.trim(),
-                  password: this.formInline.password.trim()
-                }))
-                res = res.data
-                if(res.token){
-                  localStorage.token = res.token
-                  this.$router.push('home')
-                }
-
-                if (res['state_code'] === 40036) this.$Message.error('用戶名或密碼缺失')
-                if (res['state_code'] === 40035) this.$Message.error('用戶名或密碼不合法')
-                if (res['state_code'] === 46004) this.$Message.error('用户名错误或无此用户')
-                if (res['state_code'] === 46005) this.$Message.error('密码错误')
-
-                this.isLoading = false
+            !async function () {
+              let res = (await axios.post('http://crm.mrdaisite.com/back_end/api/v1/token/', qs.stringify({
+                username: self.formInline.user.trim(),
+                password: self.formInline.password.trim()
+              }))).data
+              if (res.token) {
+                localStorage.token = res.token
+                self.$router.push('home')
               }
-              login()
+
+              if (res['state_code'] === 40036) self.$Message.error('用戶名或密碼缺失')
+              if (res['state_code'] === 40035) self.$Message.error('用戶名或密碼不合法')
+              if (res['state_code'] === 46004) self.$Message.error('用户名错误或无此用户')
+              if (res['state_code'] === 46005) self.$Message.error('密码错误')
+
+              self.isLoading = false
+            }()
           } else {
             this.$Message.error('native!')
             this.isLoading = false

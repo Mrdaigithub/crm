@@ -29,8 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //    为用户创建新token
     $token = $jwt->create_token($username);
     $sql->exec("UPDATE users SET token='" . $token . "', exp=" . (time() + EXP) . " WHERE username='" . $username . "';");
-    echo json_encode(array('token' => $token));
-
+    print_r(json_encode(array('token' => $token)));
     exit();
 }
 
@@ -52,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
     //    为用户创建新token
     $token = $jwt->create_token($username);
     $sql->exec("UPDATE users SET token='" . $token . "', exp=" . (time() + EXP) . " WHERE username='" . $username . "';");
-    echo json_encode(array('token' => $token, 'username' => $username));
+    print_r(json_encode(array('token' => $token, 'username' => $username)));
     exit();
 }
+
+error_handler(44001);
