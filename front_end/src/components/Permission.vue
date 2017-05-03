@@ -71,11 +71,10 @@
       }
     },
     mounted(){
-      let self = this
       !async function () {
-        self.permissionData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/permission/?token=${localStorage.token}`)).data
-        console.log(self.permissionData);
-      }()
+        this.permissionData = (await axios.get(`http://localhost/crm/back_end/api/v1/permission/?token=${localStorage.token}`)).data
+        console.log(this.permissionData)
+      }
     }
   }
 </script>
