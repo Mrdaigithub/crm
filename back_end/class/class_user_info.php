@@ -11,12 +11,14 @@ class class_user_info
     public $token = null;
     public $username = null;
     public $role_permission = null;
+    public $role_name = null;
 
     function __construct()
     {
         $this->get_token();
         $this->get_username();
         $this->get_role_permission();
+        $this->get_role_name();
     }
 
     /**
@@ -57,7 +59,18 @@ class class_user_info
     function get_role_permission()
     {
         if (!$this->username) $this->get_username();
-        $this->role_permission = $GLOBALS['sql']->query("SELECT * FROM role WHERE id=(SELECT role_id FROM users WHERE username='$this->username')");
+        $this->role_permission = $GLOBALS['sql']->query("SELECT permission FROM role WHERE id=(SELECT role_id FROM users WHERE username='$this->username')");
         return $this->role_permission = $this->role_permission[0]['permission'];
+    }
+
+    /**
+     * 获取角色名
+     * @return mixed
+     */
+    function get_role_name()
+    {
+        if (!$this->username) $this->get_username();
+        $this->role_name = $GLOBALS['sql']->query("SELECT name FROM role WHERE id=(SELECT role_id FROM users WHERE username='$this->username')");
+        return $this->role_name = $this->role_name[0]['name'];
     }
 }
