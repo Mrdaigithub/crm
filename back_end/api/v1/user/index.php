@@ -7,7 +7,6 @@
  */
 
 include '../../../core/core.php';
-
 if ($user_info->username !== 'root') error_handler(48001);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
