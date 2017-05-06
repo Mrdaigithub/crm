@@ -4,7 +4,8 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Patient from '@/components/Patient'
 import Doctor from '@/components/Doctor'
-import Permission from '@/components/Permission'
+import Role from '@/components/Role'
+// import Permission from '@/components/Permission'
 import Log from '@/components/Log'
 
 Vue.use(Router)
@@ -18,8 +19,8 @@ export default new Router({
       children:[
         {path: '/patients_regsiter', name: 'patient', component: Patient},
         {path: '/info_doctor', name: 'doctor', component: Doctor},
-        {path: '/system_permission', name: 'Permission', component: Permission},
-        {path: '/system_log', name: 'Log', component: Log}
+        {path: '/system_role', name: 'role', component: Role},
+        {path: '/system_log', name: 'log', component: Log}
       ]
     },
     {

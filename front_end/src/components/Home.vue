@@ -1,33 +1,39 @@
 <template>
   <div class="home">
-    <Row type="flex">
-      <i-col span="5" class="layout-menu-left">
-        <Menu active-name="2-1" theme="dark" width="auto" :open-names="['2']">
-          <div class="layout-logo-left"></div>
-          <Submenu v-for="m of menu" :key="m.name" :name="m.name">
+    <el-row class="top-bar">
+      <el-col :span="6" class="logo">
+        <h1>LOGO</h1>
+      </el-col>
+      <el-col :span="6" :offset="12" class="user">
+        <p>user area</p>
+      </el-col>
+    </el-row>
+    <el-row class="main">
+      <el-col :span="4" class="menu-bar">
+        <el-menu default-active="1" theme="light">
+          <el-menu-item v-for="m in menu" :index="m.name" :key="m.name" v-if="!m.child.length">
+            <router-link :to="m.url">{{m.title}}</router-link>
+          </el-menu-item>
+          <el-submenu v-for="m in menu" :index="m.name" :key="m.name" v-if="m.child.length">
             <template slot="title">{{m.title}}</template>
-            <Menu-item v-for="subM of m.child" :key="subM.name" :name="subM.name">
+            <el-menu-item v-for="subM in m.child" :index="subM.name" :key="subM.name" class="sub-menu">
               <router-link :to="subM.url">{{subM.title}}</router-link>
-            </Menu-item>
-          </Submenu>
-        </Menu>
-      </i-col>
-      <i-col span="19">
-        <div class="layout-header"></div>
-        <div class="layout-content">
-          <div class="layout-content-main">
-            <router-view></router-view>
-          </div>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-col>
+      <el-col :span="20" class="container">
+        <div class="content">
+          <router-view></router-view>
         </div>
-      </i-col>
-    </Row>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
   import qs from 'qs'
   import axios from 'axios'
-
   export default {
     name: 'home',
     computed: {
@@ -35,9 +41,8 @@
         return this.$store.state.menu
       }
     },
-    methods: {},
     mounted(){
-      let self = this
+      let self = this;
       if (!this.menu || !this.menu.length) {
         !async function () {
           let res = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/menu/?token=${localStorage.token}`)).data
@@ -60,53 +65,62 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .home {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    border: 1px solid #d7dde4;
     background: #f5f7f9;
     position: relative;
-  }
-
-  .layout-breadcrumb {
-    padding: 10px 15px 0;
-  }
-
-  .layout-content {
-    overflow-y: scroll;
-    min-height: 200px;
-    height: 90vh;
-    margin: 15px;
-    background: #fff;
-    border-radius: 4px;
-  }
-
-  .layout-content-main {
-    padding: 50px 10px;
-  }
-
-  .layout-menu-left {
-    background: #464c5b;
-    height: 100vh;
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      width: 0;
+    .top-bar {
+      background-color: #324057;
+      line-height: 10vh;
+      .logo {
+        h1 {
+          color: #fff;
+          text-indent: 3vw;
+        }
+      }
+      .user {
+        p {
+          color: #fff;
+          font-size: 30px;
+        }
+      }
     }
-  }
-
-  .layout-header {
-    height: 60px;
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
-  }
-
-  .layout-logo-left {
-    width: 90%;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    margin: 15px auto;
+    .main {
+      background-color: #e5e9f2;
+      .menu-bar {
+        height: 90vh;
+        background-color: #eef1f6;
+        overflow-y: scroll;
+        a {
+          display: block;
+          width: 100%;
+          color: #48576a;
+          text-decoration: none;
+        }
+      }
+      .container {
+        box-sizing: border-box;
+        padding: 2vh;
+        .content {
+          height: 86vh;
+          background-color: #fff;
+          overflow-y: scroll;
+          .content-header{
+            background-color: #fff;
+            color: inherit;
+            margin-bottom: 0;
+            padding: 14px 15px 7px;
+            min-height: 48px;
+            h2{
+              font-size:30px;
+              color: #676a6c;
+            }
+          }
+        }
+      }
+    }
   }
 </style>
