@@ -4,7 +4,7 @@
     <el-row>
       <el-col :span="22" :offset="1">
         <br><br>
-        <el-button type="primary" icon="plus"> 添加用户组</el-button>
+        <el-button type="primary" icon="plus" @click="handleAdd"> 添加用户组</el-button>
         <br><br>
         <el-table
           :data="roleData"
@@ -34,16 +34,24 @@
                   off-color="#ff4949"
                   on-text="启用"
                   off-text="禁用"
-                  @change="handleToggle(scope.$index, scope.row)">
+                  @change="handleToggle(scope.row)">
                 </el-switch>
                 <el-button
                   size="small"
-                  @click="handleEdit(scope.$index, scope.row)">编辑
+                  @click="handleEdit(scope.row)"
+                  icon="edit">编辑
                 </el-button>
                 <el-button
                   size="small"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除
+                  @click="handleDelete(scope.$index, scope.row)"
+                  icon="delete">删除
+                </el-button>
+                <el-button
+                  size="small"
+                  type="success"
+                  @click="handlePermission(scope.$index, scope.row)"
+                  icon="setting">分配权限
                 </el-button>
               </div>
             </template>
@@ -62,147 +70,92 @@
     data() {
       return {
         roleData: [],
-        loading:false
+        loading: false,
+        editingName: ''
       }
     },
     methods: {
-      handleToggle(index, row){
-        this.$Progress.start()
-        let self = this
+      handleAdd(){
+        let self = this;
+        this.$prompt('添加用户组', {
+          showCancelButton: false,
+          confirmButtonText: '添加',
+        }).then(({value}) => {
+          this.$Progress.start();
+          !async function () {
+            await axios.post('http://crm.mrdaisite.com/back_end/api/v1/role/', qs.stringify({
+              token: localStorage.token,
+              new_role_name: value
+            }));
+            self.roleData.push({
+              name:value,
+              state:false,
+              fixed:false
+            })
+            self.$Progress.finish();
+          }()
+        }).catch(() => {
+        });
+      },
+      handleToggle(row){
+        let self = this;
+        this.$Progress.start();
         !async function () {
           await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/', qs.stringify({
             token: localStorage.token,
             role_name: row.name,
             state: row.state
           }));
-          self.$Progress.finish()
+          self.$Progress.finish();
         }()
       },
-      handleEdit(index, row) {
-        console.log(index, row);
+      handleEdit(row) {
+        let self = this;
+        this.editingName = row.name
+        this.$prompt('修改组名', {
+          showCancelButton: false,
+          inputValue: this.editingName,
+          confirmButtonText: '添加',
+        }).then(({value}) => {
+          this.$Progress.start();
+          !async function () {
+            await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/name/', qs.stringify({
+              token: localStorage.token,
+              old_role_name: row.name,
+              new_role_name: value
+            }))
+            row.name = value;
+            self.$Progress.finish();
+          }()
+        }).catch(() => {
+        });
       },
       handleDelete(index, row) {
-        console.log(index, row);
+        let self = this;
+        console.log(index, row.name)
+        self.$Progress.start();
+        !async function () {
+          await axios.delete('http://crm.mrdaisite.com/back_end/api/v1/role/', {
+            data: qs.stringify({
+              token: localStorage.token,
+              role_name: row.name
+            })
+          })
+          self.roleData.splice(index, 1);
+          self.$Progress.finish();
+        }()
       }
     },
     mounted(){
-      this.$Progress.start()
-      console.log(this.$Progress)
-      let self = this
+      let self = this;
       !async function () {
         self.roleData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/role/?token=${localStorage.token}`)).data
         self.roleData = self.roleData.map(e => {
-          e.state = e.state === '0' ? false : true
+          e.state = e.state == 1;
           return e
         })
       }()
     }
-
-
-
-
-
-//    data () {
-//      return {
-//        switch1: true,
-//        self: this,
-//        editNameModal: false,
-//        roleName: '',
-//        roleCol: [
-//          {
-//            title: '用户组名',
-//            key: 'name',
-//            render (row, column, index) {
-//              return `<Icon type="person-stalker"></Icon> <strong>${row.name}</strong>`;
-//            }
-//          },
-//          {
-//            title: '操作',
-//            key: 'action',
-//            width: 600,
-//            align: 'center',
-//            render (row, column, index) {
-//              return parseInt(row.fixed) ?
-//                `无权操作` :
-//                `<i-switch size="large" v-model="roleData[${index}].state" @on-change="toggleRoleState(${index})">
-//                    <span slot="open">启用</span>
-//                    <span slot="close">禁用</span>
-//                </i-switch>
-//
-//                <i-button type="warning" size="small" @click="editRoleName(${index})"><Icon type="edit"></Icon> 修改</i-button>
-//                <Modal
-//                    v-model="editNameModal"
-//                    title="修改组名"
-//                    @on-ok="editRoleNameOk(${index})">
-//                    用户组名:&nbsp;&nbsp;&nbsp;&nbsp;
-//                    <i-input style="width: 250px" v-model="roleName"></i-input>
-//                </Modal>
-//
-//                <i-button type="error" size="small" @click="remove(${index})"><Icon type="trash-b"></Icon> 删除</i-button>`;
-//            }
-//          }
-//        ],
-//        roleData: []
-//      }
-//    },
-//    methods: {
-//      toggleRoleState(index){
-//        let self = this
-//        !async function () {
-//          self.$Loading.start();
-//          await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/', qs.stringify({
-//            token: localStorage.token,
-//            role_name: self.roleData[index].name,
-//            state: self.roleData[index].state
-//          }))
-//          self.$Loading.finish();
-//        }()
-//      },
-//      editRoleName(index){
-//        this.editNameModal = true
-//        this.roleName = this.roleData[index].name
-//      },
-//      editRoleNameOk(index){
-//        let self = this
-//        console.log(this.roleData[index].name)
-//        let oldRoleName = this.roleData[index].name
-//        !async function () {
-//          self.$Loading.start();
-//          await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/name/', qs.stringify({
-//            token: localStorage.token,
-//            old_role_name: self.roleData[index].name,
-//            new_role_name: self.roleName
-//          }))
-//          self.roleData[index].name = self.roleName
-//          self.$Loading.finish();
-//        }()
-//      },
-//      remove (index) {
-//        let self = this
-//        console.log(self.roleData[index].name)
-//        !async function () {
-//          self.$Loading.start();
-//          await axios.delete('http://crm.mrdaisite.com/back_end/api/v1/role/', {
-//              data:qs.stringify({
-//                token: localStorage.token,
-//                role_name: self.roleData[index].name
-//              })
-//          })
-//          self.roleData.splice(index, 1);
-//          self.$Loading.finish();
-//        }()
-//      },
-//    },
-//    mounted(){
-//      let self = this
-//      !async function () {
-//        self.roleData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/role/?token=${localStorage.token}`)).data
-//        self.roleData = self.roleData.map(e => {
-//          e.state = e.state === '0' ? false : true
-//          return e
-//        })
-//      }()
-//    }
   }
 </script>
 
