@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content-header"><h2>权限组管理</h2></div>
+    <div class="content-header"><h2>用户管理</h2></div>
     <el-row>
       <el-col :span="22" :offset="1">
         <br><br>
@@ -64,7 +64,7 @@
   import qs from 'qs'
   import axios from 'axios'
   export default {
-    name: 'role',
+    name: 'user',
     data() {
       return {
         roleData: [],
@@ -143,7 +143,7 @@
         }()
       },
       handlePermission(index, row){
-          this.$router.push({ name: 'permission', params: { RoleName: row.name }})
+        this.$router.push({ name: 'permission', params: { RoleName: row.name }})
       }
     },
     mounted(){

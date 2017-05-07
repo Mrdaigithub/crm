@@ -6,6 +6,7 @@ import Patient from '@/components/Patient'
 import Doctor from '@/components/Doctor'
 import Role from '@/components/Role'
 import Permission from '@/components/Permission'
+import User from '@/components/User'
 import Log from '@/components/Log'
 
 Vue.use(Router)
@@ -21,6 +22,7 @@ export default new Router({
         {path: '/info_doctor', name: 'doctor', component: Doctor},
         {path: '/system_role', name: 'role', component: Role},
         {path: '/system_permission', name: 'permission', component: Permission},
+        {path: '/system_user', name: 'user', component: User},
         {path: '/system_log', name: 'log', component: Log}
       ]
     },
