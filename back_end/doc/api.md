@@ -13,8 +13,8 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|username |是  |string |用户名   |
-|password |是  |string | 密码    |
+|username |是  |String |用户名   |
+|password |是  |String | 密码    |
 
 
  ### 返回示例
@@ -29,17 +29,17 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|token|string|用户认证密钥|
+|token|String|用户认证密钥|
 
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|40036|number|用戶名或密碼缺失|
-|40035|number|用戶名或密碼不合法|
-|46004|number|用户名错误或无此用户|
-|46005|number|密码错误|
+|40036|Number|用戶名或密碼缺失|
+|40035|Number|用戶名或密碼不合法|
+|46004|Number|用户名错误或无此用户|
+|46005|Number|密码错误|
 ---
 
 
@@ -51,7 +51,7 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|token |是  |string |过期的token   |
+|token |是  |String |过期的token   |
 
 
  ### 返回示例
@@ -66,13 +66,13 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|token|string|用户认证密钥|
+|token|String|用户认证密钥|
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|41001|number|缺少token参数|
+|41001|Number|缺少token参数|
 
 
 
@@ -93,7 +93,7 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|token |是  |string |用户密钥   |
+|token |是  |String |用户密钥   |
 
 
  ### 返回示例
@@ -126,16 +126,16 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|menu_data|array|用户对应的菜单数据|
+|menu_data|Array|用户对应的菜单数据|
 
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|41001|number|缺少token参数|
-|40014|number|无效的token|
-|42001|number|token超时|
+|41001|Number|缺少token参数|
+|40014|Number|无效的token|
+|42001|Number|token超时|
 
 
 
@@ -157,7 +157,7 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|token |是  |string |用户密钥   |
+|token |是  |String |用户密钥   |
 
 
  ### 返回示例
@@ -190,16 +190,16 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|menu_data|array|用户对应的菜单数据|
+|menu_data|Array|用户对应的菜单数据|
 
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|41001|number|缺少token参数|
-|40014|number|无效的token|
-|42001|number|token超时|
+|41001|Number|缺少token参数|
+|40014|Number|无效的token|
+|42001|Number|token超时|
 
 
 ---
@@ -211,13 +211,13 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|token |是  |string |用户密钥   |
-|name |是  |string |名字   |
-|sex |否  |number（0/1） |性别   |
-|age |否  |number |年纪   |
-|tel |否  |string |电话   |
-|wechat |否  |string |微信   |
-|qq |否  |string |qq   |
+|token |是  |String |用户密钥   |
+|name |是  |String |名字   |
+|sex |否  |Number（0/1） |性别   |
+|age |否  |Number |年纪   |
+|tel |否  |String |电话   |
+|wechat |否  |String |微信   |
+|qq |否  |String |qq   |
 |add_time |是  |timestamp |登记时间   |
 |order_time |否  |timestamp |预约时间   |
 |reach_time |否  |timestamp |到诊时间   |
@@ -225,10 +225,10 @@
 |state |是  |int |病患状态   |
 |media_from_id |否  |int |来源id   |
 |doctor_id |否  |int |预约专家id   |
-|advisory_way |否  |string |咨询方式   |
-|advisory_content |否  |string |咨询内容   |
-|area |否  |string |地区   |
-|remarks |否  |string |备注   |
+|advisory_way |否  |String |咨询方式   |
+|advisory_content |否  |String |咨询内容   |
+|area |否  |String |地区   |
+|remarks |否  |String |备注   |
 
 
  ### 返回示例
@@ -270,9 +270,9 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|41001|number|缺少token参数|
-|40014|number|无效的token|
-|42001|number|token超时|
+|41001|Number|缺少token参数|
+|40014|Number|无效的token|
+|42001|Number|token超时|
 
 
 
@@ -292,8 +292,8 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|token |是  |string |用户密钥   |
-|role_name |是  |string |权限组名称   |
+|token |是  |String |用户密钥   |
+|role_name |是  |String |权限组名称   |
 
 
  ### 返回示例
@@ -323,16 +323,59 @@
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|menu_data|array|权限组对应的权限数据|
+|permission_data|Array|权限组对应的权限数据|
 
 
  ### 错误状态码 
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
-|41001|number|缺少token参数|
-|40014|number|无效的token|
-|42001|number|token超时|
-|48001|number|此用户无权访问|
-|44001|number|缺少权限组参数|
-|43003|number|请求方法错误|
+|41001|Number|缺少token参数|
+|40014|Number|无效的token|
+|42001|Number|token超时|
+|48001|Number|此用户无权访问|
+|44001|Number|缺少权限组参数|
+|43003|Number|请求方法错误|
+
+
+---
+
+### 请求方式：
+- PUT
+
+### 参数： 
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|token |是  |String |用户密钥   |
+|role_name |是  |String |权限组名称   |
+|role_permission |是  |String |将要更新的权限值   |
+
+
+
+ ### 返回示例
+
+``` 
+  {
+    "role_permission": "11111111111111111111111111111000000000000000000000000000000000000"
+  }
+```
+
+ ### 返回参数说明 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|role_permission|String|更新之后的权限值|
+
+
+ ### 错误状态码 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|41001|Number|缺少token参数|
+|40014|Number|无效的token|
+|42001|Number|token超时|
+|48001|Number|此用户无权访问|
+|44001|Number|缺少权限组参数|
+|44001|Number|缺少将要更新的权限值参数|
+|43003|Number|请求方法错误|

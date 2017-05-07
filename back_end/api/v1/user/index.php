@@ -7,8 +7,19 @@
  */
 
 include '../../../core/core.php';
-if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-    if (!$_GET['token']) error_handler(44001);
-    print_r($sql->query("SELECT username FROM users WHERE username='" . $username    . "';"));
+if ($user_info->username !== 'root') error_handler(48001);
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (array_key_exists('all', $_GET) && !!$_GET['all']) {
+        print_r(1);
+    } else {
+        print_r(json_encode(array(
+            'username' => $user_info->username,
+            'role_name' => $user_info->role_name,
+            'role_permission' => $user_info->role_permission
+        )));
+    }
+    exit();
 }
+
 error_handler(43001);

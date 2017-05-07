@@ -1191,7 +1191,7 @@ CREATE TABLE `permission` (
 -- 转存表中的数据 `permission`
 --
 
-INSERT INTO `permission` (`id`, `name`, `title`) VALUES
+INSERT INTO `permission` (`id`, `name`, des) VALUES
 (1, 'index', '系统后台'),
 (2, 'index/home', '控制台'),
 (3, 'index/rank', '排行'),

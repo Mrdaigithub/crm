@@ -3,7 +3,6 @@
 include '../../../core/core.php';
 
 
-
 //获取用户对应的菜单数据
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
