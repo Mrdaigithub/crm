@@ -3,7 +3,7 @@
     <div class="content-header"><h2>权限组管理</h2></div>
     <el-row>
       <el-col :span="22" :offset="1">
-        <br><br>
+        <br>
         <el-button type="primary" icon="plus" @click="handleAdd"> 添加用户组</el-button>
         <br><br>
         <el-table
@@ -11,16 +11,9 @@
           border
           class="m-content">
           <el-table-column
+            prop="role_name"
             label="用户组名"
             width="250">
-            <template scope="scope">
-              <el-popover trigger="hover" placement="top">
-                <p>用户组名: {{ scope.row.name }}</p>
-                <div slot="reference">
-                  <el-tag>{{ scope.row.name }}</el-tag>
-                </div>
-              </el-popover>
-            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
@@ -86,7 +79,7 @@
               new_role_name: value
             }));
             self.roleData.push({
-              name:value,
+              role_name:value,
               state:false,
               fixed:false
             })
@@ -101,7 +94,7 @@
         !async function () {
           await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/', qs.stringify({
             token: localStorage.token,
-            role_name: row.name,
+            role_name: row['role_name'],
             state: row.state
           }));
           self.$Progress.finish();
@@ -109,7 +102,7 @@
       },
       handleEdit(row) {
         let self = this;
-        this.editingName = row.name
+        this.editingName = row['role_name'];
         this.$prompt('修改组名', {
           showCancelButton: false,
           inputValue: this.editingName,
@@ -119,10 +112,10 @@
           !async function () {
             await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/name/', qs.stringify({
               token: localStorage.token,
-              old_role_name: row.name,
+              old_role_name: row['role_name'],
               new_role_name: value
             }))
-            row.name = value;
+            row['role_name'] = value;
             self.$Progress.finish();
           }()
         }).catch(() => {
@@ -135,7 +128,7 @@
           await axios.delete('http://crm.mrdaisite.com/back_end/api/v1/role/', {
             data: qs.stringify({
               token: localStorage.token,
-              role_name: row.name
+              role_name: row['role_name']
             })
           })
           self.roleData.splice(index, 1);
@@ -143,7 +136,7 @@
         }()
       },
       handlePermission(index, row){
-          this.$router.push({ name: 'permission', params: { RoleName: row.name }})
+          this.$router.push({ name: 'permission', params: { RoleName: row['role_name'] }})
       }
     },
     mounted(){

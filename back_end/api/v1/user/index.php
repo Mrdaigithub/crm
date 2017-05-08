@@ -10,15 +10,14 @@ include '../../../core/core.php';
 if ($user_info->username !== 'root') error_handler(48001);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (array_key_exists('all', $_GET) && !!$_GET['all']) {
-        print_r(1);
-    } else {
-        print_r(json_encode(array(
-            'username' => $user_info->username,
-            'role_name' => $user_info->role_name,
-            'role_permission' => $user_info->role_permission
-        )));
-    }
+    print_r(json_encode($sql->query("SELECT u.id, u.username, u.state, r.role_name FROM users u, role r WHERE u.role_id=r.id;")));
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents('php://input'), $req_args);
+    if (!array_key_exists('username', $req_args)) error_handler(44001);
+    $sql->exec("DELETE FROM users WHERE username='" . $req_args['username'] . "'");
     exit();
 }
 

@@ -70,7 +70,7 @@ class class_user_info
     function get_role_name()
     {
         if (!$this->username) $this->get_username();
-        $this->role_name = $GLOBALS['sql']->query("SELECT name FROM role WHERE id=(SELECT role_id FROM users WHERE username='$this->username')");
-        return $this->role_name = $this->role_name[0]['name'];
+        $this->role_name = $GLOBALS['sql']->query("SELECT role_name FROM role WHERE id=(SELECT role_id FROM users WHERE username='$this->username')");
+        return $this->role_name = $this->role_name[0]['role_name'];
     }
 }
