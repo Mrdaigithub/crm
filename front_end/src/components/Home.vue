@@ -4,8 +4,16 @@
       <el-col :span="6" class="logo">
         <h1>LOGO</h1>
       </el-col>
-      <el-col :span="6" :offset="12" class="user">
-        <p>user area</p>
+      <el-col :span="2" :offset="16" class="user">
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            <span>root</span> <i class="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item divided @click="exit"><a @click="exit">退出</a></el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
     </el-row>
     <el-row class="main">
@@ -40,6 +48,12 @@
       menu(){
         return this.$store.state.menu
       }
+    },
+    methods:{
+        exit(){
+            localStorage.token = '';
+            this.$router.replace({name:'Login'});
+        }
     },
     mounted(){
       let self = this;
@@ -81,10 +95,10 @@
           text-indent: 3vw;
         }
       }
-      .user {
-        p {
+      .user .el-dropdown-link{
+        span{
           color: #fff;
-          font-size: 30px;
+          font-size: 26px;
         }
       }
     }
@@ -109,14 +123,14 @@
           height: 86vh;
           background-color: #fff;
           overflow-y: scroll;
-          .content-header{
+          .content-header {
             background-color: #fff;
             color: inherit;
             margin-bottom: 0;
             padding: 14px 15px 7px;
             min-height: 48px;
-            h2{
-              font-size:30px;
+            h2 {
+              font-size: 30px;
               color: #676a6c;
             }
           }

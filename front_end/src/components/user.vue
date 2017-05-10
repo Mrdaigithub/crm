@@ -6,46 +6,49 @@
         <br>
         <el-button type="primary" icon="plus" @click="handleAdd"> 添加用户</el-button>
         <el-dialog
-          title="添加用户"
-          :visible.sync="dialogFormVisible">
-          <el-form :model="form">
+          :title="userForm.addMode? '添加用户' : '用户资料编辑'"
+          :visible.sync="userForm.visible"
+          size="large"
+          :close-on-press-escape="false">
+          <el-form :model="userInfo" :rules="userRules" ref="userInfo" label-width="100px">
             <el-row>
-              <el-col :span="24">
-                <el-form-item label="权限组：" :label-width="formLabelWidth">
-                  <el-radio-group v-model="form.resource">
-                    <el-row>
-                      <el-col :span="8"><el-radio label="root"></el-radio></el-col>
-                      <el-col :span="8"><el-radio label="admin1"></el-radio></el-col>
-                      <el-col :span="8"><el-radio label="admin2"></el-radio></el-col>
-                      <el-col :span="8"><el-radio label="admin3"></el-radio></el-col>
-                      <el-col :span="8"><el-radio label="admin4"></el-radio></el-col>
-                    </el-row>
+              <el-col :span="20">
+                <el-form-item label="管理组" prop="role">
+                  <el-radio-group v-model="userInfo.roleName">
+                    <el-radio
+                      v-for="roleitem in roleList"
+                      :key="roleitem['role_name']"
+                      :label="roleitem['role_name']"></el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="11">
-                <el-form-item label="用户名：" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+              <el-col :span="10">
+                <el-form-item label="用户名" prop="username">
+                  <el-input type="text" v-model="userInfo.username" auto-complete="off" placeholder="中英文皆可"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="11">
-                <el-form-item label="初始密码：" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+              <el-col :span="10" :offset="1">
+                <el-form-item :label="userForm.addMode ? '初始密码' : '密码'"
+                              prop="password">
+                  <el-input type="password"
+                            v-model="userInfo.password"
+                            placeholder="请输入4-16位密码"
+                            auto-complete="off"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="11">
-                <el-form-item label="手机号：" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+              <el-col :span="10">
+                <el-form-item label="电话号码" prop="tel">
+                  <el-input v-model.number="userInfo.tel"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            <el-button type="primary" @click="handleAddSubmit" :disabled="btnState">确 定</el-button>
           </div>
         </el-dialog>
         <br><br>
@@ -104,28 +107,85 @@
   export default {
     name: 'user',
     data() {
+      var validateUsername = (rule, value, callback) => {
+        if (value === '') return callback(new Error('请输入用户名'));
+        if (!/^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(value)) return callback(new Error('用户名不能包含非法字符'));
+        callback();
+      };
+      var validatePassword = (rule, value, callback) => {
+        if (value === '') return callback(new Error('请输入密码'));
+        if (value.length < 4) return callback(new Error('密码长度过短'));
+        if (value.length > 15) return callback(new Error('密码长度过长'));
+        callback();
+      };
+      var validateTel = (rule, value, callback) => {
+        if (!value) return callback(new Error('电话号码不能为空'));
+        if (!Number.isInteger(value)) return callback(new Error('请输入数字值'));
+        if (!/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(value)) return callback(new Error('电话号码格式不正确'));
+        callback();
+      };
       return {
-        userData: [],
-        loading: false,
-        editingName: '',
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+        sUserData: [],
+        roleList: [],
+        userForm: {
+          addMode: false,
+          currRole: '',
+          visible: false,
         },
-        formLabelWidth: '100px'
+        userInfo: {
+          roleName: '',
+          username: '',
+          password: '',
+          tel: ''
+        },
+        userRules: {
+          username: [
+            {validator: validateUsername, trigger: 'blur'}
+          ],
+          password: [
+            {validator: validatePassword, trigger: 'blur'}
+          ],
+          tel: [
+            {validator: validateTel, trigger: 'blur'}
+          ]
+        }
+      }
+    },
+    computed: {
+      btnState(){
+        return (this.userInfo.username && this.userInfo.password && this.userInfo.tel) ? false : true;
+      },
+      userData(){
+        return this.sUserData.map(e=>{
+          if (e.state === '0') e.state = false;
+          return e
+        })
       }
     },
     methods: {
       handleAdd(){
+        this.userForm.addMode = true;
+        this.userForm.visible = true;
         let self = this;
-        this.dialogFormVisible = true;
+      },
+      handleAddSubmit(){
+        this.$Progress.start();
+        let self = this;
+        !async function () {
+          let newUser = (await axios.post('http://crm.mrdaisite.com/back_end/api/v1/user/', qs.stringify({
+            token: localStorage.token,
+            username: self.userInfo.username,
+            password: self.userInfo.password,
+            tel: self.userInfo.tel,
+            role_name:self.userInfo.roleName
+          }))).data;
+          self.userForm.visible = false;
+          self.sUserData.push(newUser);
+          self.userInfo.username = '';
+          self.userInfo.password = '';
+          self.userInfo.tel = '';
+          self.$Progress.finish();
+        }()
       },
       handleToggle(row){
         let self = this;
@@ -141,25 +201,12 @@
       },
       handleEdit(row) {
         let self = this;
-        console.log(row)
-        this.editingName = row.name
-        this.$prompt(`${this.editingName}修改组名`, {
-          showCancelButton: false,
-          inputValue: this.editingName,
-          confirmButtonText: '添加',
-        }).then(({value}) => {
-          this.$Progress.start();
-          !async function () {
-            await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/role/name/', qs.stringify({
-              token: localStorage.token,
-              old_role_name: row.name,
-              new_role_name: value
-            }))
-            row.name = value;
-            self.$Progress.finish();
-          }()
-        }).catch(() => {
-        });
+        self.userForm.addMode = false;
+        self.userForm.visible = true;
+        self.userInfo.username = row.username;
+        self.userInfo.password = '';
+        self.userInfo.tel = '';
+        console.log(row);
       },
       handleDelete(index, row) {
         let self = this;
@@ -175,18 +222,21 @@
           self.$Progress.finish();
         }()
       },
-      handlePermission(index, row){
-        this.$router.push({ name: 'permission', params: { RoleName: row.name }})
-      }
     },
     mounted(){
       let self = this;
       !async function () {
-        self.userData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/user/?token=${localStorage.token}`)).data
-        self.userData.forEach(e=>{
-            if (e.state === '0') e.state = false;
-        })
+        self.sUserData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/user/?token=${localStorage.token}`)).data
+        self.roleList = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/role/?token=${localStorage.token}`)).data
+        self.userInfo.roleName = self.roleList[0]['role_name'];
       }()
     }
   }
 </script>
+<style scope lang="scss">
+  .dialog-footer {
+    .el-button {
+      width: 100%;
+    }
+  }
+</style>

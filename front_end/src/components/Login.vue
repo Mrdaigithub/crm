@@ -72,7 +72,7 @@
               if (res.token) {
                 self.loading = false
                 localStorage.token = res.token
-                self.$router.push('home')
+                self.$router.replace('home')
               }
 
               if (res['state_code'] === 40036) self.$message.error('用戶名或密碼缺失');
