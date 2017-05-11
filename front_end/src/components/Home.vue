@@ -59,7 +59,7 @@
       let self = this;
       if (!this.menu || !this.menu.length) {
         !async function () {
-          let res = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/menu/?token=${localStorage.token}`)).data
+          let res = (await axios.get(`http://crm.mrdaisite.com/api/v1/menu/?token=${localStorage.token}`)).data
 
 //          缺少token参数或无效的token，退回登陆界面
           if (res['state_code'] === 41001 || res['state_code'] === 40014) {
@@ -72,7 +72,7 @@
             localStorage.token = (await axios.patch('http://crm.mrdaisite.com/back_end/api/v1/token/', qs.stringify({token: localStorage.token}))).data.token
             res = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/menu/?token=${localStorage.token}`)).data
           }
-          self.$store.dispatch('saveMenu', res['menu_data'])
+          self.$store.dispatch('saveMenu', res)
         }()
       }
     }

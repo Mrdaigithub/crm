@@ -65,7 +65,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             !async function () {
-              let res = (await axios.post('http://crm.mrdaisite.com/back_end/api/v1/token/', qs.stringify({
+              let res = (await axios.post('http://crm.mrdaisite.com/api/v1/token/', qs.stringify({
                 username: self.loginInfo.username.trim(),
                 password: self.loginInfo.password.trim()
               }))).data

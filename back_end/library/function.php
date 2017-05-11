@@ -42,3 +42,13 @@ function error_handler($state_code)
     echo json_encode(array('state_code' => $state_code));
     exit();
 }
+
+/**
+ * 去除字符串最后一个字符
+ * @param $str
+ * @return bool|string
+ */
+function str_pop($str)
+{
+    return substr($str, 0, strlen($str) - 1);
+}

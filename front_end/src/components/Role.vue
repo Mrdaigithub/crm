@@ -74,7 +74,7 @@
         }).then(({value}) => {
           this.$Progress.start();
           !async function () {
-            await axios.post('http://crm.mrdaisite.com/back_end/api/v1/role/', qs.stringify({
+            await axios.post('http://crm.mrdaisite.com/api/v1/role/', qs.stringify({
               token: localStorage.token,
               new_role_name: value
             }));
@@ -142,7 +142,7 @@
     mounted(){
       let self = this;
       !async function () {
-        self.roleData = (await axios.get(`http://crm.mrdaisite.com/back_end/api/v1/role/?token=${localStorage.token}`)).data
+        self.roleData = (await axios.get(`http://crm.mrdaisite.com/api/v1/role/?token=${localStorage.token}`)).data
         self.roleData = self.roleData.map(e => {
           e.state = e.state == 1;
           return e

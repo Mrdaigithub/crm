@@ -34,7 +34,7 @@
                               prop="password">
                   <el-input type="password"
                             v-model="userInfo.password"
-                            placeholder="请输入4-16位密码"
+                            :placeholder="userForm.addMode? '请输入4-16位密码':'如不改密码；留空即可'"
                             auto-complete="off"></el-input>
                 </el-form-item>
               </el-col>
@@ -48,7 +48,7 @@
             </el-row>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="handleAddSubmit" :disabled="btnState">确 定</el-button>
+            <el-button type="primary" @click="handleAddSubmit">确 定</el-button>
           </div>
         </el-dialog>
         <br><br>
@@ -152,9 +152,6 @@
       }
     },
     computed: {
-      btnState(){
-        return (this.userInfo.username && this.userInfo.password && this.userInfo.tel) ? false : true;
-      },
       userData(){
         return this.sUserData.map(e=>{
           if (e.state === '0') e.state = false;
@@ -171,6 +168,10 @@
       handleAddSubmit(){
         this.$Progress.start();
         let self = this;
+        return !function () {
+          this.$message.error('错了哦，这是一条错误消息');
+          this.$Progress.finish();
+        }()
         !async function () {
           let newUser = (await axios.post('http://crm.mrdaisite.com/back_end/api/v1/user/', qs.stringify({
             token: localStorage.token,
@@ -205,8 +206,7 @@
         self.userForm.visible = true;
         self.userInfo.username = row.username;
         self.userInfo.password = '';
-        self.userInfo.tel = '';
-        console.log(row);
+        self.userInfo.tel = row.tel;
       },
       handleDelete(index, row) {
         let self = this;

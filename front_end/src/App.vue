@@ -22,7 +22,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-weight: 100;
   }
-  div,p,h1, h2, h3, h4, h5, h6,span,i,em,button{
+  div,p,h1, h2, h3, h4, h5, h6,i,em,button{
     cursor: default;
   }
 </style>
