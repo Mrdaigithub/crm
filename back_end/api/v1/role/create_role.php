@@ -16,7 +16,7 @@ $permission_len = $permission_len[0]["count('id')"];
 $new_role_permission = str_pad('', $permission_len, '0');
 
 //检查参数是否缺失
-if (!array_key_exists('new_role_name', $_POST)) error_handler(41001);
+if (!array_key_exists('new_role_name', $_POST)) error_handler(44001);
 
 //检查权限组是否已存在
 $role_list = $GLOBALS['sql']->query("SELECT role_name FROM role");
@@ -26,9 +26,11 @@ foreach ($role_list as $role_item) {
 
 $GLOBALS['sql']->exec("INSERT INTO role (role_name, permission) VALUES ('" . $_POST['new_role_name'] . "','$new_role_permission')");
 print_r(json_encode(array(
-    'name' => $_POST['new_role_name'],
-    'permission' => $new_role_permission,
-    'state' => false,
-    'fixed' => false
+    'new_role_info' => array(
+        'name' => $_POST['new_role_name'],
+        'permission' => $new_role_permission,
+        'state' => false,
+        'fixed' => false
+    )
 )));
 exit();
