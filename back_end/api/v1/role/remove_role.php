@@ -7,6 +7,7 @@
  * Des: 删除指定权限组
  */
 
+
 //检查当前用户是否有管理权限组的权限
 if (!$GLOBALS['permission']->has_permission('system_role')) error_handler(48001);
 

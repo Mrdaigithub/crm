@@ -13,7 +13,7 @@ if (!$GLOBALS['permission']->has_permission('system_role')) error_handler(48001)
 $role_id = pathinfo(parse_url($_SERVER['REQUEST_URI'])['path'])['basename'];
 
 //判断要查询的权限组是否存在
-if (!count($GLOBALS['sql']->query("SELECT * FROM role WHERE id='$role_id'"))) error_handler(46008);
+if (!count($GLOBALS['sql']->query("SELECT id FROM role WHERE id='$role_id'"))) error_handler(46008);
 
 parse_str(file_get_contents('php://input'), $req_args);
 

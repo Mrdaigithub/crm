@@ -19,10 +19,8 @@ $new_role_permission = str_pad('', $permission_len, '0');
 if (!array_key_exists('new_role_name', $_POST)) error_handler(44001);
 
 //检查权限组是否已存在
-$role_list = $GLOBALS['sql']->query("SELECT role_name FROM role");
-foreach ($role_list as $role_item) {
-    if ($_POST['new_role_name'] === $role_item['role_name']) error_handler(46007);
-}
+$new_role_name = $_POST['new_role_name'];
+if (count($GLOBALS['sql']->query("SELECT id FROM role WHERE role_name='$new_role_name'"))) error_handler(46007);
 
 $GLOBALS['sql']->exec("INSERT INTO role (role_name, permission) VALUES ('" . $_POST['new_role_name'] . "','$new_role_permission')");
 print_r(json_encode(array(
