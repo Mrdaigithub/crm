@@ -29,10 +29,3 @@ print_r(json_encode(array(
     'new_media' => $new_media
 )));
 exit();
-
-
-
-
-
-
-

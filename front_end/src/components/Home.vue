@@ -50,10 +50,10 @@
       }
     },
     methods:{
-        exit(){
-            localStorage.token = '';
-            this.$router.replace({name:'Login'});
-        }
+      exit(){
+        localStorage.token = '';
+        this.$router.replace({name:'Login'});
+      }
     },
     mounted(){
       let self = this;

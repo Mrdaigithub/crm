@@ -36,9 +36,9 @@ class class_jwt
      */
     function verifyToken($token)
     {
-        $exp = $GLOBALS['sql']->query("SELECT exp FROM users WHERE token = '$token';");
-        if (!$exp) error_handler(40014); //无效的token
-        if ($exp[0]['exp'] <= time()) error_handler(42001); //token超时
+        $res = $GLOBALS['sql']->query("SELECT exp FROM users WHERE token='" . $token . "';");
+        if (!$res) error_handler(40014); //无效的token
+        if ($res[0]['exp'] <= time()) error_handler(42001); //token超时
         return true;
     }
 }

@@ -22,5 +22,5 @@ $username = $username[0]['admin_name'];
 //    为用户创建新token
 $token = $GLOBALS['jwt']->create_token($username);
 $GLOBALS['sql']->exec("UPDATE crm_admin SET admin_token='$token', admin_token_exp=" . (time() + EXP) . " WHERE admin_name='$username'");
-print_r(json_encode(array('admin_token' => $token)));
+print_r(json_encode(array('token' => $token)));
 exit();

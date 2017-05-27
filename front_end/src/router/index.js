@@ -20,7 +20,7 @@ export default new Router({
       children:[
         {path: '/patients_regsiter', name: 'patient', component: Patient},
         {path: '/info_doctor', name: 'doctor', component: Doctor},
-        {path: '/system_role', name: 'admin_group', component: Role},
+        {path: '/system_role', name: 'role', component: Role},
         {path: '/system_permission', name: 'permission', component: Permission},
         {path: '/system_user', name: 'user', component: User},
         {path: '/system_log', name: 'log', component: Log}
