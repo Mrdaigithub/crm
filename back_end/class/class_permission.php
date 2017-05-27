@@ -17,8 +17,8 @@ class class_permission
 
     function has_permission($permission_name)
     {
-        $p_sub = $GLOBALS['sql']->query("SELECT * FROM permission WHERE name='$permission_name'");
-        $p_sub = $p_sub[0]['id'] - 1;
+        $p_sub = $GLOBALS['sql']->query("SELECT permission_id FROM permission WHERE permission_name='$permission_name'");
+        $p_sub = $p_sub[0]['permission_id'] - 1;
         return $this->role_permission[$p_sub] === '1' ? true : false;
     }
 }

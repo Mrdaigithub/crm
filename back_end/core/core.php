@@ -15,8 +15,8 @@ include ROOT."/class/class_mysql.php";
 include ROOT."/class/class_jwt.php";
 include ROOT."/class/class_permission.php";
 include ROOT."/class/class_user_info.php";
+include ROOT."/class/class_router.php";
 
 $sql = new class_mysql();
 $jwt = new class_jwt();
-$user_info = new class_user_info();
-$permission = new class_permission($user_info->username);
+$router = new class_router();

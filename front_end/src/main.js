@@ -2,26 +2,32 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import iView from 'iview'
-import '../node_modules/iview/dist/styles/iview.css'
+import ElementUI from 'element-ui'
+import '../node_modules/element-ui/lib/theme-default/index.css'
+import VueProgressBar from 'vue-progressbar'
 
-Vue.config.productionTip = false
+const options = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '3px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
 
-Vue.use(iView)
+Vue.config.productionTip = false;
+Vue.use(ElementUI)
+Vue.use(VueProgressBar, options)
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    store,
+    template: '<App/>',
+    components: {App}
 })
-
-router.beforeEach((to, from, next) => {
-  iView.LoadingBar.start();
-  next();
-});
-
-router.afterEach((to, from, next) => {
-  iView.LoadingBar.finish();
-});
