@@ -1,5 +1,6 @@
 .idea
 .DS_Store
+back_end/vendor
 node_modules/
 dist/
 npm-debug.log*
