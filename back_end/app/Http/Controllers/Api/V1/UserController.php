@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use App\Models\User\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Dingo\Api\Routing\Helpers;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Models\Role;
+use App\User;
 
 class UserController extends Controller
 {
@@ -33,7 +34,6 @@ class UserController extends Controller
     public function create()
     {
         //
-        return 'create';
     }
 
     /**
@@ -55,18 +55,23 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
         if ($id == 0){
-            try {
-                if (! $user = JWTAuth::parseToken()->authenticate()) return response()->json(['user_not_found'], 404);
-            } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-                return response()->json(['token_expired'], $e->getStatusCode());
-            } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-                return response()->json(['token_invalid'], $e->getStatusCode());
-            } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-                return response()->json(['token_absent'], $e->getStatusCode());
-            }
-            return $this->response->array(['user' => $user]);
+//            $user = JWTAuth::parseToken()->authenticate();
+            $owner = new Role();
+            $owner->name  = 'owner';
+            $owner->display_name = 'Project Owner';
+            $owner->description  = 'User is the owner of a given project'; // optional
+            $owner->save();
+
+            $admin = new Role();
+            $admin->name = 'admin';
+            $admin->display_name = 'User Administrator';
+            $admin->description  = 'User is allowed to manage and edit other users';
+            $admin->save();
+
+            $user = User::where('username', '=', 'admin')->first();
+            $user->attachRole($admin);
+            return $admin;
         }
     }
 

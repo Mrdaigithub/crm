@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString'),
+    'key' => env('APP_KEY', 'crm'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -197,6 +197,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 

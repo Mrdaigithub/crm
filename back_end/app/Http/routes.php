@@ -17,14 +17,11 @@ $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
 
         // token
-        $api->group(['prefix' => 'token'], function ($api) {
-            $api->post('/create', 'TokenController@create'); // 创建token
-        });
+        $api->post('/token/create', 'TokenController@create');
 
-        // user
-//        , 'middleware' => 'jwt.refresh'
-        $api->group(['prefix' => 'users','middleware'=>'jwt.auth'], function ($api) {
-            $api->get('/{id}', 'UserController@show'); // 获取当前用户信息
+        // users
+        $api->group(['prefix' => 'users', 'middleware' => 'jwt.auth'], function ($api) {
+            $api->get('/{id}', 'UserController@show');
         });
     });
 });

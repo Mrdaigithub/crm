@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use App\Models\User\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Dingo\Api\Routing\Helpers;
@@ -13,27 +12,22 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TokenController extends Controller
 {
-
     use Helpers;
 
-
     /**
-     * Show the form for creating a new resource.
-     * @param  \Illuminate\Http\Request $request
+     * Create a token for current user
+     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
-        $credentials = [
-            'username' => $request->json('username'),
-            'password' => $request->json('password')
-        ];
-
+        $credentials = ['username' => $request->json('username'), 'password' => $request->json('password')];
         try {
-            if (!$access_token = JWTAuth::attempt($credentials)) $this->response->errorUnauthorized('username or password is error');
-            return $this->response->array(['access_token' => $access_token]);
+            if (! $token = JWTAuth::attempt($credentials)) return response()->json(['error' => 'invalid_credentials'], 401);
         } catch (JWTException $e) {
-            $this->response->errorInternal('errorInternal');
+            return response()->json(['error' => 'could_not_create_token'], 500);
         }
+        return response()->json(compact('token'));
     }
 }
