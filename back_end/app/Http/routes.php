@@ -11,20 +11,25 @@
 |
 */
 
-$api = app('Dingo\Api\Routing\Router');
+Route::group(['namespace' => 'Api\V1'], function (){
+    Route::group(['prefix' => 'api'], function () {
 
-$api->version('v1', function ($api) {
-    $api->group(['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
+        Route::group(['prefix'=>'token'],function (){
+            Route::post('/', 'TokenController@store');
+        });
 
-        // token
-        $api->post('/token/create', 'TokenController@create');
+        Route::group(['middleware' => ['jwt.auth']],function (){
 
-        // users
-        $api->group(['prefix' => 'users', 'middleware' => 'jwt.auth'], function ($api) {
-            $api->get('/{id}', 'UserController@show');
+            Route::group(['prefix'=>'menu'],function (){
+                Route::resource('/', 'MenuController@store');
+            });
         });
     });
 });
+
+
+
+
 
 
 Route::get('/', function () {

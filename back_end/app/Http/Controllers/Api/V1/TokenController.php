@@ -4,29 +4,42 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Dingo\Api\Routing\Helpers;
 use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTException;
+use EllipseSynergie\ApiResponse\Contracts\Response;
+use Validator;
 
 class TokenController extends Controller
 {
-    use Helpers;
+
+    public function __construct(Response $response, Request $request)
+    {
+        $this->request = $request;
+        $this->response = $response;
+    }
 
     /**
-     * Create a token for current user
+     * Create and Store a new token for current user.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function store()
     {
-        $credentials = ['username' => $request->json('username'), 'password' => $request->json('password')];
+        $validator = Validator::make($this->request->all(), [
+            'username' => 'required|min:4|max:15|string',
+            'password' => 'required|min:4|max:15|string',
+        ]);
+        if ($validator->fails()) return $this->response->errorUnauthorized();
+
+        $credentials = $this->request->only('username', 'password');
         try {
-            if (! $token = JWTAuth::attempt($credentials)) return response()->json(['error' => 'invalid_credentials'], 401);
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return $this->response->errorUnauthorized();
+            }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return $this->response->errorInternalError();
         }
         return response()->json(compact('token'));
     }
