@@ -4,54 +4,34 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
 use App\Models\Permission;
+use App\Http\Controllers\Controller;
+use Validator;
+use Dingo\Api\Routing\Helpers;
+use Hash;
 
 class UserController extends Controller
 {
+    use Helpers;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-//        $owner = new Role();
-//        $owner->name         = 'owner';
-//        $owner->display_name = 'Project Owner'; // optional
-//        $owner->description  = 'User is the owner of a given project'; // optional
-//        $owner->save();
-//
-//        $admin = new Role();
-//        $admin->name         = 'admin';
-//        $admin->display_name = 'User Administrator'; // optional
-//        $admin->description  = 'User is allowed to manage and edit other users'; // optional
-//        $admin->save();
-//
-//        $user = User::where('id', '=', '1')->first();
-//        $user->attachRole($owner); // parameter can be an Role object, array, or id
-//
-//        $createPost = new Permission();
-//        $createPost->name         = 'create-post';
-//        $createPost->display_name = 'Create Posts'; // optional
-//        // Allow a user to...
-//        $createPost->description  = 'create new blog posts'; // optional
-//        $createPost->save();
-//
-//        $editUser = new Permission();
-//        $editUser->name         = 'edit-user';
-//        $editUser->display_name = 'Edit Users'; // optional
-//        $editUser->description  = 'edit existing users'; // optional
-//        $editUser->save();
-//
-//        $admin->attachPermission($createPost);
-//
-//        $owner->attachPermissions(array($createPost, $editUser));
-//
-//        return json_encode($user->hasRole('owner'));
+        $permission = new Permission();
+        $permission->name = $request['name'];
+        $permission->description = $request['description'];
+        $permission->save();
+
+        $role = Role::where('id', 1)->first();
+
+        $role->attachPermission($permission);
+        return $permission;
     }
 
     /**
@@ -72,7 +52,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|min:4|max:10|unique:users|string',
+            'password' => 'required|min:4|max:20|string',
+            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
+            'role_id' => 'required|exists:roles,id'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        $user = new User();
+        $user->username = $request->get('username');
+        $user->password = Hash::make($request->get('password'));
+        $user->tel = $request->get('tel');
+        if (!$user->save()) $this->response->errorInternal();
+        $role = Role::where('id',$request->get('role_id'))->first();
+        $user->attachRole($role);
+        return $user;
     }
 
     /**

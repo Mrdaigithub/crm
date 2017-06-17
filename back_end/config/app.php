@@ -147,7 +147,7 @@ return [
 
         Zizaco\Entrust\EntrustServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
-        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
     ],
 
     /*
