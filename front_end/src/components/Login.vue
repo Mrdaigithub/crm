@@ -60,15 +60,16 @@
                 username: self.loginFrom.username,
                 password: self.loginFrom.password
               }));
-//              if (localStorage.token) {
-//                self.$message.success({
-//                  message: 'login success',
-//                  duration: 1000,
-//                  onClose: function () {
-//                    console.log('close');
-//                  }
-//                });
-//              }
+              if (token) {
+                self.$message.success({
+                  message: 'login success',
+                  duration: 800,
+                  onClose: function () {
+                    self.$router.replace('home');
+                    localStorage.token = token;
+                  }
+                });
+              }
             }()
           } else {
             this.$message.error({

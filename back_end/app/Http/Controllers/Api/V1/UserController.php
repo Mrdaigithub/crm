@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 
-class MenuController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +19,39 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+//        $owner = new Role();
+//        $owner->name         = 'owner';
+//        $owner->display_name = 'Project Owner'; // optional
+//        $owner->description  = 'User is the owner of a given project'; // optional
+//        $owner->save();
+//
+//        $admin = new Role();
+//        $admin->name         = 'admin';
+//        $admin->display_name = 'User Administrator'; // optional
+//        $admin->description  = 'User is allowed to manage and edit other users'; // optional
+//        $admin->save();
+//
+//        $user = User::where('id', '=', '1')->first();
+//        $user->attachRole($owner); // parameter can be an Role object, array, or id
+//
+//        $createPost = new Permission();
+//        $createPost->name         = 'create-post';
+//        $createPost->display_name = 'Create Posts'; // optional
+//        // Allow a user to...
+//        $createPost->description  = 'create new blog posts'; // optional
+//        $createPost->save();
+//
+//        $editUser = new Permission();
+//        $editUser->name         = 'edit-user';
+//        $editUser->display_name = 'Edit Users'; // optional
+//        $editUser->description  = 'edit existing users'; // optional
+//        $editUser->save();
+//
+//        $admin->attachPermission($createPost);
+//
+//        $owner->attachPermissions(array($createPost, $editUser));
+//
+//        return json_encode($user->hasRole('owner'));
     }
 
     /**
