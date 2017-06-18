@@ -148,6 +148,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+        'Baum\Providers\BaumServiceProvider',
     ],
 
     /*

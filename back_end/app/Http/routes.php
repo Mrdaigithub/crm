@@ -20,16 +20,18 @@ Route::get('/', function () {
 Route::get('/user/', 'Api\V1\UserController@index');
 
 $api->version('v1', function ($api) {
-    $api->group(['namespace'=>'App\Http\Controllers\Api\V1'],function ($api){
+    $api->group(['namespace'=>'App\Http\Controllers\Api\V1', 'middleware'=>'cors'],function ($api){
 
         $api->post('/token', 'TokenController@store');
 
         $api->group(['middleware'=>['jwt.auth']],function ($api){
 
+//            roles
             $api->group(['prefix'=>'roles'],function ($api){
                 $api->get('/{name}', 'RoleController@store');
             });
 
+//            users
             $api->group(['prefix'=>'users'],function ($api){
                 $api->get('/', 'UserController@index');
                 $api->post('/', 'UserController@store');

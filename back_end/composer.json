@@ -6,7 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "zizaco/entrust": "^1.8",
+        "dingo/api": "1.0.x@dev",
+        "tymon/jwt-auth": "^0.5.12",
+        "orangehill/iseed": "~2.2",
+        "baum/baum": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

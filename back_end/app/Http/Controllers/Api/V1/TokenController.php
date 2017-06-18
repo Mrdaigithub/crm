@@ -22,12 +22,11 @@ class TokenController extends Controller
             'username' => 'required|min:4|max:15|string',
             'password' => 'required|min:4|max:15|string',
         ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if ($validator->fails()) $this->response->errorUnauthorized();
         $credentials = $request->only('username', 'password');
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                print_r('1');
-                return $this->response->errorBadRequest();
+                return $this->response->errorUnauthorized();
             }
         } catch (JWTException $e) {
             return $this->response->errorInternal();

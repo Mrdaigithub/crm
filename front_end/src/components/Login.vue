@@ -56,10 +56,10 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             !async function () {
-              let token = await axios.post('/token', qs.stringify({
+              let token = (await axios.post('/token', qs.stringify({
                 username: self.loginFrom.username,
                 password: self.loginFrom.password
-              }));
+              }))).token;
               if (token) {
                 self.$message.success({
                   message: 'login success',
