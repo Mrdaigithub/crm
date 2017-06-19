@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui';
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 let axiosInstance = axios.create({
   baseURL: 'http://crm.mrdaisite.com/api',
@@ -9,8 +11,9 @@ let axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
+    NProgress.start();
     if (localStorage.token) {
-      // config.headers.common['Authorization'] = `Bearer "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9jcm0ubXJkYWlzaXRlLmNvbS9hcGkvdG9rZW4iLCJpYXQiOjE0OTc3NzI0NDcsImV4cCI6MTQ5Nzc3NjA0NywibmJmIjoxNDk3NzcyNDQ3LCJqdGkiOiJxQ21IUU9GRmRQU0pueUY1In0.Mw3dhCc3n_EmyvKSUpDeBmDrc1p8Xmr0DxrLYFM3eHU`;
+      config.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
     }
     return config;
   },
@@ -18,11 +21,13 @@ axiosInstance.interceptors.request.use(
     Message.error({
       message:'Internal Error'
     })
+    NProgress.done();
     return Promise.reject(err);
   });
 
 axiosInstance.interceptors.response.use(
   response => {
+    NProgress.done();
     return response.data
   },
   error => {
@@ -35,7 +40,8 @@ axiosInstance.interceptors.response.use(
         case 500:Message.error({message:'Internal Error'});break;
       }
     }
-    return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+    NProgress.done();
+    return Promise.reject(error.response.data);
   });
 
 

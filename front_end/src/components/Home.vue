@@ -1,33 +1,36 @@
 <template>
   <div class="home">
-    <el-row class="top-bar" type="flex" justify="space-between">
-      <el-col :span="4" class="logo">
-        <h1>logo</h1>
-      </el-col>
-    </el-row>
+    <!--<el-row class="top-bar" type="flex" justify="space-between">-->
+    <!--<el-col :span="4" class="logo">-->
+    <!--<h1>logo</h1>-->
+    <!--</el-col>-->
+    <!--</el-row>-->
     <el-row>
       <el-col :span="4" class="left-bar">
-        <el-dropdown trigger="click" class="user-profile">
-          <div class="user-menu">
-            <div class="user-pic"><img src="http://q1.qlogo.cn/g?b=qq&nk=467732207&s=100&t=1494561756" alt="user"></div>
-            <span class="el-dropdown-link">
-            Hello: <span>root</span><i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          </div>
-          <el-dropdown-menu slot="dropdown" style="width: 230px;">
-            <el-dropdown-item>账号设置</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-menu class="el-menu-vertical" theme="default">
-          <el-submenu index="1">
-            <template slot="title">导航一</template>
-            <el-menu-item index="2">选项1</el-menu-item>
-            <el-menu-item index="3">选项2</el-menu-item>
-            <el-menu-item index="4">选项2</el-menu-item>
+
+        <!--<el-dropdown trigger="click" class="user-profile">-->
+        <!--<div class="user-menu">-->
+        <!--<div class="user-pic"><img src="http://q1.qlogo.cn/g?b=qq&nk=467732207&s=100&t=1494561756" alt="user"></div>-->
+        <!--<span class="el-dropdown-link">-->
+        <!--Hello: <span>root</span><i class="el-icon-caret-bottom el-icon&#45;&#45;right"></i>-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<el-dropdown-menu slot="dropdown" style="width: 230px;">-->
+        <!--<el-dropdown-item>user setting</el-dropdown-item>-->
+        <!--<el-dropdown-item @click.native="logout">logout</el-dropdown-item>-->
+        <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
+
+        <el-menu theme="default" class="el-menu-vertical">
+          <el-menu-item v-for="menu in menus" :index="menu.id" :key="menu.id" v-if="!menu.children.length">
+            <router-link :to="menu.url">{{menu.name}}</router-link>
+          </el-menu-item>
+          <el-submenu v-for="menu in menus" :index="menu.id" :key="menu.id" v-if="menu.children.length">
+            <template slot="title">{{menu.name}}</template>
+            <el-menu-item v-for="subMenu in menu.children" :index="subMenu.id" :key="subMenu.id">
+              <router-link :to="subMenu.url">{{subMenu.name}}</router-link>
+            </el-menu-item>
           </el-submenu>
-          <el-menu-item index="5">导航二</el-menu-item>
-          <el-menu-item index="6">导航三</el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="20" class="main">main</el-col>
@@ -42,15 +45,21 @@
     name: 'home',
     data () {
       return {
-        menu: []
+        menus: {}
+      }
+    },
+    methods: {
+      logout(){
+        console.log('logout');
+        if (localStorage.token) delete localStorage.token;
+        this.$router.replace('login');
       }
     },
     mounted(){
       let self = this;
       if (!this.menu || !this.menu.length) {
         !async function () {
-          axios.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9jcm0ubXJkYWlzaXRlLmNvbS9hcGkvdG9rZW4iLCJpYXQiOjE0OTc3NzYwMzEsImV4cCI6MTQ5Nzc3OTYzMSwibmJmIjoxNDk3Nzc2MDMxLCJqdGkiOiJzRE9CaERWMUFvM1djNDZYIn0.IDRJ6oqQ1aYCADwbhEMcsusiTg8rTXY5Wk1iYQwUL-c';
-          await axios.get('/menus')
+          self.menus = (await axios.get('/menus')).menuses;
         }()
       }
     }
@@ -59,54 +68,54 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .home{
-    .top-bar{
+  .home {
+    .top-bar {
       position: relative;
       z-index: 999;
-      height:10vh;
-      line-height:10vh;
+      height: 10vh;
+      line-height: 10vh;
       background-color: #58B7FF;
       box-shadow: 0 1px 5px #000;
     }
-    .left-bar{
-      height:90vh;
+    .left-bar {
+      height: 90vh;
       background-color: #eef1f6;
-      .user-profile{
+      .user-profile {
         position: relative;
         width: 100%;
-        height:15vh;
-        .user-menu{
-          height:125px;
-          background: url("http://material.23air.com/Public/2017/img/profile-menu.png")no-repeat;
-          background-size:100% 100%;
-          .user-pic{
-            padding:8px;
-            img{
+        height: 15vh;
+        .user-menu {
+          height: 125px;
+          background: url("http://material.23air.com/Public/2017/img/profile-menu.png") no-repeat;
+          background-size: 100% 100%;
+          .user-pic {
+            padding: 8px;
+            img {
               width: 25%;
-              border: 3px solid rgba(0,0,0,.14);
+              border: 3px solid rgba(0, 0, 0, .14);
               border-radius: 50%;
             }
           }
-          .el-dropdown-link{
+          .el-dropdown-link {
             position: absolute;
-            bottom:0;
-            left:0;
+            bottom: 0;
+            left: 0;
             display: block;
-            line-height:33px;
+            line-height: 33px;
             width: 100%;
             color: #fff;
-            background-color: rgba(0,0,0,.5);
-            text-indent:10px;
+            background-color: rgba(0, 0, 0, .5);
+            text-indent: 10px;
           }
         }
       }
-      .el-menu-vertical{
+      .el-menu-vertical {
         overflow-y: scroll;
-        height:75vh;
+        height: 75vh;
       }
     }
-    .main{
-      height:90vh;
+    .main {
+      height: 90vh;
       overflow-y: scroll;
     }
   }
