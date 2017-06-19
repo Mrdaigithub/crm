@@ -1,12 +1,13 @@
 <?php
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
  * @package  Laravel
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
-
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, PATCH, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization");
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

@@ -9,7 +9,9 @@ let axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    if (localStorage.token) config.headers.common.Authorization = localStorage.token;
+    if (localStorage.token) {
+      // config.headers.common['Authorization'] = `Bearer "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9jcm0ubXJkYWlzaXRlLmNvbS9hcGkvdG9rZW4iLCJpYXQiOjE0OTc3NzI0NDcsImV4cCI6MTQ5Nzc3NjA0NywibmJmIjoxNDk3NzcyNDQ3LCJqdGkiOiJxQ21IUU9GRmRQU0pueUY1In0.Mw3dhCc3n_EmyvKSUpDeBmDrc1p8Xmr0DxrLYFM3eHU`;
+    }
     return config;
   },
   err => {
