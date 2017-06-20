@@ -12,7 +12,7 @@
                       @keyup.native.enter="login('loginFrom')"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="login('loginFrom')" :disabled="disabled">login</el-button>
+            <el-button class="login-btn" type="primary" @click="login('loginFrom')" :disabled="disabled">login</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -66,7 +66,7 @@
                   duration: 800,
                   onClose: function () {
                     localStorage.token = token;
-                    self.$router.replace('home');
+                    self.$router.replace('/home/welcome');
                   }
                 });
               }

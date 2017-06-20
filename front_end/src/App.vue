@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <link href="https://fonts.googleapis.com/css?family=Mogra" rel="stylesheet">
     <router-view></router-view>
   </div>
 </template>
@@ -8,8 +9,8 @@
   export default {
     name: 'app',
     mounted(){
-      if (localStorage.token) this.$router.replace('home')
-      else this.$router.replace('login')
+      if (localStorage.token) this.$router.replace('/home/welcome')
+      else this.$router.replace('/login')
     }
   }
 </script>
@@ -19,8 +20,12 @@
     margin: 0;
     padding: 0;
   }
+  a{
+    text-decoration: none;
+    color: #48576a;
+  }
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Mogra', 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;

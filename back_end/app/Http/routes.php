@@ -41,6 +41,7 @@ $api->version('v1', function ($api) {
             $api->group(['prefix'=>'users'],function ($api){
                 $api->get('/', 'UserController@index');
                 $api->post('/', 'UserController@store');
+                $api->get('/{uid}', 'UserController@show');
             });
         });
     });

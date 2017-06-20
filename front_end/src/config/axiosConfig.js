@@ -27,6 +27,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
+    // localStorage.token = response.config.headers.Authorization.replace(/Bearer\s/,'');
     NProgress.done();
     return response.data
   },
