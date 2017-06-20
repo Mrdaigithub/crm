@@ -20,28 +20,34 @@ Route::get('/', function () {
 Route::get('/user/', 'Api\V1\UserController@index');
 
 $api->version('v1', function ($api) {
-    $api->group(['namespace'=>'App\Http\Controllers\Api\V1'],function ($api){
+    $api->group(['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
 
-        $api ->post('/token', 'TokenController@store');
+        // token
+        $api->post('/token', 'TokenController@store');
 
-        $api->group(['middleware'=>['jwt.auth']],function ($api){
+        $api->group(['middleware' => ['jwt.auth']], function ($api) {
 
             // menus
-            $api->group(['prefix'=>'menus'],function ($api){
+            $api->group(['prefix' => 'menus'], function ($api) {
                 $api->get('/', 'MenuController@index');
                 $api->post('/', 'MenuController@store');
             });
 
             // roles
-            $api->group(['prefix'=>'roles'],function ($api){
-                $api->get('/{name}', 'RoleController@store');
+            $api->group(['prefix' => 'roles'], function ($api) {
+                $api->get('/', 'RoleController@index');
+                $api->get('/{name}', 'RoleController@create');
+                $api->PATCH('/{id}', 'RoleController@update');
+                $api->delete('/{id}', 'RoleController@destroy');
             });
 
             // users
-            $api->group(['prefix'=>'users'],function ($api){
+            $api->group(['prefix' => 'users'], function ($api) {
                 $api->get('/', 'UserController@index');
+                $api->get('/{id}', 'UserController@show');
                 $api->post('/', 'UserController@store');
-                $api->get('/{uid}', 'UserController@show');
+                $api->patch('/{id}', 'UserController@update');
+                $api->delete('/{id}', 'UserController@destroy');
             });
         });
     });

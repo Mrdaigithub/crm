@@ -20,7 +20,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $role = new Role();
+        return $role->all();
     }
 
     /**
@@ -28,9 +29,19 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($name)
     {
-        //
+        $parameters = [
+            'name' => $name
+        ];
+        $validator = Validator::make($parameters, [
+            'name' => 'unique:roles|string'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        $role = new Role();
+        $role->name = $name;
+        if (!$role->save()) $this->response->errorInternal();
+        return $role;
     }
 
     /**
@@ -42,17 +53,7 @@ class RoleController extends Controller
      */
     public function store(Request $request, $name)
     {
-        $parameters = [
-            'name' => $name
-        ];
-        $validator = Validator::make($parameters, [
-            'name' => 'unique:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
-        $role = new Role();
-        $role->name = $name;
-        if (!$role->save()) $this->response->errorInternal();
-        return response()->json($role);
+        //
     }
 
     /**
@@ -86,7 +87,17 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $parameters = $request->all();
+        $parameters['id'] = $id;
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:roles',
+            'name' => 'required|string|unique:roles'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        $role = Role::find($id);
+        $role->name = $parameters['name'];
+        if (!$role->save()) $this->response->errorInternal();
+        return $role;
     }
 
     /**
@@ -97,6 +108,13 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $parameters = [
+            'id' => $id
+        ];
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        if (!Role::destroy($id)) $this->response->errorBadRequest();
     }
 }

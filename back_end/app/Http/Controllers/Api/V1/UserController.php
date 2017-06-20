@@ -20,19 +20,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function index(Request $request)
     {
-        $permission = new Permission();
-        $permission->name = $request['name'];
-        $permission->description = $request['description'];
-        $permission->save();
-
-        $role = Role::where('id', 1)->first();
-
-        $role->attachPermission($permission);
-        return $permission;
+        return User::all();
     }
 
     /**
@@ -48,46 +41,66 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $parameters = $request->all();
         $validator = Validator::make($request->all(), [
             'username' => 'required|min:4|max:10|unique:users|string',
             'password' => 'required|min:4|max:20|string',
             'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
+            'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
+            'ip' => 'ip',
             'role_id' => 'required|exists:roles,id'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
         $user = new User();
-        $user->username = $request->get('username');
-        $user->password = Hash::make($request->get('password'));
-        $user->tel = $request->get('tel');
+        $user->username = $parameters['username'];
+        $user->password = bcrypt($parameters['password']);
+        if (key_exists('tel', $parameters)) $user->tel = $parameters['tel'];
+        if (key_exists('headimgurl', $parameters)) $user->headimgurl = $parameters['headimgurl'];
+        if (key_exists('ip', $parameters)) $user->ip = $parameters['ip'];
         if (!$user->save()) $this->response->errorInternal();
-        $role = Role::where('id',$request->get('role_id'))->first();
-        $user->attachRole($role);
+        $user->attachRole(Role::find($parameters['role_id']));
         return $user;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if ($id == 0){
+        $parameters = [
+            'id' => $id
+        ];
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        if ($id == 0) {
             $user = JWTAuth::parseToken()->authenticate();
             return $user;
         }
+
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:users'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        $user = User::find($id);
+        return $user;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -98,23 +111,56 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $parameters = $request->all();
+        $parameters['id'] = $id;
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:users',
+            'username' => 'min:4|max:10|unique:users|string',
+            'password' => 'min:4|max:20|string',
+            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
+            'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
+            'ip' => 'ip',
+            'role_id' => 'exists:roles,id'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        $user = User::find($id);
+        if (key_exists('username', $parameters)) $user->username = $parameters['username'];
+        if (key_exists('password', $parameters)) $user->password = bcrypt($parameters['password']);
+        if (key_exists('tel', $parameters)) $user->tel = $parameters['tel'];
+        if (key_exists('headimgurl', $parameters)) $user->headimgurl = $parameters['headimgurl'];
+        if (key_exists('ip', $parameters)) $user->ip = $parameters['ip'];
+        if (key_exists('role_id',$parameters)){
+            $user->detachRoles($user->roles);
+            $user->attachRole(Role::find($parameters['role_id']));
+        }
+        if (!$user->save()) $this->response->errorInternal();
+        return $user;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $parameters = [
+            'id' => $id
+        ];
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:users'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        $user = User::find($id);
+        $user->detachRoles($user->roles);
+        return $user->delete();
     }
 }
