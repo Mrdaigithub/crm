@@ -60,7 +60,8 @@
       let self = this;
       if (!this.menu || !this.menu.length) {
         !async function () {
-          [self.menus, self.oneself] = [(await axios.get('/menus'))['menuses'], (await axios.get('/users/0'))['user']];
+          self.menus = (await axios.get('/menus'))['menuses'];
+          self.oneself = (await axios.get('/users/0'))['user'];
         }()
       }
     }

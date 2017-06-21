@@ -70,12 +70,12 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the user by user id.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show_by_uid($id)
     {
         $parameters = [
             'id' => $id
@@ -97,6 +97,27 @@ class UserController extends Controller
 
         $user = User::find($id);
         return $user;
+    }
+
+    /**
+     * Display users by role id.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_by_rid($id)
+    {
+        $parameters = [
+            'id' => $id
+        ];
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:roles'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        $role = Role::find($id);
+        $users = $role->users;
+        return $users;
     }
 
     /**

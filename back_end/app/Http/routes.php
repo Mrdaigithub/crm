@@ -25,7 +25,7 @@ $api->version('v1', function ($api) {
         // token
         $api->post('/token', 'TokenController@store');
 
-        $api->group(['middleware' => ['jwt.auth']], function ($api) {
+        $api->group(['middleware' => ['jwt.auth', 'jwt.refresh']], function ($api) {
 
             // menus
             $api->group(['prefix' => 'menus'], function ($api) {
@@ -36,7 +36,7 @@ $api->version('v1', function ($api) {
             // roles
             $api->group(['prefix' => 'roles'], function ($api) {
                 $api->get('/', 'RoleController@index');
-                $api->get('/{name}', 'RoleController@create');
+                $api->get('/{name}/create', 'RoleController@create');
                 $api->PATCH('/{id}', 'RoleController@update');
                 $api->delete('/{id}', 'RoleController@destroy');
             });
@@ -44,7 +44,8 @@ $api->version('v1', function ($api) {
             // users
             $api->group(['prefix' => 'users'], function ($api) {
                 $api->get('/', 'UserController@index');
-                $api->get('/{id}', 'UserController@show');
+                $api->get('/{id}', 'UserController@show_by_uid');
+                $api->get('/role/{id}', 'UserController@show_by_rid');
                 $api->post('/', 'UserController@store');
                 $api->patch('/{id}', 'UserController@update');
                 $api->delete('/{id}', 'UserController@destroy');

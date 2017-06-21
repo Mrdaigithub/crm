@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password', 60);
             $table->string('tel', 11)->nullable;
-            $table->string('headimgurl')->default('http://q1.qlogo.cn/g?b=qq&nk=467732207&s=100&t=1494561756');
+            $table->string('headimgurl')->default('https://static.bootcss.com/www/assets/img/yarn.png');
             $table->string('ip', 15)->default('0.0.0.0');
             $table->boolean('state')->default(false);
             $table->timestamps();

@@ -4,7 +4,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
-import Welcome from '@/components/Welcome'
+import Console from '@/components/Console'
 import Rank from '@/components/Rank'
 import Patient from '@/components/Patient'
 import User from '@/components/User'
@@ -23,7 +23,7 @@ const router = new Router({
       name: 'home',
       component: Home,
       children: [
-        {path: '/home/welcome', name: 'welcome', component: Welcome},
+        {path: '/home/console', name: 'console', component: Console},
         {path: '/home/rank', name: 'rank', component: Rank},
         {path: '/home/patient', name: 'patient', component: Patient},
         {path: '/home/users', name: 'user', component: User},
@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(route => {
   if (!localStorage.token && route.name !== 'login') router.replace('/login');
-  if (localStorage.token && route.name === 'home') router.replace('/home/welcome');
+  if (localStorage.token && route.name === 'home') router.replace('/home/console');
   NProgress.done();
 })
 

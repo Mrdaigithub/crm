@@ -66,7 +66,7 @@
                   duration: 800,
                   onClose: function () {
                     localStorage.token = token;
-                    self.$router.replace('/home/welcome');
+                    self.$router.replace('/home/console');
                   }
                 });
               }
@@ -81,12 +81,12 @@
       }
     },
     mounted(){
-      new JParticles.particle('#loginBg', {
-        proximity: 90,
-        maxR: 5,
-        minR: 1,
-        range: 1000
-      });
+//      new JParticles.particle('#loginBg', {
+//        proximity: 90,
+//        maxR: 5,
+//        minR: 1,
+//        range: 1000
+//      });
     }
   }
 </script>

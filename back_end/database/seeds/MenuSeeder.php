@@ -27,7 +27,7 @@ class MenuSeeder extends Seeder
             'rgt' => '3',
             'depth' => '1',
             'name' => 'Console',
-            'url' => '/home',
+            'url' => '/home/console',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -38,7 +38,7 @@ class MenuSeeder extends Seeder
             'rgt' => '5',
             'depth' => '1',
             'name' => 'Rank',
-            'url' => '/rank',
+            'url' => '/home/rank',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -49,7 +49,7 @@ class MenuSeeder extends Seeder
             'rgt' => '7',
             'depth' => '1',
             'name' => 'Patients',
-            'url' => '/patient',
+            'url' => '/home/patient',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -265,7 +265,7 @@ class MenuSeeder extends Seeder
             'rgt' => '47',
             'depth' => '1',
             'name' => 'Users list',
-            'url' => '/users',
+            'url' => '/home/users',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

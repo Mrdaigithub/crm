@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import router from '../router'
 
 let axiosInstance = axios.create({
   baseURL: 'http://crm.mrdaisite.com/api',
@@ -27,15 +28,18 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
-    // localStorage.token = response.config.headers.Authorization.replace(/Bearer\s/,'');
+    if (response.headers.authorization) localStorage.token = response.headers.authorization.replace(/Bearer\s/,'');
     NProgress.done();
-    return response.data
+    return response.data;
   },
   error => {
     if (error.response) {
       switch (error.response.status) {
         case 400:Message.error({message:'BadRequest'});break;
-        case 401:Message.error({message:'Unauthorized'});break;
+        case 401:
+          Message.error({message:'Unauthorized'});
+          router.replace('/login');
+          break;
         case 403:Message.error({message:'Forbidden'});break;
         case 405:Message.error({message:'MethodNotAllowed'});break;
         case 500:Message.error({message:'Internal Error'});break;

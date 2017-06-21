@@ -9,7 +9,7 @@
   export default {
     name: 'app',
     mounted(){
-      if (localStorage.token) this.$router.replace('/home/welcome')
+      if (localStorage.token) this.$router.replace('/home/console')
       else this.$router.replace('/login')
     }
   }
