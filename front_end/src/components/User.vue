@@ -4,7 +4,8 @@
       <el-col :span="6" class="role-area">
         <el-card class="box-card">
           <div slot="header" class="clearfix role-header">
-            <span style="line-height: 36px;">All users <el-badge class="mark" :value="users.length"/></span>
+            <span style="line-height: 36px;" @click="showAllUsers">All users
+              <el-badge class="mark" :value="users.length"/></span>
           </div>
           <div class="role-item-title">Role</div>
           <div v-for="role in roles" class="role-item" :key="role.id">{{role.name}}
@@ -14,7 +15,30 @@
           <div class="add-role" @click="addRole">Add new role</div>
         </el-card>
       </el-col>
-      <el-col :span="18">right</el-col>
+      <el-col :span="18" class="user-area">
+        <el-card class="box-card">
+          <h2>User List</h2>
+          <el-table :data="showUsersData" border style="width: 100%">
+            <el-table-column prop="id" label="id" width="70"></el-table-column>
+            <el-table-column prop="username" label="username" width="120"></el-table-column>
+            <el-table-column prop="tel" label="tel" width="120"></el-table-column>
+            <el-table-column prop="created_at" label="created_at" width="190"></el-table-column>
+            <el-table-column prop="updated_at" label="updated_at" width="190"></el-table-column>
+            <el-table-column prop="ip" label="ip" width="150"></el-table-column>
+            <el-table-column label="tools" width="120" fixed="right">
+              <template scope="scope">
+                <el-button
+                  size="small"
+                  @click="handleEdit(scope.$index, scope.row)" icon="edit"></el-button>
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)" icon="delete"></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -28,23 +52,32 @@
     data(){
       return {
         roles: [],
-        users: []
+        users: [],
+        showUsersData: [],
+        currentRole: ''
       }
     },
     methods: {
       addRole(){
         let self = this;
-        this.$prompt('Please enter a role name', 'Tip')
-          .then(({roleName}) => {
-            console.log(roleName);
-
-//            axios.get(`/roles/${roleName}/create`)
-//              .then(newRole=>{
-//                console.log(newRole);
-//              })
-//            newRole.users = [];
-//            self.roles.push(newRole);
+        this.$prompt('Please enter a role name', 'Tips')
+          .then(({value}) => {
+            axios.get(`/roles/${value}/create`)
+              .then(res => {
+                let role = res.role
+                role.users = [];
+                self.roles.push(role);
+              })
           });
+      },
+      showAllUsers(){
+        this.showUsersData = this.users;
+      },
+      handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
       }
     },
     mounted(){
@@ -57,6 +90,7 @@
         }
         self.roles = roles;
         self.users = (await axios.get('/users'))['users'];
+        self.showUsersData = self.users;
       }()
     }
   }
@@ -67,7 +101,7 @@
   .user {
     .role-area {
       .box-card {
-        height: 90vh;
+        min-height: 90vh;
         .role-header, .role-item, .add-role {
           cursor: pointer;
         }
@@ -95,6 +129,15 @@
           &:hover {
             background-color: #f3f7f9;
           }
+        }
+      }
+    }
+    .user-area {
+      padding: 15px;
+      .box-card {
+        height: 85vh;
+        h2{
+          margin-bottom:30px;
         }
       }
     }
