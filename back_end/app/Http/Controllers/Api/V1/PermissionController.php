@@ -111,7 +111,7 @@ class PermissionController extends Controller
                 $permission['selected'] = true;
             }
         }
-//        return response()->json($permission_list);
+        return response()->json($permission_list);
     }
 
     /**

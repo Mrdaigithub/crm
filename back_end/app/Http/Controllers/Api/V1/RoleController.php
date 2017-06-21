@@ -27,6 +27,7 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param $name
      * @return \Illuminate\Http\Response
      */
     public function create($name)
@@ -38,6 +39,7 @@ class RoleController extends Controller
             'name' => 'unique:roles|string'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
+
         $role = new Role();
         $role->name = $name;
         if (!$role->save()) $this->response->errorInternal();
@@ -112,9 +114,11 @@ class RoleController extends Controller
             'id' => $id
         ];
         $validator = Validator::make($parameters, [
-            'id' => 'numeric'
+            'id' => 'numeric|exists:roles'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
-        if (!Role::destroy($id)) $this->response->errorBadRequest();
+
+        Role::find($id)->detachPermissions();
+        Role::destroy($id);
     }
 }
