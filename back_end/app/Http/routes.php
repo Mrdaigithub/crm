@@ -49,6 +49,11 @@ $api->version('v1', function ($api) {
                 $api->patch('/{id}', 'UserController@update');
                 $api->delete('/{id}', 'UserController@destroy');
             });
+
+            $api->group(['prefix' => 'permissions'], function ($api){
+                $api->get('/{id}', 'PermissionController@show');
+                $api->put('/{id}', 'PermissionController@update');
+            });
         });
     });
 });

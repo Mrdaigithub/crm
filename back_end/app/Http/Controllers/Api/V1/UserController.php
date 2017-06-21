@@ -53,7 +53,8 @@ class UserController extends Controller
             'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
             'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
             'ip' => 'ip',
-            'role_id' => 'required|exists:roles,id'
+            'role_id' => 'required|exists:roles,id',
+            'state' => 'boolean'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
         $user = new User();
@@ -62,6 +63,7 @@ class UserController extends Controller
         if (key_exists('tel', $parameters)) $user->tel = $parameters['tel'];
         if (key_exists('headimgurl', $parameters)) $user->headimgurl = $parameters['headimgurl'];
         if (key_exists('ip', $parameters)) $user->ip = $parameters['ip'];
+        if (key_exists('state', $parameters)) $user->state = $parameters['state'];
         if (!$user->save()) $this->response->errorInternal();
         $user->attachRole(Role::find($parameters['role_id']));
         return $user;
@@ -126,6 +128,7 @@ class UserController extends Controller
             'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
             'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
             'ip' => 'ip',
+            'state' => 'boolean',
             'role_id' => 'exists:roles,id'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
@@ -135,7 +138,8 @@ class UserController extends Controller
         if (key_exists('tel', $parameters)) $user->tel = $parameters['tel'];
         if (key_exists('headimgurl', $parameters)) $user->headimgurl = $parameters['headimgurl'];
         if (key_exists('ip', $parameters)) $user->ip = $parameters['ip'];
-        if (key_exists('role_id',$parameters)){
+        if (key_exists('state', $parameters)) $user->state = $parameters['state'];
+        if (key_exists('role_id', $parameters)) {
             $user->detachRoles($user->roles);
             $user->attachRole(Role::find($parameters['role_id']));
         }
