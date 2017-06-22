@@ -4,12 +4,14 @@
       <el-col :span="6" class="role-area">
         <el-card class="box-card">
           <div slot="header" class="clearfix role-header">
-            <span style="line-height: 36px;" @click="showAllUsers">All users
-              <el-badge class="mark" :value="users.length"/></span>
+            <span style="line-height: 36px;" @click="currentRoleId = 'all'">
+              All users<el-badge class="mark" :value="users.length"/>
+            </span>
           </div>
           <div class="role-item-title">Role</div>
-          <div v-for="role in roles" class="role-item" :key="role.id">{{role.name}}
-            <el-badge class="mark" :value="role.users.length"/>
+          <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
+            {{role.name}}
+            <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
           </div>
           <hr>
           <div class="add-role" @click="addRole">Add new role</div>
@@ -18,6 +20,7 @@
       <el-col :span="18" class="user-area">
         <el-card class="box-card">
           <h2>User List</h2>
+          <el-button type="success" icon="plus" class="add_btn" @click="newUser.formVisible = true"></el-button>
           <el-table :data="showUsersData" border style="width: 100%">
             <el-table-column prop="id" label="id" width="70"></el-table-column>
             <el-table-column prop="username" label="username" width="120"></el-table-column>
@@ -29,17 +32,48 @@
               <template scope="scope">
                 <el-button
                   size="small"
-                  @click="handleEdit(scope.$index, scope.row)" icon="edit"></el-button>
+                  @click="editUser(scope.$index, scope.row)" icon="edit"></el-button>
                 <el-button
                   size="small"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)" icon="delete"></el-button>
+                  @click="removeUser(scope.$index, scope.row)" icon="delete"></el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog title="Edit user info" :visible.sync="dialogVisible" size="large">
+      <el-form :model="newUser.data" :rules="newUser.rules" ref="newUser" label-width="100px" class="new-user">
+        <el-form-item label="username" prop="username">
+          <el-input v-model="newUser.data.username"></el-input>
+        </el-form-item>
+        <el-form-item label="password" prop="password">
+          <el-input v-model="newUser.data.password"></el-input>
+        </el-form-item>
+        <el-form-item label="tel" prop="tel">
+          <el-input v-model="newUser.data.tel"></el-input>
+        </el-form-item>
+        <el-form-item label="state" prop="state">
+          <el-switch on-text="" off-text="" v-model="newUser.data.state"></el-switch>
+        </el-form-item>
+        <el-form-item label="roles" prop="roles">
+          <el-radio-group v-model="newUser.data.roles">
+            <el-radio label="role1"></el-radio>
+            <el-radio label="role2"></el-radio>
+            <el-radio label="role3"></el-radio>
+            <el-radio label="role4"></el-radio>
+            <el-radio label="role5"></el-radio>
+            <el-radio label="role6"></el-radio>
+            <el-radio label="role7"></el-radio>
+            <el-radio label="role8"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="saveNewUser('newUser')" style="width: 100%">save</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -53,11 +87,59 @@
       return {
         roles: [],
         users: [],
-        showUsersData: [],
-        currentRole: ''
+        currentRoleId: null,
+        dialogVisible: false,
+        newUser: {
+          data: {
+            name: '',
+            password: '',
+            tel: '',
+            state: true,
+            roles: ''
+          },
+          rules: {
+            username: [
+              {required: true, message: 'please enter username', trigger: 'blur'},
+              {min: 4, max: 15, message: '4 to 15', trigger: 'blur'}
+            ],
+            password: [
+              {min: 4, max: 15, message: '4 to 15', trigger: 'change'}
+            ],
+            tel: [
+              {
+                pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/,
+                message: 'pattern error',
+                trigger: 'change'
+              }
+            ]
+          }
+        },
+        dialogState: 'new' // new or edit
+      }
+    },
+    computed: {
+      showUsersData(){
+        let showUsersData = [];
+        if (this.currentRoleId === 'all') return this.users;
+        else {
+          for (let user of this.users) {
+            if (this.currentRoleId === user['roles'][0]['id']) {
+              showUsersData.push(user);
+            }
+          }
+          return showUsersData
+        }
       }
     },
     methods: {
+      getRoleUserLength(roleId){
+        let self = this;
+        let len = 0;
+        for (let user of self.users) {
+          if (user['roles'][0]['id'] === roleId) len++;
+        }
+        return len
+      },
       addRole(){
         let self = this;
         this.$prompt('Please enter a role name', 'Tips')
@@ -70,27 +152,47 @@
               })
           });
       },
-      showAllUsers(){
-        this.showUsersData = this.users;
+      saveNewUser(formName){
+          console.log('save');
+//        let self = this;
+////        this.newUser.formVisible = false;
+//        this.$refs[formName].validate(valid => {
+//          if (valid) {
+//            let postData = {
+//              username: self.newUser.data.username,
+//              role
+//            }
+////            axios.post('/users', qs.stringify({
+////
+////            }))
+//          } else {
+//            console.log('error');
+//            return false
+//          }
+//        })
       },
-      handleEdit(index, row) {
-        console.log(index, row);
+      editUser(index, row) {
+        this.dialogVisible = true;
+        this.dialogState = 'edit';
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      removeUser(index, row) {
+        axios.delete(`users/${row.id}`)
+          .then(res => {
+            this.users.forEach((user, index) => {
+              if (user.id === row.id) {
+                this.users.splice(index, 1);
+              }
+            })
+          })
       }
     },
     mounted(){
       let self = this;
       !async function () {
-        let roles = (await axios.get('/roles'))['roles'];
-        for (let role of roles) {
-          let role_users = (await axios.get(`/users/role/${role.id}`))['users']
-          role.users = role_users ? role_users : [];
-        }
-        self.roles = roles;
-        self.users = (await axios.get('/users'))['users'];
-        self.showUsersData = self.users;
+        let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')]);
+        self.roles = roles['roles'];
+        self.users = users['users'];
+        self.currentRoleId = 'all';
       }()
     }
   }
@@ -135,9 +237,12 @@
     .user-area {
       padding: 15px;
       .box-card {
-        height: 85vh;
-        h2{
-          margin-bottom:30px;
+        min-height: 85vh;
+        h2 {
+          margin-bottom: 5px;
+        }
+        .add_btn {
+          margin-bottom: 15px;
         }
       }
     }

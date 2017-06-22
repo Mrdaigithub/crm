@@ -25,7 +25,7 @@ $api->version('v1', function ($api) {
         // token
         $api->post('/token', 'TokenController@store');
 
-        $api->group(['middleware' => ['jwt.auth', 'jwt.refresh']], function ($api) {
+        $api->group(['middleware' => ['jwt.auth']], function ($api) {
 
             // menus
             $api->group(['prefix' => 'menus'], function ($api) {

@@ -25,7 +25,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return User::all();
+        $users = User::all();
+        foreach ($users as $user){
+            $user->roles;
+        }
+        return $users;
     }
 
     /**
