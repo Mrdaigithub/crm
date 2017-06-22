@@ -61,6 +61,7 @@ class UserController extends Controller
             'state' => 'boolean'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
+
         $user = new User();
         $user->username = $parameters['username'];
         $user->password = bcrypt($parameters['password']);
@@ -70,7 +71,7 @@ class UserController extends Controller
         if (key_exists('state', $parameters)) $user->state = $parameters['state'];
         if (!$user->save()) $this->response->errorInternal();
         $user->attachRole(Role::find($parameters['role_id']));
-        return $user;
+        return User::find($user['id']);
     }
 
     /**

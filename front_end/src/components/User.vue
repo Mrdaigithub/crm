@@ -20,7 +20,7 @@
       <el-col :span="18" class="user-area">
         <el-card class="box-card">
           <h2>User List</h2>
-          <el-button type="success" icon="plus" class="add_btn" @click="newUser.formVisible = true"></el-button>
+          <el-button type="success" icon="plus" class="add_btn" @click="initUserFormData('new')"></el-button>
           <el-table :data="showUsersData" border style="width: 100%">
             <el-table-column prop="id" label="id" width="70"></el-table-column>
             <el-table-column prop="username" label="username" width="120"></el-table-column>
@@ -32,7 +32,7 @@
               <template scope="scope">
                 <el-button
                   size="small"
-                  @click="editUser(scope.$index, scope.row)" icon="edit"></el-button>
+                  @click="initUserFormData('edit', scope.$index, scope.row)" icon="edit"></el-button>
                 <el-button
                   size="small"
                   type="danger"
@@ -43,35 +43,29 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog title="Edit user info" :visible.sync="dialogVisible" size="large">
-      <el-form :model="newUser.data" :rules="newUser.rules" ref="newUser" label-width="100px" class="new-user">
+    <el-dialog title="Edit user info" :visible.sync="dialogVisible" size="small">
+      <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
+               class="new-user">
         <el-form-item label="username" prop="username">
-          <el-input v-model="newUser.data.username"></el-input>
+          <el-input v-model="userFormData.data.username"></el-input>
         </el-form-item>
         <el-form-item label="password" prop="password">
-          <el-input v-model="newUser.data.password"></el-input>
+          <el-input v-model="userFormData.data.password"></el-input>
         </el-form-item>
         <el-form-item label="tel" prop="tel">
-          <el-input v-model="newUser.data.tel"></el-input>
+          <el-input v-model="userFormData.data.tel"></el-input>
         </el-form-item>
         <el-form-item label="state" prop="state">
-          <el-switch on-text="" off-text="" v-model="newUser.data.state"></el-switch>
+          <el-switch on-text="" off-text="" v-model="userFormData.data.state"></el-switch>
         </el-form-item>
-        <el-form-item label="roles" prop="roles">
-          <el-radio-group v-model="newUser.data.roles">
-            <el-radio label="role1"></el-radio>
-            <el-radio label="role2"></el-radio>
-            <el-radio label="role3"></el-radio>
-            <el-radio label="role4"></el-radio>
-            <el-radio label="role5"></el-radio>
-            <el-radio label="role6"></el-radio>
-            <el-radio label="role7"></el-radio>
-            <el-radio label="role8"></el-radio>
+        <el-form-item label="role" prop="role">
+          <el-radio-group v-model="userFormData.data.role">
+            <el-radio v-for="role in roles" key="role.id" :label="role.id.toString()">{{role.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="saveNewUser('newUser')" style="width: 100%">save</el-button>
+        <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
       </div>
     </el-dialog>
   </div>
@@ -87,15 +81,15 @@
       return {
         roles: [],
         users: [],
-        currentRoleId: null,
+        currentRoleId: 'all',
         dialogVisible: false,
-        newUser: {
+        userFormData: {
           data: {
-            name: '',
+            username: '',
             password: '',
             tel: '',
-            state: true,
-            roles: ''
+            state: false,
+            role: ''
           },
           rules: {
             username: [
@@ -111,10 +105,10 @@
                 message: 'pattern error',
                 trigger: 'change'
               }
-            ]
+            ],
+            role: [{required: true, message: 'please select a role', trigger: 'blur'}]
           }
-        },
-        dialogState: 'new' // new or edit
+        }
       }
     },
     computed: {
@@ -152,28 +146,55 @@
               })
           });
       },
-      saveNewUser(formName){
-          console.log('save');
-//        let self = this;
-////        this.newUser.formVisible = false;
-//        this.$refs[formName].validate(valid => {
-//          if (valid) {
-//            let postData = {
-//              username: self.newUser.data.username,
-//              role
-//            }
-////            axios.post('/users', qs.stringify({
-////
-////            }))
-//          } else {
-//            console.log('error');
-//            return false
-//          }
-//        })
-      },
-      editUser(index, row) {
+      initUserFormData(dialogState, index = null, row = null){
         this.dialogVisible = true;
-        this.dialogState = 'edit';
+        if (dialogState === 'new') {
+          this.userFormData.rules.password = [
+            {required: true, message: 'please enter password', trigger: 'blur'},
+            {min: 4, max: 15, message: '4 to 15', trigger: 'change'}
+          ];
+          this.userFormData.data = {
+            username: '',
+            password: '',
+            tel: '',
+            state: false,
+            role: ''
+          }
+        }
+        if (dialogState === 'edit') {
+          this.userFormData.rules.password = [
+            {min: 4, max: 15, message: '4 to 15', trigger: 'change'}
+          ];
+          this.userFormData.data = {
+            username: row.username,
+            password: '',
+            tel: row.tel,
+            state: !!row.state,
+            role: row.roles[0]['id'].toString()
+          }
+        }
+      },
+      saveUser(formName){
+        let self = this;
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            let postData = {
+              username: self.userFormData.data.username,
+              role_id: self.userFormData.data.role,
+              state: self.userFormData.data.state ? 1 : 0
+            }
+            if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
+            if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
+            axios.post('/users', qs.stringify(postData))
+              .then(res => {
+                self.users.push(res.user);
+              })
+            self.dialogVisible = false;
+          } else {
+            console.error('error');
+            return false
+          }
+        })
       },
       removeUser(index, row) {
         axios.delete(`users/${row.id}`)
@@ -192,7 +213,6 @@
         let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')]);
         self.roles = roles['roles'];
         self.users = users['users'];
-        self.currentRoleId = 'all';
       }()
     }
   }
