@@ -64,7 +64,7 @@ class PermissionController extends Controller
 
         $role = Role::find($id);
         $permission_list = permission::all();
-        foreach ($permission_list as $permission){
+        foreach ($permission_list as $permission) {
             if ($role->hasPermission($permission['name'])) $permission['selected'] = true;
             else $permission['selected'] = false;
         }
@@ -100,13 +100,14 @@ class PermissionController extends Controller
         if ($validator->fails()) $this->response->errorbadrequest();
 
         $role = Role::find($id);
-        $permission_list = $request->json()->all();
-        foreach ($permission_list as $permission){
-            if ($role->hasPermission($permission['name']) && !$permission['selected']){
+        $permission_list = $request->all()['permissions'];
+
+        foreach ($permission_list as $permission) {
+            if ($role->hasPermission($permission['name']) && $permission['selected'] === 'false') {
                 $role->detachPermission(Permission::find($permission['id']));
                 $permission['selected'] = false;
             }
-            if (!$role->hasPermission($permission['name']) && $permission['selected']){
+            if (!$role->hasPermission($permission['name']) && $permission['selected'] === 'true'){
                 $role->attachPermission(Permission::find($permission['id']));
                 $permission['selected'] = true;
             }

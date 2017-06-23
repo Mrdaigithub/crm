@@ -12,6 +12,12 @@
           <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
             {{role.name}}
             <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
+            <el-button type="danger" size="small" icon="delete" class="role-edit-btn"
+                       @click="removeRole(role.id)"></el-button>
+            <el-button type="default" size="small" icon="edit" class="role-remove-btn"
+                       @click="editRole(role.id)"></el-button>
+            <el-button type="default" size="small" icon="setting" class="setting-permission-btn"
+                       @click="editPermission(role.id)"></el-button>
           </div>
           <hr>
           <div class="add-role" @click="addRole">Add new role</div>
@@ -43,7 +49,24 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog title="Edit user info" :visible.sync="dialogVisible" size="small">
+    <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
+      <el-table
+        ref="permissionTable"
+        :data="permissions"
+        border
+        tooltip-effect="dark"
+        style="width: 100%"
+        @select="selectPermission"
+        @select-all="selectPermissionAll">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column prop="name" label="name" width="280"></el-table-column>
+        <el-table-column prop="description" label="description"></el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
       <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
                class="new-user">
         <el-form-item label="username" prop="username">
@@ -81,8 +104,12 @@
       return {
         roles: [],
         users: [],
+        permissions: [],
         currentRoleId: 'all',
-        dialogVisible: false,
+        currentUser: {},
+        userDialogVisible: false,
+        permissionDialogVisible: false,
+        dialogState: 'new',
         userFormData: {
           data: {
             username: '',
@@ -108,7 +135,7 @@
             ],
             role: [{required: true, message: 'please select a role', trigger: 'blur'}]
           }
-        }
+        },
       }
     },
     computed: {
@@ -123,7 +150,7 @@
           }
           return showUsersData
         }
-      }
+      },
     },
     methods: {
       getRoleUserLength(roleId){
@@ -146,8 +173,46 @@
               })
           });
       },
+      editRole(roleId){
+        let self = this;
+        let rIndex = null;
+        let currentRole = null;
+        self.roles.forEach((role, index) => {
+          if (role.id === roleId) {
+            currentRole = role;
+            rIndex = index;
+          }
+        })
+        this.$prompt('enter a new role name', 'Tips', {
+          confirmButtonText: 'submit',
+          showCancelButton: false,
+          inputPattern: /\w{4,20}/,
+          inputValidator: function (val) {
+            if (val === currentRole.name) return false;
+          },
+          inputErrorMessage: 'name format is error'
+        }).then(({value}) => {
+          axios.patch(`/roles/${roleId}`, qs.stringify({name: value}))
+            .then(res => {
+              self.roles.splice(rIndex, 1, res.role);
+            })
+        });
+      },
+      removeRole(roleId){
+        let self = this;
+        let rIndex = null;
+        self.roles.forEach((role, index) => {
+          if (role.id === roleId) rIndex = index;
+        })
+        axios.delete(`/roles/${roleId}`)
+          .then(res => {
+            self.roles.splice(rIndex, 1);
+          })
+      },
       initUserFormData(dialogState, index = null, row = null){
-        this.dialogVisible = true;
+        this.userDialogVisible = true;
+        this.dialogState = dialogState;
+        this.currentUser = row;
         if (dialogState === 'new') {
           this.userFormData.rules.password = [
             {required: true, message: 'please enter password', trigger: 'blur'},
@@ -176,20 +241,46 @@
       },
       saveUser(formName){
         let self = this;
+        let postData = {};
+
         this.$refs[formName].validate(valid => {
           if (valid) {
-            let postData = {
-              username: self.userFormData.data.username,
-              role_id: self.userFormData.data.role,
-              state: self.userFormData.data.state ? 1 : 0
+            if (self.dialogState === 'new') {
+              postData = {
+                username: self.userFormData.data.username,
+                role_id: self.userFormData.data.role,
+                state: self.userFormData.data.state ? 1 : 0
+              }
+              if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
+              if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
+              axios.post('/users', qs.stringify(postData))
+                .then(res => {
+                  self.users.push(res.user);
+                })
+
+            } else if (self.dialogState === 'edit') {
+
+              postData = {
+                role_id: self.userFormData.data.role,
+                state: self.userFormData.data.state ? 1 : 0
+              }
+              if (self.userFormData.data.username !== self.currentUser['username']) {
+                postData['username'] = self.userFormData.data.username;
+              }
+              if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
+              if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
+              axios.patch(`/users/${self.currentUser.id}`, qs.stringify(postData))
+                .then(res => {
+                  let startIndex;
+                  self.users.forEach((user, index) => {
+                    if (user.id === self.currentUser.id) startIndex = index;
+                  })
+                  self.users.splice(startIndex, 1, res.user);
+                })
             }
-            if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
-            if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
-            axios.post('/users', qs.stringify(postData))
-              .then(res => {
-                self.users.push(res.user);
-              })
-            self.dialogVisible = false;
+
+            self.userDialogVisible = false;
+
           } else {
             console.error('error');
             return false
@@ -205,7 +296,39 @@
               }
             })
           })
-      }
+      },
+      editPermission(roleId){
+        let self = this;
+        this.permissionDialogVisible = true;
+        axios.get(`permissions/${roleId}`)
+          .then(permissions => {
+            self.permissions = permissions;
+            this.permissions.forEach((permission, index) => {
+              this.$nextTick(() => {
+                this.$refs['permissionTable'].toggleRowSelection(this.permissions[index], permission.selected);
+              })
+            })
+          })
+      },
+      selectPermission(selection, row){
+        for (let permission of this.permissions) {
+          if (permission.id === row.id) {
+            permission.selected = !permission.selected;
+            break;
+          }
+        }
+      },
+      selectPermissionAll(selection){
+        if (selection.length === 0) this.permissions.forEach(permission => permission.selected = false);
+        else this.permissions.forEach(permission => permission.selected = true);
+      },
+      savePermission(){
+        let self = this;
+        axios.put(`permissions/${self.currentRoleId}`, qs.stringify({permissions: self.permissions}))
+          .then(res => {
+            this.permissionDialogVisible = false;
+          })
+      },
     },
     mounted(){
       let self = this;
@@ -243,6 +366,10 @@
           &:hover {
             color: #62a8ea;
             background-color: #f3f7f9;
+          }
+          .role-remove-btn, .role-edit-btn, .setting-permission-btn {
+            float: right;
+            margin-left: 1px;
           }
         }
         .add-role {

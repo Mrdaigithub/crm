@@ -1,6 +1,6 @@
 <template>
-  <div class="console">
-    console
+  <div class="welcome">
+    welcome
   </div>
 </template>
 
@@ -9,7 +9,7 @@
   import qs from 'qs'
 
   export default {
-    name: 'console',
+    name: 'welcome',
   }
 </script>
 

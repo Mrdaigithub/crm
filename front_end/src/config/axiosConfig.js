@@ -13,8 +13,8 @@ let axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   config => {
     NProgress.start();
-    if (localStorage.token) {
-      config.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+    if (sessionStorage.token) {
+      config.headers.common['Authorization'] = `Bearer ${sessionStorage.token}`;
     }
     return config;
   },
@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
-    // if (response.headers.authorization) localStorage.token = response.headers.authorization.replace(/Bearer\s/,'');
+    // if (response.headers.authorization) sessionStorage.token = response.headers.authorization.replace(/Bearer\s/,'');
     NProgress.done();
     return response.data;
   },

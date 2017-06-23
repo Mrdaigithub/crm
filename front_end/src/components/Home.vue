@@ -52,7 +52,7 @@
     },
     methods: {
       logout(){
-        if (localStorage.token) delete localStorage.token;
+        if (sessionStorage.token) delete sessionStorage.token;
         this.$router.replace('login');
       }
     },

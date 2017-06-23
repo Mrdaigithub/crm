@@ -39,8 +39,8 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(route => {
-  if (!localStorage.token && route.name !== 'login') router.replace('/login');
-  if (localStorage.token && route.name === 'home') router.replace('/home/console');
+  if (!sessionStorage.token && route.name !== 'login') router.replace('/login');
+  if (sessionStorage.token && route.name === 'home') router.replace('/home/console');
   NProgress.done();
 })
 
