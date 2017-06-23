@@ -117,7 +117,8 @@ class RoleController extends Controller
             'id' => 'numeric|exists:roles'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
-
+        $role = Role::find($id);
+        if (count($role->users)) $this->response->errorInternal();
         Role::find($id)->detachPermissions();
         Role::destroy($id);
     }

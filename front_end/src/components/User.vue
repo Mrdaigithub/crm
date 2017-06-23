@@ -12,6 +12,10 @@
           <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
             {{role.name}}
             <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
+            <el-button type="danger" size="small" icon="delete" class="role-edit-btn"
+                       @click="removeRole(role.id)"></el-button>
+            <el-button type="default" size="small" icon="edit" class="role-remove-btn"
+                       @click="editRole(role.id)"></el-button>
           </div>
           <hr>
           <div class="add-role" @click="addRole">Add new role</div>
@@ -148,6 +152,42 @@
               })
           });
       },
+      editRole(roleId){
+        let self = this;
+        let rIndex = null;
+        let currentRole = null;
+        self.roles.forEach((role, index) => {
+          if (role.id === roleId) {
+            currentRole = role;
+            rIndex = index;
+          }
+        })
+        this.$prompt('enter a new role name', 'Tips', {
+          confirmButtonText: 'submit',
+          showCancelButton: false,
+          inputPattern: /\w{4,20}/,
+          inputValidator: function (val) {
+            if (val === currentRole.name) return false;
+          },
+          inputErrorMessage: 'name format is error'
+        }).then(({value}) => {
+          axios.patch(`/roles/${roleId}`, qs.stringify({name: value}))
+            .then(res => {
+              self.roles.splice(rIndex, 1, res.role);
+            })
+        });
+      },
+      removeRole(roleId){
+        let self = this;
+        let rIndex = null;
+        self.roles.forEach((role, index) => {
+          if (role.id === roleId) rIndex = index;
+        })
+        axios.delete(`/roles/${roleId}`)
+          .then(res => {
+            self.roles.splice(rIndex, 1);
+          })
+      },
       initUserFormData(dialogState, index = null, row = null){
         this.dialogVisible = true;
         this.dialogState = dialogState;
@@ -273,6 +313,10 @@
           &:hover {
             color: #62a8ea;
             background-color: #f3f7f9;
+          }
+          .role-remove-btn, .role-edit-btn {
+            float: right;
+            margin-left: 5px;
           }
         }
         .add-role {
