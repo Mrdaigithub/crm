@@ -82,7 +82,9 @@
         roles: [],
         users: [],
         currentRoleId: 'all',
+        currentUser: {},
         dialogVisible: false,
+        dialogState: 'new',
         userFormData: {
           data: {
             username: '',
@@ -148,6 +150,8 @@
       },
       initUserFormData(dialogState, index = null, row = null){
         this.dialogVisible = true;
+        this.dialogState = dialogState;
+        this.currentUser = row;
         if (dialogState === 'new') {
           this.userFormData.rules.password = [
             {required: true, message: 'please enter password', trigger: 'blur'},
@@ -176,20 +180,46 @@
       },
       saveUser(formName){
         let self = this;
+        let postData = {};
+
         this.$refs[formName].validate(valid => {
           if (valid) {
-            let postData = {
-              username: self.userFormData.data.username,
-              role_id: self.userFormData.data.role,
-              state: self.userFormData.data.state ? 1 : 0
+            if (self.dialogState === 'new') {
+              postData = {
+                username: self.userFormData.data.username,
+                role_id: self.userFormData.data.role,
+                state: self.userFormData.data.state ? 1 : 0
+              }
+              if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
+              if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
+              axios.post('/users', qs.stringify(postData))
+                .then(res => {
+                  self.users.push(res.user);
+                })
+
+            } else if (self.dialogState === 'edit') {
+
+              postData = {
+                role_id: self.userFormData.data.role,
+                state: self.userFormData.data.state ? 1 : 0
+              }
+              if (self.userFormData.data.username !== self.currentUser['username']) {
+                postData['username'] = self.userFormData.data.username;
+              }
+              if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
+              if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
+              axios.patch(`/users/${self.currentUser.id}`, qs.stringify(postData))
+                .then(res => {
+                  let startIndex;
+                  self.users.forEach((user, index) => {
+                    if (user.id === self.currentUser.id) startIndex = index;
+                  })
+                  self.users.splice(startIndex, 1, res.user);
+                })
             }
-            if (self.userFormData.data.password) postData.password = self.userFormData.data.password;
-            if (self.userFormData.data.tel) postData.tel = self.userFormData.data.tel;
-            axios.post('/users', qs.stringify(postData))
-              .then(res => {
-                self.users.push(res.user);
-              })
+
             self.dialogVisible = false;
+
           } else {
             console.error('error');
             return false

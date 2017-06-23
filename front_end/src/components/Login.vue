@@ -65,7 +65,7 @@
                   message: 'login success',
                   duration: 800,
                   onClose: function () {
-                    localStorage.token = token;
+                    sessionStorage.token = token;
                     self.$router.replace('/home/console');
                   }
                 });

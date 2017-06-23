@@ -71,7 +71,8 @@ class UserController extends Controller
         if (key_exists('state', $parameters)) $user->state = $parameters['state'];
         if (!$user->save()) $this->response->errorInternal();
         $user->attachRole(Role::find($parameters['role_id']));
-        return User::find($user['id']);
+        $user->roles;
+        return $user;
     }
 
     /**
@@ -170,6 +171,8 @@ class UserController extends Controller
             $user->attachRole(Role::find($parameters['role_id']));
         }
         if (!$user->save()) $this->response->errorInternal();
+        $user = User::find($parameters['id']);
+        $user->roles;
         return $user;
     }
 
