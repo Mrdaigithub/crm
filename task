@@ -1,5 +1,7 @@
-1. 用户列表编辑按钮功能
-2. 用户列表删除按钮功能 //ok
-3. 添加新增用户按钮功能 //ok
-4. 点击左侧role切换user列表 //ok
-5. 尝试并发请求，保证用户体验 //ok
+1. 构建channels视图
+2. disease get list API
+3. disease create API
+4. disease remove API
+5. disease update name API
+6. disease 添加子项目 API
+7. 构建disease视图（树状视图）
