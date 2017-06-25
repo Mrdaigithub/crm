@@ -113,7 +113,7 @@ class MenuSeeder extends Seeder
             'lft' => '18',
             'rgt' => '27',
             'depth' => '1',
-            'name' => 'Project management',
+            'name' => 'Project Management',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -123,8 +123,8 @@ class MenuSeeder extends Seeder
             'lft' => '19',
             'rgt' => '20',
             'depth' => '2',
-            'name' => 'Diseases management',
-            'url' => '/management/diseases',
+            'name' => 'Diseases Management',
+            'url' => '/Management/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -134,8 +134,8 @@ class MenuSeeder extends Seeder
             'lft' => '21',
             'rgt' => '22',
             'depth' => '2',
-            'name' => 'Doctors management',
-            'url' => '/management/doctors',
+            'name' => 'Doctors Management',
+            'url' => '/Management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -145,8 +145,8 @@ class MenuSeeder extends Seeder
             'lft' => '23',
             'rgt' => '24',
             'depth' => '2',
-            'name' => 'Channels management',
-            'url' => '/management/channel',
+            'name' => 'Channels Management',
+            'url' => '/Management/channel',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -156,8 +156,8 @@ class MenuSeeder extends Seeder
             'lft' => '25',
             'rgt' => '26',
             'depth' => '2',
-            'name' => 'Advisory management',
-            'url' => '/management/advisory',
+            'name' => 'Advisory Management',
+            'url' => '/Management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

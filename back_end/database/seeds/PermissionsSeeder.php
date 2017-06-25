@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class PermissionsSeede extends Seeder
+class PermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
