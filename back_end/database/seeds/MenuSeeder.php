@@ -113,7 +113,7 @@ class MenuSeeder extends Seeder
             'lft' => '18',
             'rgt' => '27',
             'depth' => '1',
-            'name' => 'Project Management',
+            'name' => 'Project management',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -123,7 +123,7 @@ class MenuSeeder extends Seeder
             'lft' => '19',
             'rgt' => '20',
             'depth' => '2',
-            'name' => 'Diseases Management',
+            'name' => 'Diseases management',
             'url' => '/Management/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -134,7 +134,7 @@ class MenuSeeder extends Seeder
             'lft' => '21',
             'rgt' => '22',
             'depth' => '2',
-            'name' => 'Doctors Management',
+            'name' => 'Doctors management',
             'url' => '/Management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -145,7 +145,7 @@ class MenuSeeder extends Seeder
             'lft' => '23',
             'rgt' => '24',
             'depth' => '2',
-            'name' => 'Channels Management',
+            'name' => 'Channels management',
             'url' => '/Management/channel',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -156,7 +156,7 @@ class MenuSeeder extends Seeder
             'lft' => '25',
             'rgt' => '26',
             'depth' => '2',
-            'name' => 'Advisory Management',
+            'name' => 'Advisory management',
             'url' => '/Management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
