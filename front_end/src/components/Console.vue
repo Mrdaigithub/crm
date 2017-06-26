@@ -1,6 +1,6 @@
 <template>
   <div class="console">
-    console
+    <!--console-->
   </div>
 </template>
 

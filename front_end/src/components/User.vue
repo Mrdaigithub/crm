@@ -16,6 +16,8 @@
                        @click="removeRole(role.id)"></el-button>
             <el-button type="default" size="small" icon="edit" class="role-remove-btn"
                        @click="editRole(role.id)"></el-button>
+            <el-button type="default" size="small" icon="setting" class="setting-permission-btn"
+                       @click="editPermission(role.id)"></el-button>
           </div>
           <hr>
           <div class="add-role" @click="addRole">Add new role</div>
@@ -47,7 +49,24 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog title="Edit user info" :visible.sync="dialogVisible" size="small">
+    <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
+      <el-table
+        ref="permissionTable"
+        :data="permissions"
+        border
+        tooltip-effect="dark"
+        style="width: 100%"
+        @select="selectPermission"
+        @select-all="selectPermissionAll">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column prop="name" label="name" width="280"></el-table-column>
+        <el-table-column prop="description" label="description"></el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
       <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
                class="new-user">
         <el-form-item label="username" prop="username">
@@ -85,9 +104,11 @@
       return {
         roles: [],
         users: [],
+        permissions: [],
         currentRoleId: 'all',
         currentUser: {},
-        dialogVisible: false,
+        userDialogVisible: false,
+        permissionDialogVisible: false,
         dialogState: 'new',
         userFormData: {
           data: {
@@ -114,7 +135,7 @@
             ],
             role: [{required: true, message: 'please select a role', trigger: 'blur'}]
           }
-        }
+        },
       }
     },
     computed: {
@@ -129,7 +150,7 @@
           }
           return showUsersData
         }
-      }
+      },
     },
     methods: {
       getRoleUserLength(roleId){
@@ -189,7 +210,7 @@
           })
       },
       initUserFormData(dialogState, index = null, row = null){
-        this.dialogVisible = true;
+        this.userDialogVisible = true;
         this.dialogState = dialogState;
         this.currentUser = row;
         if (dialogState === 'new') {
@@ -258,7 +279,7 @@
                 })
             }
 
-            self.dialogVisible = false;
+            self.userDialogVisible = false;
 
           } else {
             console.error('error');
@@ -275,7 +296,39 @@
               }
             })
           })
-      }
+      },
+      editPermission(roleId){
+        let self = this;
+        this.permissionDialogVisible = true;
+        axios.get(`permissions/${roleId}`)
+          .then(permissions => {
+            self.permissions = permissions;
+            this.permissions.forEach((permission, index) => {
+              this.$nextTick(() => {
+                this.$refs['permissionTable'].toggleRowSelection(this.permissions[index], permission.selected);
+              })
+            })
+          })
+      },
+      selectPermission(selection, row){
+        for (let permission of this.permissions) {
+          if (permission.id === row.id) {
+            permission.selected = !permission.selected;
+            break;
+          }
+        }
+      },
+      selectPermissionAll(selection){
+        if (selection.length === 0) this.permissions.forEach(permission => permission.selected = false);
+        else this.permissions.forEach(permission => permission.selected = true);
+      },
+      savePermission(){
+        let self = this;
+        axios.put(`permissions/${self.currentRoleId}`, qs.stringify({permissions: self.permissions}))
+          .then(res => {
+            this.permissionDialogVisible = false;
+          })
+      },
     },
     mounted(){
       let self = this;
@@ -314,9 +367,9 @@
             color: #62a8ea;
             background-color: #f3f7f9;
           }
-          .role-remove-btn, .role-edit-btn {
+          .role-remove-btn, .role-edit-btn, .setting-permission-btn {
             float: right;
-            margin-left: 5px;
+            margin-left: 1px;
           }
         }
         .add-role {

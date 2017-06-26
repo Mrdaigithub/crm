@@ -51,9 +51,22 @@ $api->version('v1', function ($api) {
                 $api->delete('/{id}', 'UserController@destroy');
             });
 
+            // permissions
             $api->group(['prefix' => 'permissions'], function ($api){
                 $api->get('/{id}', 'PermissionController@show');
                 $api->put('/{id}', 'PermissionController@update');
+            });
+
+            // Management
+            $api->group(['prefix' => 'management', 'namespace' => 'Management'], function ($api){
+
+                // channels
+                $api->group(['prefix' => 'channels'], function ($api){
+                    $api->get('/', 'ChannelController@index');
+                    $api->post('/', 'ChannelController@store');
+                    $api->patch('/{id}', 'ChannelController@update');
+                    $api->delete('/{id}', 'ChannelController@destroy');
+                });
             });
         });
     });
