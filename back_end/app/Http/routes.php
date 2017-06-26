@@ -63,7 +63,11 @@ $api->version('v1', function ($api) {
                 // channels
                 $api->group(['prefix' => 'channels'], function ($api){
                     $api->get('/', 'ChannelController@index');
+<<<<<<< HEAD
                     $api->post('/', 'ChannelController@store');
+=======
+                    $api->post('/create', 'ChannelController@store');
+>>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
                     $api->patch('/{id}', 'ChannelController@update');
                     $api->delete('/{id}', 'ChannelController@destroy');
                 });
