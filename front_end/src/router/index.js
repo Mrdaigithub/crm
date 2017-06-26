@@ -10,7 +10,8 @@ import Rank from '@/components/Rank'
 import Patient from '@/components/Patient'
 import User from '@/components/User'
 
-import Channel from '@/components/management/Channel'
+import ChannelManagement from '@/components/management/Channel'
+import DiseasesManagement from '@/components/management/Diseases'
 
 
 Vue.use(Router)
@@ -32,7 +33,8 @@ const router = new Router({
         {path: '/home/patient', name: 'patient', component: Patient},
         {path: '/home/users', name: 'user', component: User},
 
-        {path: '/management/channel', name: 'Channel', component: Channel},
+        {path: '/management/channel', name: 'channelManagement', component: ChannelManagement},
+        {path: '/management/diseases', name: 'diseasesManagement', component: DiseasesManagement},
       ]
     }
   ]
