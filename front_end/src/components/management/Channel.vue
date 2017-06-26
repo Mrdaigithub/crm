@@ -2,17 +2,12 @@
   <div class="channel-managemnet">
     <el-card class="box-card">
       <h2>Channels management</h2>
-<<<<<<< HEAD
       <el-button type="success" icon="plus" class="add-channel" @click="addChannel"></el-button>
-=======
-      <el-button type="success" icon="plus" class="add-channel"></el-button>
->>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
       <el-table style="width: 100%" border :data="channelData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
-<<<<<<< HEAD
             <el-switch v-model="scope.row.state" on-text="" off-text="" @change="toggleChannelState(scope.$index, scope.row)"></el-switch>
             <el-button size="small" icon="edit"
                        @click="editChannelName(scope.$index, scope.row)">
@@ -20,11 +15,6 @@
             <el-button size="small" type="danger" icon="delete"
                        @click="removeChannel(scope.$index, scope.row)">
             </el-button>
-=======
-            <el-switch v-model="scope.row.state" on-text="" off-text=""></el-switch>
-            <el-button size="small" icon="edit" @click="editChannel"></el-button>
-            <el-button size="small" type="danger" icon="delete" @click="removeChannel"></el-button>
->>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
           </template>
         </el-table-column>
       </el-table>
@@ -40,7 +30,6 @@
     name: 'channelManagement',
     data(){
       return {
-<<<<<<< HEAD
         channels: []
       }
     },
@@ -82,11 +71,11 @@
           });
       },
       toggleChannelState(index, row){
-          let self = this;
-          axios.patch(`/management/channels/${row.id}`, qs.stringify({
-            state: row.state ? 0 : 1
-          }))
-            .then(res=>{})
+        let self = this;
+        axios.patch(`/management/channels/${row.id}`, qs.stringify({
+          state: row.state ? 0 : 1
+        }))
+          .then(res=>{})
       },
       removeChannel(index, row){
         let self = this;
@@ -102,23 +91,6 @@
         .then(res => {
           self.channels = res.channels;
         })
-=======
-        channelData: [
-          {id: 1, name: 'channel1', state: true},
-          {id: 2, name: 'channel2', state: false},
-          {id: 3, name: 'channel3', state: false},
-          {id: 4, name: 'channel4', state: false}
-        ]
-      }
-    },
-    methods: {
-      editChannel(){
-        console.log('edit');
-      },
-      removeChannel(){
-        console.log('remove');
-      }
->>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
     }
   }
 </script>
@@ -127,11 +99,7 @@
 <style scoped lang="scss">
   .box-card {
     margin: 15px;
-<<<<<<< HEAD
     min-height: 85vh;
-=======
-    height: 85vh;
->>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
     h2 {
       margin-bottom: 5px;
     }

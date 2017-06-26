@@ -54,11 +54,7 @@ class ChannelController extends Controller
 
         $channel = new Channel();
         $channel->name = $request['name'];
-<<<<<<< HEAD
         if (array_key_exists('state', $request)) $channel->state = $request['state'];
-=======
-        $channel->state = $request['state'];
->>>>>>> dad4ece71b723027a31316569c1b58d4dad1dd74
         if (!$channel->save()) $this->response->errorInternal();
         return $channel;
     }
