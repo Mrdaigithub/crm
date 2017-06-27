@@ -67,6 +67,15 @@ $api->version('v1', function ($api) {
                     $api->patch('/{id}', 'ChannelController@update');
                     $api->delete('/{id}', 'ChannelController@destroy');
                 });
+
+                // diseases
+                $api->group(['prefix' => 'diseases'], function ($api){
+                    $api->get('/', 'DiseaseController@index');
+                    $api->get('/create', 'DiseaseController@create');
+                    $api->post('/', 'DiseaseController@store');
+                    $api->patch('/{id}', 'DiseaseController@update');
+                    $api->delete('/{id}', 'DiseaseController@destroy');
+                });
             });
         });
     });

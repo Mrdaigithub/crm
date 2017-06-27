@@ -70,7 +70,8 @@
       },
 
       remove(store, data) {
-        store.remove(data);
+//        store.remove(data);
+        console.log(store, data)
       },
 
       renderContent(h, { node, data, store }) {
