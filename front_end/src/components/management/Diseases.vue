@@ -2,11 +2,11 @@
   <div class="disease-management">
     <el-card class="box-card">
       <h2>Disease management</h2>
-      <el-button type="primary" icon="plus" class="add-disease"></el-button>
       <el-tree
-        :data="data2"
+        ref="treeParent"
+        :data="diseases"
         :props="defaultProps"
-        show-checkbox
+        :show-checkbox="false"
         node-key="id"
         default-expand-all
         :expand-on-click-node="false"
@@ -17,75 +17,78 @@
 </template>
 
 <script>
+  import axios from '../../config/axiosConfig'
+  import qs from 'qs'
+
   let id = 1000;
 
   export default {
     data() {
       return {
-        data2: [{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1',
-            children: [{
-              id: 9,
-              label: '三级 1-1-1'
-            }, {
-              id: 10,
-              label: '三级 1-1-2'
-            }]
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
+        diseases: [{id: 1, name: 'root', children: []}],
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'name'
         }
       }
     },
 
     methods: {
-      append(store, data) {
-        store.append({ id: id++, label: 'testtest', children: [] }, data);
+      appendDisease(store, data) {
+        let self = this;
+        this.$prompt('Please enter a disease name', 'Tips', {
+          showCancelButton: false,
+          confirmButtonText: 'Create',
+          inputPlaceholder: 'new disease name'
+        })
+          .then(({value}) => {
+            axios.get(`/management/diseases/${data.id}/${value}`)
+              .then(res => {
+                store.append({id: res.disease.id, name: res.disease.name, children: []}, data);
+              })
+          });
       },
-
-      remove(store, data) {
-//        store.remove(data);
-        console.log(store, data)
+      removeDsiease(store, data) {
+        axios.delete(`/management/diseases/${data.id}`)
+          .then(res => {
+            store.remove(data);
+          })
       },
-
-      renderContent(h, { node, data, store }) {
+      editDsiease(store, data){
+        this.$prompt('Please enter a disease name', 'Tips', {
+          showCancelButton: false,
+          confirmButtonText: 'Create',
+          inputPlaceholder: 'new disease name'
+        })
+          .then(({value}) => {
+            axios.patch(`/management/diseases/${data.id}`, qs.stringify({name: value}))
+            .then(res=>{
+              data.name = res.disease.name;
+            })
+          });
+      },
+      renderContent(h, {node, data, store}) {
         return (
           <span>
-            <span>
-              <span>{node.label}</span>
-            </span>
-            <span style="float: right; margin-right: 20px">
-              <el-button size="mini" on-click={ () => this.append(store, data) }>Append</el-button>
-              <el-button size="mini" on-click={ () => this.remove(store, data) }>Delete</el-button>
-            </span>
-          </span>);
+          <span>
+          <span>{node.label}</span>
+        </span>
+        <span style="float: right; margin-right: 20px">
+          <el-button size="mini" type="primary" icon="plus" on-click={ () => this.appendDisease(store, data) }></el-button>
+        <el-button size="mini" icon="edit" on-click={ () => this.editDsiease(store, data) }></el-button>
+        <el-button size="mini" type="danger" icon="delete" on-click={ () => this.removeDsiease(store, data) }></el-button>
+        </span>
+        </span>);
       }
+    },
+    mounted(){
+      let self = this;
+      axios.get('/management/diseases')
+        .then(res => {
+          for (let disease in res.diseases) {
+            self.diseases[0].children.push(res.diseases[disease])
+          }
+        })
     }
   };
 </script>
@@ -96,10 +99,10 @@
     margin: 15px;
     min-height: 85vh;
     h2 {
-      margin-bottom: 5px;
+      margin-bottom: 20px;
     }
-    .add-disease {
-      margin-bottom: 15px;
+    .el-tree{
+      border: none;
     }
   }
 </style>

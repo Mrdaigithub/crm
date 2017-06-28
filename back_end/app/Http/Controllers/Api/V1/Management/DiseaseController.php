@@ -30,22 +30,22 @@ class DiseaseController extends Controller
     public function create()
     {
         $diseases = [
-            ['id'=>1, 'name' => 'root', 'children' => [
-                ['id'=>2, 'name' => 'disease1', 'children' => [
-                    ['id'=>3, 'name' => 'disease1-1'],
-                    ['id'=>4, 'name' => 'disease1-2'],
-                    ['id'=>5, 'name' => 'disease1-3'],
+            ['id' => 1, 'name' => 'root', 'children' => [
+                ['id' => 2, 'name' => 'disease1', 'children' => [
+                    ['id' => 3, 'name' => 'disease1-1'],
+                    ['id' => 4, 'name' => 'disease1-2'],
+                    ['id' => 5, 'name' => 'disease1-3'],
                 ]],
-                ['id'=>6, 'name' => 'disease2', 'children' => [
-                    ['id'=>7, 'name' => 'disease2-1'],
-                    ['id'=>8, 'name' => 'disease2-2'],
-                    ['id'=>9, 'name' => 'disease2-3'],
-                    ['id'=>10, 'name' => 'disease2-4'],
+                ['id' => 6, 'name' => 'disease2', 'children' => [
+                    ['id' => 7, 'name' => 'disease2-1'],
+                    ['id' => 8, 'name' => 'disease2-2'],
+                    ['id' => 9, 'name' => 'disease2-3'],
+                    ['id' => 10, 'name' => 'disease2-4'],
                 ]],
-                ['id'=>11, 'name' => 'disease3', 'children' => [
-                    ['id'=>12, 'name' => 'disease3-1'],
-                    ['id'=>13, 'name' => 'disease3-2'],
-                    ['id'=>14, 'name' => 'disease3-3'],
+                ['id' => 11, 'name' => 'disease3', 'children' => [
+                    ['id' => 12, 'name' => 'disease3-1'],
+                    ['id' => 13, 'name' => 'disease3-2'],
+                    ['id' => 14, 'name' => 'disease3-3'],
                 ]]
             ]]
         ];
@@ -54,14 +54,24 @@ class DiseaseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param $pid
+     * @param $name
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($pid, $name)
     {
-        //
+        $parameters['id'] = $pid;
+        $parameters['name'] = $name;
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:diseases',
+            'name' => 'string'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        $c_node = Disease::find($parameters['id'])->children()->create(['name' => $parameters['name']]);
+        return $c_node;
     }
 
     /**
@@ -95,7 +105,18 @@ class DiseaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $parameters = $request->all();
+        $parameters['id'] = $id;
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:diseases',
+            'name' => 'string'
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+
+        $node = Disease::find($parameters['id']);
+        $node->name = $parameters['name'];
+        $node->save();
+        return $node;
     }
 
     /**
@@ -106,6 +127,13 @@ class DiseaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $parameters['id'] = $id;
+        $validator = Validator::make($parameters, [
+            'id' => 'numeric|exists:diseases',
+        ]);
+        if ($validator->fails()) $this->response->errorBadRequest();
+        $node = Disease::find($id);
+        if (count($node->children()->get())) $this->response->errorBadRequest();
+        if (!Disease::find($id)->delete()) $this->response->errorInternal();
     }
 }
