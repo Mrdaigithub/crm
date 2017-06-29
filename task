@@ -1,7 +1,5 @@
-1. 构建channels视图
-2. disease get list API
-3. disease create API
-4. disease remove API
-5. disease update name API
-6. disease 添加子项目 API
-7. 构建disease视图（树状视图）
+1. doctors get list API
+2. doctors create API
+3. doctors remove API
+4. doctors update name API
+5. 构建doctors视图

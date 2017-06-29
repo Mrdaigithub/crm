@@ -1,21 +1,18 @@
 <template>
-  <div class="channel-managemnet">
+  <div class="doctor-managemnet">
     <el-card class="box-card">
-      <h2>Channels management</h2>
-      <el-button type="success" icon="plus" class="add-channel" @click="addChannel"></el-button>
-      <el-table style="width: 100%" border :data="channelData">
+      <h2>Doctors management</h2>
+      <el-button type="success" icon="plus" class="add-doctor" @click="addDoctor"></el-button>
+      <el-table style="width: 100%" border :data="doctorData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
             <el-switch v-model="scope.row.state" on-text="" off-text=""
-                       @change="toggleChannelState(scope.$index, scope.row)"></el-switch>
-            <el-button size="small" icon="edit"
-                       @click="editChannelName(scope.$index, scope.row)">
-            </el-button>
+                       @change="toggleDoctorState(scope.$index, scope.row)"></el-switch>
+            <el-button size="small" icon="edit" @click="editChannelName(scope.$index, scope.row)"></el-button>
             <el-button size="small" type="danger" icon="delete"
-                       @click="removeChannel(scope.$index, scope.row)">
-            </el-button>
+                       @click="removeDoctor(scope.$index, scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -28,33 +25,33 @@
   import qs from 'qs'
 
   export default {
-    name: 'channelManagement',
+    name: 'doctorsManagement',
     data(){
       return {
-        channels: []
+        doctors: []
       }
     },
     computed: {
-      channelData(){
-        if (!this.channels) return []
-        return this.channels.map(channel => {
-          channel.state = channel.state ? true : false;
-          return channel
+      doctorData(){
+        if (!this.doctors) return []
+        return this.doctors.map(doctor => {
+          doctor.state = doctor.state ? true : false;
+          return doctor
         });
       }
     },
     methods: {
-      addChannel(){
+      addDoctor(){
         let self = this;
-        this.$prompt('Please enter a channel name', 'Tips', {
+        this.$prompt('Please enter a doctor name', 'Tips', {
           showCancelButton: false,
           confirmButtonText: 'Create',
-          inputPlaceholder: 'new channel name'
+          inputPlaceholder: 'new doctor name'
         })
           .then(({value}) => {
-            axios.post('/management/channels', qs.stringify({name: value}))
+            axios.get(`/management/doctors/create/${value}`)
               .then(res => {
-                self.channels.push(res.channel);
+                self.doctors.push(res.doctor);
               })
           });
       },
@@ -72,27 +69,33 @@
               })
           });
       },
-      toggleChannelState(index, row){
+      toggleDoctorState(index, row){
         let self = this;
-        axios.patch(`/management/channels/${row.id}`, qs.stringify({
-          state: row.state ? 0 : 1
-        }))
-          .then(res => {
-          })
+        console.log(self.doctors[index].state);
+        self.doctors[index].state = !self.doctors[index].state;
+        console.log(self.doctors[index].state);
+
+//        console.log(self.doctors[index].state, res.doctor.state);
+//        axios.patch(`/management/doctors/${row.id}`, qs.stringify({
+//          state: row.state ? 0 : 1
+//        }))
+//          .then(res => {
+//
+//          })
       },
-      removeChannel(index, row){
+      removeDoctor(index, row){
         let self = this;
-        axios.delete(`/management/channels/${row.id}`)
+        axios.delete(`/management/doctors/${row.id}`)
           .then(res => {
-            self.channels.splice(index, 1);
+            self.doctors.splice(index, 1);
           })
       }
     },
     mounted(){
       let self = this;
-      axios.get('/management/channels')
+      axios.get('/management/doctors')
         .then(res => {
-          self.channels = res.channels;
+          self.doctors = res.doctors;
         })
     }
   }
@@ -106,7 +109,7 @@
     h2 {
       margin-bottom: 5px;
     }
-    .add-channel {
+    .add-doctor {
       margin-bottom: 15px;
     }
   }

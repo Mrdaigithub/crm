@@ -33,19 +33,10 @@ class DiseaseController extends Controller
             ['id' => 1, 'name' => 'root', 'children' => [
                 ['id' => 2, 'name' => 'disease1', 'children' => [
                     ['id' => 3, 'name' => 'disease1-1'],
-                    ['id' => 4, 'name' => 'disease1-2'],
-                    ['id' => 5, 'name' => 'disease1-3'],
                 ]],
-                ['id' => 6, 'name' => 'disease2', 'children' => [
-                    ['id' => 7, 'name' => 'disease2-1'],
-                    ['id' => 8, 'name' => 'disease2-2'],
-                    ['id' => 9, 'name' => 'disease2-3'],
-                    ['id' => 10, 'name' => 'disease2-4'],
-                ]],
-                ['id' => 11, 'name' => 'disease3', 'children' => [
-                    ['id' => 12, 'name' => 'disease3-1'],
-                    ['id' => 13, 'name' => 'disease3-2'],
-                    ['id' => 14, 'name' => 'disease3-3'],
+                ['id' => 4, 'name' => 'disease2', 'children' => [
+                    ['id' => 5, 'name' => 'disease2-1'],
+                    ['id' => 6, 'name' => 'disease2-2'],
                 ]]
             ]]
         ];
