@@ -13,7 +13,6 @@ class ManagementSeeder extends Seeder
     {
 
         // diseases
-
         DB::table('diseases')->insert([
             'id' => 1,
             'lft' => 1,
@@ -75,22 +74,22 @@ class ManagementSeeder extends Seeder
         ]);
 
         // doctors
-
         DB::table('doctors')->insert([
-            'id' => '1',
+            'id' => 1,
             'name' => 'doctors1',
             'state' => true,
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
-        DB::table('channels')->insert(['id' => '2',
+        DB::table('doctors')->insert([
+            'id' => 2,
             'name' => 'doctors2',
             'state' => false,
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
-        DB::table('channels')->insert([
-            'id' => '3',
+        DB::table('doctors')->insert([
+            'id' => 3,
             'name' => 'doctors3',
             'state' => false,
             'created_at' => date('Y-m-d h:m:s'),
@@ -98,24 +97,44 @@ class ManagementSeeder extends Seeder
         ]);
 
         // channels
-
         DB::table('channels')->insert([
-            'id' => '1',
+            'id' => 1,
             'name' => 'google',
             'state' => false,
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
-        DB::table('channels')->insert(['id' => '2',
+        DB::table('channels')->insert([
+            'id' => 2,
             'name' => 'baidu',
             'state' => true,
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('channels')->insert([
-            'id' => '3',
+            'id' => 3,
             'name' => 'sougou',
             'state' => false,
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+
+        // advisories
+        DB::table('advisories')->insert([
+            'id' => 1,
+            'name' => 'QQ',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('advisories')->insert([
+            'id' => 2,
+            'name' => 'Wechat',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('advisories')->insert([
+            'id' => 3,
+            'name' => 'swt',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

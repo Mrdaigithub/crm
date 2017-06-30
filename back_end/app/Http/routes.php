@@ -73,7 +73,6 @@ $api->version('v1', function ($api) {
                 $api->group(['prefix' => 'doctors'], function ($api){
                     $api->get('/', 'DoctorsController@index');
                     $api->get('/create/{name}', 'DoctorsController@create');
-//                    $api->get('/{pid}/{name}', 'DiseaseController@store');
                     $api->patch('/{id}', 'DoctorsController@update');
                     $api->delete('/{id}', 'DoctorsController@destroy');
                 });
@@ -84,6 +83,14 @@ $api->version('v1', function ($api) {
                     $api->post('/', 'ChannelController@store');
                     $api->patch('/{id}', 'ChannelController@update');
                     $api->delete('/{id}', 'ChannelController@destroy');
+                });
+
+                // advisories
+                $api->group(['prefix' => 'advisories'], function ($api){
+                    $api->get('/', 'AdvisoryController@index');
+                    $api->get('/create/{name}', 'AdvisoryController@create');
+                    $api->patch('/{id}', 'AdvisoryController@update');
+                    $api->delete('/{id}', 'AdvisoryController@destroy');
                 });
             });
         });

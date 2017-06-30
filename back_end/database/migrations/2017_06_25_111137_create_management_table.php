@@ -46,6 +46,13 @@ class CreateManagementTable extends Migration
             $table->boolean('state')->default(false);
             $table->timestamps();
         });
+
+        // Create table for storing advisorys
+        Schema::create('advisories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 30)->unique();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -58,5 +65,6 @@ class CreateManagementTable extends Migration
         Schema::drop('diseases');
         Schema::drop('doctors');
         Schema::drop('channels');
+        Schema::drop('advisories');
     }
 }

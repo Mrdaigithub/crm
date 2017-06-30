@@ -1,16 +1,14 @@
 <template>
-  <div class="doctor-managemnet">
+  <div class="advisory-managemnet">
     <el-card class="box-card">
       <h2>Doctors management</h2>
-      <el-button type="success" icon="plus" class="add-doctor" @click="addDoctor"></el-button>
-      <el-table style="width: 100%" border :data="doctorData">
+      <el-button type="success" icon="plus" class="add-advisory" @click="addAdvisory"></el-button>
+      <el-table style="width: 100%" border :data="advisories">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
-            <el-switch v-model="scope.row.state" on-text="" off-text=""
-                       @change="toggleDoctorState(scope.$index, scope.row)"></el-switch>
-            <el-button size="small" icon="edit" @click="editDoctorName(scope.$index, scope.row)"></el-button>
+            <el-button size="small" icon="edit" @click="editAdvisoryName(scope.$index, scope.row)"></el-button>
             <el-button size="small" type="danger" icon="delete"
                        @click="removeDoctor(scope.$index, scope.row)"></el-button>
           </template>
@@ -25,23 +23,14 @@
   import qs from 'qs'
 
   export default {
-    name: 'doctorsManagement',
+    name: 'advisoryManagement',
     data(){
       return {
-        doctors: []
-      }
-    },
-    computed: {
-      doctorData(){
-        if (!this.doctors) return []
-        return this.doctors.map(doctor => {
-          doctor.state = doctor.state ? true : false;
-          return doctor
-        });
+        advisories: []
       }
     },
     methods: {
-      addDoctor(){
+      addAdvisory(){
         let self = this;
         this.$prompt('Please enter a doctor name', 'Tips', {
           showCancelButton: false,
@@ -49,45 +38,39 @@
           inputPlaceholder: 'new doctor name'
         })
           .then(({value}) => {
-            axios.get(`/management/doctors/create/${value}`)
+            axios.get(`/management/advisories/create/${value}`)
               .then(res => {
-                self.doctors.push(res.doctor);
+                self.advisories.push(res.advisory);
               })
           });
       },
-      editDoctorName(index, row){
+      editAdvisoryName(index, row){
         let self = this;
-        this.$prompt('Please enter a doctor name', 'Tips', {
+        this.$prompt('Please enter a role name', 'Tips', {
           showCancelButton: false,
           confirmButtonText: 'Submit',
           inputValue: row.name
         })
           .then(({value}) => {
-            axios.patch(`/management/doctors/${row.id}`, qs.stringify({name: value}))
+            axios.patch(`/management/advisories/${row.id}`, qs.stringify({name: value}))
               .then(res => {
-                self.doctors.splice(index, 1, res.doctor);
+                self.advisories.splice(index, 1, res.advisory);
               })
           });
       },
-      toggleDoctorState(index, row){
-        axios.patch(`/management/doctors/${row.id}`, qs.stringify({
-          state: row.state ? 0 : 1
-        }))
-          .then(res => {})
-      },
       removeDoctor(index, row){
         let self = this;
-        axios.delete(`/management/doctors/${row.id}`)
+        axios.delete(`/management/advisories/${row.id}`)
           .then(res => {
-            self.doctors.splice(index, 1);
+            self.advisories.splice(index, 1);
           })
       }
     },
     mounted(){
       let self = this;
-      axios.get('/management/doctors')
+      axios.get('/management/advisories')
         .then(res => {
-          self.doctors = res.doctors;
+          self.advisories = res.advisories;
         })
     }
   }
@@ -101,7 +84,7 @@
     h2 {
       margin-bottom: 5px;
     }
-    .add-doctor {
+    .add-advisory {
       margin-bottom: 15px;
     }
   }
