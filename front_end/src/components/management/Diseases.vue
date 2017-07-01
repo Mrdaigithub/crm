@@ -20,8 +20,6 @@
   import axios from '../../config/axiosConfig'
   import qs from 'qs'
 
-  let id = 1000;
-
   export default {
     data() {
       return {
