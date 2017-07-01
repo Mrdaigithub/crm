@@ -12,11 +12,11 @@
           <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
             {{role.name}}
             <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
-            <el-button type="danger" size="small" icon="delete" class="role-edit-btn"
+            <el-button type="danger" size="mini" icon="delete" class="role-edit-btn"
                        @click="removeRole(role.id)"></el-button>
-            <el-button type="default" size="small" icon="edit" class="role-remove-btn"
+            <el-button type="default" size="mini" icon="edit" class="role-remove-btn"
                        @click="editRole(role.id)"></el-button>
-            <el-button type="default" size="small" icon="setting" class="setting-permission-btn"
+            <el-button type="default" size="mini" icon="setting" class="setting-permission-btn"
                        @click="editPermission(role.id)"></el-button>
           </div>
           <hr>

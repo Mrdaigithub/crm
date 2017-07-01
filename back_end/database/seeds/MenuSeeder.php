@@ -124,7 +124,7 @@ class MenuSeeder extends Seeder
             'rgt' => '20',
             'depth' => '2',
             'name' => 'Diseases management',
-            'url' => '/Management/diseases',
+            'url' => '/management/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -135,7 +135,7 @@ class MenuSeeder extends Seeder
             'rgt' => '22',
             'depth' => '2',
             'name' => 'Doctors management',
-            'url' => '/Management/doctors',
+            'url' => '/management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -146,7 +146,7 @@ class MenuSeeder extends Seeder
             'rgt' => '24',
             'depth' => '2',
             'name' => 'Channels management',
-            'url' => '/Management/channel',
+            'url' => '/management/channel',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -157,7 +157,7 @@ class MenuSeeder extends Seeder
             'rgt' => '26',
             'depth' => '2',
             'name' => 'Advisory management',
-            'url' => '/Management/advisory',
+            'url' => '/management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

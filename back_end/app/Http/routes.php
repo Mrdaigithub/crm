@@ -60,6 +60,23 @@ $api->version('v1', function ($api) {
             // Management
             $api->group(['prefix' => 'management', 'namespace' => 'Management'], function ($api){
 
+                // diseases
+                $api->group(['prefix' => 'diseases'], function ($api){
+                    $api->get('/', 'DiseaseController@index');
+                    $api->get('/create', 'DiseaseController@create');
+                    $api->get('/{pid}/{name}', 'DiseaseController@store');
+                    $api->patch('/{id}', 'DiseaseController@update');
+                    $api->delete('/{id}', 'DiseaseController@destroy');
+                });
+
+                // doctors
+                $api->group(['prefix' => 'doctors'], function ($api){
+                    $api->get('/', 'DoctorsController@index');
+                    $api->get('/create/{name}', 'DoctorsController@create');
+                    $api->patch('/{id}', 'DoctorsController@update');
+                    $api->delete('/{id}', 'DoctorsController@destroy');
+                });
+
                 // channels
                 $api->group(['prefix' => 'channels'], function ($api){
                     $api->get('/', 'ChannelController@index');
@@ -68,13 +85,12 @@ $api->version('v1', function ($api) {
                     $api->delete('/{id}', 'ChannelController@destroy');
                 });
 
-                // diseases
-                $api->group(['prefix' => 'diseases'], function ($api){
-                    $api->get('/', 'DiseaseController@index');
-                    $api->get('/create', 'DiseaseController@create');
-                    $api->get('/{pid}/{name}', 'DiseaseController@store');
-                    $api->patch('/{id}', 'DiseaseController@update');
-                    $api->delete('/{id}', 'DiseaseController@destroy');
+                // advisories
+                $api->group(['prefix' => 'advisories'], function ($api){
+                    $api->get('/', 'AdvisoryController@index');
+                    $api->get('/create/{name}', 'AdvisoryController@create');
+                    $api->patch('/{id}', 'AdvisoryController@update');
+                    $api->delete('/{id}', 'AdvisoryController@destroy');
                 });
             });
         });

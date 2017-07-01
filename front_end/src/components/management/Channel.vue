@@ -8,7 +8,8 @@
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
-            <el-switch v-model="scope.row.state" on-text="" off-text="" @change="toggleChannelState(scope.$index, scope.row)"></el-switch>
+            <el-switch v-model="scope.row.state" on-text="" off-text=""
+                       @change="toggleChannelState(scope.$index, scope.row)"></el-switch>
             <el-button size="small" icon="edit"
                        @click="editChannelName(scope.$index, scope.row)">
             </el-button>
@@ -35,6 +36,7 @@
     },
     computed: {
       channelData(){
+        if (!this.channels) return []
         return this.channels.map(channel => {
           channel.state = channel.state ? true : false;
           return channel
@@ -44,7 +46,7 @@
     methods: {
       addChannel(){
         let self = this;
-        this.$prompt('Please enter a role name', 'Tips', {
+        this.$prompt('Please enter a channel name', 'Tips', {
           showCancelButton: false,
           confirmButtonText: 'Create',
           inputPlaceholder: 'new channel name'
@@ -75,7 +77,8 @@
         axios.patch(`/management/channels/${row.id}`, qs.stringify({
           state: row.state ? 0 : 1
         }))
-          .then(res=>{})
+          .then(res => {
+          })
       },
       removeChannel(index, row){
         let self = this;
