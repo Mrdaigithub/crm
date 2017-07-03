@@ -1,5 +1,4 @@
-1. advisory get list API
-2. advisory create API
-3. advisory remove API
-4. advisory update name API
-5. 构建advisory视图
+patient api
+
+1. patient get list
+2.
