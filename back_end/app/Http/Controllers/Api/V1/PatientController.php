@@ -20,7 +20,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patient_paginate = Patient::paginate(5)->toArray();
+        $patient_paginate = Patient::paginate(10)->toArray();
         $patient_paginate['data'] = array_map(function ($e) {
             $e['user'] = Patient::find($e['id'])->user;
             $e['user'] = $e['user']->toArray();
