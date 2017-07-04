@@ -101,4 +101,9 @@ class Disease extends Node {
   // to hook your own callbacks/observers into this events:
   // http://laravel.com/docs/5.0/eloquent#model-events
     protected $hidden = ['parent_id', 'lft', 'rgt', 'depth', 'created_at', 'updated_at'];
+
+    public function patient()
+    {
+        return $this->belongsToMany('App\Models\Patient', 'patient_disease', 'disease_id', 'patient_id');
+    }
 }

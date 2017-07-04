@@ -35,4 +35,9 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password'];
+
+    public function patient()
+    {
+        return $this->belongsToMany('App\Models\Patient', 'patient_user', 'advisory_id', 'patient_id');
+    }
 }

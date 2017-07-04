@@ -23,7 +23,9 @@ class CreatePatientTable extends Migration
             $table->string('keyword', 30)->nullable;
             $table->string('pageurl')->nullable;
             $table->string('mark')->nullable;
+            $table->float('price')->default(0);
             $table->timestamp('advisory_date');
+            $table->timestamp('arrive_date');
             $table->timestamps();
         });
 
@@ -75,6 +77,18 @@ class CreatePatientTable extends Migration
             $table->primary(['patient_id', 'advisory_id']);
         });
 
+        Schema::create('patient_user', function (Blueprint $table) {
+            $table->integer('patient_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+
+            $table->foreign('patient_id')->references('id')->on('patients')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->primary(['patient_id', 'user_id']);
+        });
+
         DB::commit();
     }
 
@@ -90,5 +104,6 @@ class CreatePatientTable extends Migration
         Schema::drop('patient_doctor');
         Schema::drop('patient_channel');
         Schema::drop('patient_advisory');
+        Schema::drop('patient_user');
     }
 }
