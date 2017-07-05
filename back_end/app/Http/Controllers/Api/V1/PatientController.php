@@ -22,8 +22,15 @@ class PatientController extends Controller
     {
         $patient_paginate = Patient::paginate(10)->toArray();
         $patient_paginate['data'] = array_map(function ($e) {
-            $e['user'] = Patient::find($e['id'])->user;
-            $e['user'] = $e['user']->toArray();
+            $props = ['user', 'disease', 'doctor', 'channel'];
+            foreach ($props as $prop) {
+                $item = Patient::find($e['id'])[$prop];
+                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
+                else {
+                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
+                    else $e[$prop] = ['id' => '', 'name' => ''];
+                }
+            }
             return $e;
         }, $patient_paginate['data']);
         return $patient_paginate;
@@ -167,11 +174,11 @@ class PatientController extends Controller
         if (key_exists('price', $parameters)) $patient->price = $parameters['price'];
         if (key_exists('advisory_date', $parameters)) $patient->advisory_date = $parameters['advisory_date'];
         if (key_exists('arrive_date', $parameters)) $patient->arrive_date = $parameters['arrive_date'];
-        if (key_exists('advisory_id', $parameters)) DB::update('update patient_advisory set advisory_id = ? where patient_id = ?',[$parameters['advisory_id'], $parameters['id']]);
-        if (key_exists('channel_id', $parameters)) DB::update('update patient_channel set channel_id = ? where patient_id = ?',[$parameters['channel_id'], $parameters['id']]);
-        if (key_exists('disease_id', $parameters)) DB::update('update patient_disease set disease_id = ? where patient_id = ?',[$parameters['disease_id'], $parameters['id']]);
-        if (key_exists('doctor_id', $parameters)) DB::update('update patient_doctor set doctor_id = ? where patient_id = ?',[$parameters['doctor_id'], $parameters['id']]);
-        if (key_exists('user_id', $parameters)) DB::update('update patient_user set user_id = ? where patient_id = ?',[$parameters['user_id'], $parameters['id']]);
+        if (key_exists('advisory_id', $parameters)) DB::update('update patient_advisory set advisory_id = ? where patient_id = ?', [$parameters['advisory_id'], $parameters['id']]);
+        if (key_exists('channel_id', $parameters)) DB::update('update patient_channel set channel_id = ? where patient_id = ?', [$parameters['channel_id'], $parameters['id']]);
+        if (key_exists('disease_id', $parameters)) DB::update('update patient_disease set disease_id = ? where patient_id = ?', [$parameters['disease_id'], $parameters['id']]);
+        if (key_exists('doctor_id', $parameters)) DB::update('update patient_doctor set doctor_id = ? where patient_id = ?', [$parameters['doctor_id'], $parameters['id']]);
+        if (key_exists('user_id', $parameters)) DB::update('update patient_user set user_id = ? where patient_id = ?', [$parameters['user_id'], $parameters['id']]);
         $patient->advisory;
         $patient->channel;
         $patient->disease;
