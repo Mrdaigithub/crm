@@ -22,7 +22,7 @@ class PatientController extends Controller
     {
         $patient_paginate = Patient::paginate(10)->toArray();
         $patient_paginate['data'] = array_map(function ($e) {
-            $props = ['user', 'disease', 'doctor', 'channel'];
+            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
             foreach ($props as $prop) {
                 $item = Patient::find($e['id'])[$prop];
                 if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
@@ -67,7 +67,7 @@ class PatientController extends Controller
             'mark' => 'string',
             'price' => 'numeric',
             'advisory_date' => 'required|date',
-            'arrive_date' => 'required|date',
+            'arrive_date' => 'date',
             'advisory_id' => 'required|numeric|exists:advisories,id',
             'channel_id' => 'required|numeric|exists:channels,id',
             'disease_id' => 'required|numeric|exists:diseases,id',
@@ -81,7 +81,6 @@ class PatientController extends Controller
         $patient->tel = $parameters['tel'];
         $patient->state = $parameters['state'];
         $patient->advisory_date = $parameters['advisory_date'];
-        $patient->arrive_date = $parameters['arrive_date'];
         if (array_key_exists('sex', $parameters)) $patient->sex = $parameters['name'];
         if (array_key_exists('age', $parameters)) $patient->age = $parameters['age'];
         if (array_key_exists('wechat', $parameters)) $patient->wechat = $parameters['wechat'];
@@ -89,6 +88,7 @@ class PatientController extends Controller
         if (array_key_exists('pageurl', $parameters)) $patient->pageurl = $parameters['pageurl'];
         if (array_key_exists('mark', $parameters)) $patient->mark = $parameters['mark'];
         if (array_key_exists('price', $parameters)) $patient->price = $parameters['price'];
+        if (array_key_exists('arrive_date', $parameters)) $patient->arrive_date = $parameters['arrive_date'];
         if (!$patient->save()) $this->response->errorInternal();
 
         $patient->user()->attach($parameters['user_id']);
