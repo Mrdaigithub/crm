@@ -12,7 +12,7 @@ const store = () => new Vuex.Store({
     advisories: null,
     channels: null,
     doctors: null,
-    diseases: null
+    diseases: []
   },
   mutations: {
     getOneself (state, oneself) {
@@ -31,7 +31,9 @@ const store = () => new Vuex.Store({
       state.doctors = doctors
     },
     getDiseases (state, diseases) {
-      state.diseases = diseases
+      for (let disease in diseases) {
+        state.diseases.push(diseases[disease])
+      }
     }
   },
   actions: {
