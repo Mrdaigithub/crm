@@ -175,9 +175,7 @@
             mark: ''
           },
           rules: {
-            name: [
-              {required: true, message: 'please enter patient name', trigger: 'blur'}
-            ],
+            name: {required: true, message: 'please enter patient name', trigger: 'blur'},
             tel: [
               {required: true, message: 'please enter patient tel', trigger: 'blur'},
               {
@@ -186,24 +184,12 @@
                 trigger: 'change'
               }
             ],
-            age: [
-              {type: 'number', message: 'must number', trigger: 'blur'}
-            ],
-            advisoryDate: [
-              {required: true, type: 'date', message: 'please select date', trigger: 'change'}
-            ],
-            advisoryId: [
-              {required: true, type: 'date', message: 'select a advisory', trigger: 'blur'}
-            ],
-            channelId: [
-              {required: true, message: 'select a channel', trigger: 'blur'}
-            ],
-            doctorId: [
-              {required: true, message: 'select a doctor', trigger: 'blur'}
-            ],
-            diseaseId: [
-              {required: true, message: 'select a disease', trigger: 'blur'}
-            ]
+            age: {type: 'number', message: 'must number', trigger: 'blur'},
+            advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
+            advisoryId: {validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur'},
+            channelId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur'},
+            doctorId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur'},
+            diseaseId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur'}
           }
         }
       }
@@ -261,14 +247,14 @@
       },
       initPatientFormData (index = null, row = null) {
         if (this.operationState === 'new') {
-          this.editForm.data.name = ''
-          this.editForm.data.tel = ''
+          this.editForm.data.name = 'asdasd'
+          this.editForm.data.tel = '15248574757'
           this.editForm.data.date = ''
-          this.editForm.data.advisoryId = ''
-          this.editForm.data.channelId = ''
-          this.editForm.data.doctorId = ''
-          this.editForm.data.diseaseId = ''
-          this.editForm.data.age = ''
+          this.editForm.data.advisoryId = 1
+          this.editForm.data.channelId = 1
+          this.editForm.data.doctorId = 1
+          this.editForm.data.diseaseId = 1
+          this.editForm.data.age = 13
           this.editForm.data.sex = ''
           this.editForm.data.wechat = ''
           this.editForm.data.keyword = ''
@@ -299,7 +285,7 @@
           name: this.editForm.data.name,
           tel: this.editForm.data.tel,
           state: 0,
-          advisory_date: this.editForm.data.date,
+          advisory_date: this.editForm.data.advisoryDate,
           advisory_id: this.editForm.data.advisoryId,
           channel_id: this.editForm.data.channelId,
           disease_id: this.editForm.data.diseaseId,
@@ -316,9 +302,14 @@
           if (valid) {
             axios.post('/patients', qs.stringify(postPatientData))
               .then(res => {
-                this.dialogVisible = false
-                self.currentPage = self.patients.lastPage
-                if (self.patients.lastPage !== self.currentPage) self.currentPage++
+                self.currentPage = self.patients['last_page']
+                self.fetchPatients()
+                console.log(self.patients['last_page'], self.currentPage)
+                if (self.patients['last_page'] !== self.currentPage) {
+                  self.currentPage++
+                  self.fetchPatients()
+                }
+                self.dialogVisible = false
               })
           } else {
             return false
