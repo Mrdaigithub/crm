@@ -3,12 +3,24 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
-      <el-table :data="patientData" style="width: 100%" height="500">
+      <el-table :data="patientData" style="width: 100%" height="500" show-summary :summary-method="getPriceSum">
         <el-table-column type="expand">
           <template scope="props">
-            <el-form label-position="left" inline class="table-expand">
-              <el-form-item label="name">
-                <span>{{ props.row.name }}</span>
+            <el-form label-position="left" inline class="table-expandsss">
+              <el-form-item label="disease: ">
+                <span>{{ props.row.disease.name }}</span>
+              </el-form-item>
+              <el-form-item label="doctor: ">
+                <span>{{ props.row.doctor.name }}</span>
+              </el-form-item>
+              <el-form-item label="channel: ">
+                <span>{{ props.row.channel.name }}</span>
+              </el-form-item>
+              <el-form-item label="age: ">
+                <span>{{ props.row.age }}</span>
+              </el-form-item>
+              <el-form-item label="mark: ">
+                <span>{{ props.row.mark }}</span>
               </el-form-item>
             </el-form>
           </template>
@@ -21,28 +33,13 @@
         <el-table-column prop="created_at" label="created time" width="180"></el-table-column>
         <el-table-column prop="advisory_date" label="advisory date" width="180"></el-table-column>
         <el-table-column prop="arrive_date" label="arrive date" width="180"></el-table-column>
-        <el-table-column label="disease" width="140">
-          <template scope="scope">
-            <p>{{ scope.row.disease.name }}</p>
-          </template>
-        </el-table-column>
-        <el-table-column label="doctor" width="100">
-          <template scope="scope">
-            <p>{{ scope.row.doctor.name }}</p>
-          </template>
-        </el-table-column>
         <el-table-column label="user" width="100">
           <template scope="scope">
             <p>{{ scope.row.user.username }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="channel" width="100">
-          <template scope="scope">
-            <p>{{ scope.row.channel.name }}</p>
-          </template>
-        </el-table-column>
         <el-table-column prop="price" label="price" width="120"></el-table-column>
-        <el-table-column label="channel" width="140">
+        <el-table-column label="state" width="140">
           <template scope="scope">
             <el-select v-model="scope.row.state" @change="changeState(scope.row.id, scope.row.state)">
               <el-option :value="0" label="untreated"></el-option>
@@ -250,8 +247,7 @@
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients (callback = () => {
-      }) {
+      fetchPatients (callback = () => {}) {
         let self = this
         !(async function () {
           self.patients = await axios.get(`/patients?page=${self.currentPage}`)
@@ -329,6 +325,32 @@
             return false
           }
         })
+      },
+      getPriceSum ({ columns, data }) {
+        const sums = []
+        columns.forEach((column, index) => {
+          console.log(index)
+          if (index === 0) {
+            sums[index] = 'Sum'
+            return
+          }
+          // const values = data.map(item => Number(item[column.property]))
+          // if (!values.every(value => isNaN(value))) {
+          //   sums[index] = values.reduce((prev, curr) => {
+          //     console.log(prev)
+          //     const value = Number(curr)
+          //     if (!isNaN(value)) {
+          //       return prev + curr
+          //     } else {
+          //       return prev
+          //     }
+          //   }, 0)
+          // } else {
+          //   sums[index] = ''
+          // }
+        })
+
+        return sums
       }
     },
     mounted () {
@@ -352,5 +374,9 @@
     .add-doctor {
       margin-bottom: 15px;
     }
+  }
+  .table-expandsss > .el-form-item{
+    display: block;
+    margin-bottom: 0
   }
 </style>
