@@ -3,8 +3,17 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
-      <el-table :data="patientData" style="width: 100%" height="500" border>
-        <el-table-column prop="id" label="id" width="70" fixed></el-table-column>
+      <el-table :data="patientData" style="width: 100%" height="500">
+        <el-table-column type="expand">
+          <template scope="props">
+            <el-form label-position="left" inline class="table-expand">
+              <el-form-item label="name">
+                <span>{{ props.row.name }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column prop="id" label="id" width="70"></el-table-column>
         <el-table-column prop="name" label="name" width="120"></el-table-column>
         <el-table-column prop="sex" label="sex" width="100"></el-table-column>
         <el-table-column prop="age" label="age" width="80"></el-table-column>
@@ -66,16 +75,13 @@
               <el-form-item label="tel" prop="tel">
                 <el-input v-model="editForm.data.tel"></el-input>
               </el-form-item>
-              <el-form-item label="advisory date" required>
-                <el-form-item prop="advisoryDate">
-                  <el-date-picker
-                    v-model="editForm.data.advisoryDate"
-                    type="datetime"
-                    placeholder="选择日期时间"
-                    align="right"
-                    format="yy-MM-dd hh:mm:ss">
-                  </el-date-picker>
-                </el-form-item>
+              <el-form-item label="advisory date" prop="advisoryDate" required>
+                <el-date-picker
+                  v-model="editForm.data.advisoryDate"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  align="right"
+                  format="yy-MM-dd hh:mm:ss"></el-date-picker>
               </el-form-item>
               <el-form-item label="advisory" prop="advisoryId">
                 <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
@@ -186,10 +192,19 @@
             ],
             age: {type: 'number', message: 'must number', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
-            advisoryId: {validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur'},
-            channelId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur'},
-            doctorId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur'},
-            diseaseId: {validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur'}
+            pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
+            advisoryId: {
+              validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur'
+            },
+            channelId: {
+              validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur'
+            },
+            doctorId: {
+              validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur'
+            },
+            diseaseId: {
+              validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur'
+            }
           }
         }
       }
@@ -215,7 +230,7 @@
       },
       editPatient (index, row) {
         this.operationState = 'edit'
-        this.initPatientFormData('edit', index, row)
+        this.initPatientFormData(index, row)
       },
       removePatient (index, row) {
         axios.delete(`/patients/${row.id}`)
@@ -235,26 +250,28 @@
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients () {
+      fetchPatients (callback = () => {
+      }) {
         let self = this
         !(async function () {
           self.patients = await axios.get(`/patients?page=${self.currentPage}`)
           setTimeout(() => {
             self.stateClock = false
             self.loading = false
+            callback()
           }, 0)
         }())
       },
       initPatientFormData (index = null, row = null) {
         if (this.operationState === 'new') {
-          this.editForm.data.name = 'asdasd'
-          this.editForm.data.tel = '15248574757'
+          this.editForm.data.name = ''
+          this.editForm.data.tel = ''
           this.editForm.data.date = ''
-          this.editForm.data.advisoryId = 1
-          this.editForm.data.channelId = 1
-          this.editForm.data.doctorId = 1
-          this.editForm.data.diseaseId = 1
-          this.editForm.data.age = 13
+          this.editForm.data.advisoryId = ''
+          this.editForm.data.channelId = ''
+          this.editForm.data.doctorId = ''
+          this.editForm.data.diseaseId = ''
+          this.editForm.data.age = ''
           this.editForm.data.sex = ''
           this.editForm.data.wechat = ''
           this.editForm.data.keyword = ''
@@ -264,12 +281,12 @@
         if (this.operationState === 'edit') {
           this.editForm.data.name = row.name
           this.editForm.data.tel = row.tel
-          this.editForm.data.date = row.date
-          this.editForm.data.advisory = row.advisory
-          this.editForm.data.channel = row.channel
-          this.editForm.data.doctor = row.doctor
-          this.editForm.data.disease = row.disease
-          this.editForm.data.doctor = ''
+          this.editForm.data.date = new Date(row['advisory_date'])
+          this.editForm.data.advisory = row.advisory.id
+          this.editForm.data.channel = row.channel.id
+          this.editForm.data.doctor = row.doctor.id
+          this.editForm.data.disease = row.disease.id
+          this.editForm.data.doctor = row.doctor.id
           this.editForm.data.age = row.age
           this.editForm.data.sex = row.sex
           this.editForm.data.wechat = row.wechat
@@ -303,13 +320,10 @@
             axios.post('/patients', qs.stringify(postPatientData))
               .then(res => {
                 self.currentPage = self.patients['last_page']
-                self.fetchPatients()
-                console.log(self.patients['last_page'], self.currentPage)
-                if (self.patients['last_page'] !== self.currentPage) {
-                  self.currentPage++
-                  self.fetchPatients()
-                }
-                self.dialogVisible = false
+                self.fetchPatients(() => {
+                  self.currentPage = self.patients['last_page']
+                  self.dialogVisible = false
+                })
               })
           } else {
             return false
