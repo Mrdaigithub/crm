@@ -24,8 +24,9 @@ class CreatePatientTable extends Migration
             $table->string('pageurl')->nullable;
             $table->string('mark')->nullable;
             $table->float('price')->default(0);
+            $table->boolean('first')->default(true);
             $table->timestamp('advisory_date');
-            $table->timestamp('arrive_date');
+            $table->timestamp('arrive_date')->nullable;
             $table->timestamps();
         });
 

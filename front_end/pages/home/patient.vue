@@ -19,6 +19,9 @@
               <el-form-item label="age: ">
                 <span>{{ props.row.age }}</span>
               </el-form-item>
+              <el-form-item label="first: ">
+                <span>{{ props.row.first ? 'first' : 'many' }}</span>
+              </el-form-item>
               <el-form-item label="mark: ">
                 <span>{{ props.row.mark }}</span>
               </el-form-item>
@@ -41,7 +44,7 @@
         <el-table-column prop="price" label="price" width="120"></el-table-column>
         <el-table-column label="state" width="140">
           <template scope="scope">
-            <el-select v-model="scope.row.state" @change="changeState(scope.row.id, scope.row.state)">
+            <el-select v-model="scope.row.state" :disabled="scope.row.state === 2" @change="changeState(scope.row.id, scope.row.state, scope.$index)">
               <el-option :value="0" label="untreated"></el-option>
               <el-option :value="1" label="wait"></el-option>
               <el-option :value="2" label="confirm"></el-option>
@@ -123,6 +126,12 @@
                   <el-option label="woman" value="1"></el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="first" prop="first">
+                <el-select v-model="editForm.data.first" placeholder="first?">
+                  <el-option label="first" value="1"></el-option>
+                  <el-option label="more" value="0"></el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="wechat" prop="wechat">
                 <el-input v-model="editForm.data.wechat"></el-input>
               </el-form-item>
@@ -172,6 +181,7 @@
             diseaseId: '',
             age: '',
             sex: '',
+            first: '',
             wechat: '',
             keyword: '',
             pageurl: '',
@@ -190,18 +200,10 @@
             age: {type: 'number', message: 'must number', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
             pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
-            advisoryId: {
-              validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur'
-            },
-            channelId: {
-              validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur'
-            },
-            doctorId: {
-              validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur'
-            },
-            diseaseId: {
-              validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur'
-            }
+            advisoryId: { validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur' },
+            channelId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur' },
+            doctorId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur' },
+            diseaseId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur' }
           }
         }
       }
@@ -233,10 +235,22 @@
         axios.delete(`/patients/${row.id}`)
           .then(res => this.fetchPatients())
       },
-      changeState (patientId, patientState) {
+      changeState (patientId, patientState, index) {
         if (this.stateClock) return
+        if (patientState === 2) {
+          let now = new Date()
+          console.log(now)
+          let year = now.getFullYear()
+          let month = (now.getMonth() + 1).toString().length === 1 ? `0${(now.getMonth() + 1)}` : now.getMonth() + 1
+          let day = now.getDay().toString().length === 1 ? `0${now.getDay()}` : now.getDay()
+          let hours = now.getHours().toString().length === 1 ? `0${now.getHours()}` : now.getHours()
+          let minutes = now.getMinutes().toString().length === 1 ? `0${now.getMinutes()}` : now.getMinutes()
+          let seconds = now.getSeconds().toString().length === 1 ? `0${now.getSeconds()}` : now.getSeconds()
+          this.patientData[index]['arrive_date'] = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+        }
         axios.patch(`/patients/${patientId}`, qs.stringify({
-          state: patientState
+          state: patientState,
+          arrive_date: this.patientData[index]['arrive_date']
         }))
           .then(res => {
           })
@@ -247,7 +261,8 @@
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients (callback = () => {}) {
+      fetchPatients (callback = () => {
+      }) {
         let self = this
         !(async function () {
           self.patients = await axios.get(`/patients?page=${self.currentPage}`)
@@ -269,6 +284,7 @@
           this.editForm.data.diseaseId = ''
           this.editForm.data.age = ''
           this.editForm.data.sex = ''
+          this.editForm.data.first = ''
           this.editForm.data.wechat = ''
           this.editForm.data.keyword = ''
           this.editForm.data.pageurl = ''
@@ -285,6 +301,7 @@
           this.editForm.data.doctor = row.doctor.id
           this.editForm.data.age = row.age
           this.editForm.data.sex = row.sex
+          this.editForm.data.first = row.first
           this.editForm.data.wechat = row.wechat
           this.editForm.data.keyword = row.keyword
           this.editForm.data.pageurl = row.pageurl
@@ -307,6 +324,7 @@
         }
         if (this.editForm.data.age) postPatientData.age = this.editForm.data.age
         if (this.editForm.data.sex) postPatientData.sex = this.editForm.data.sex
+        if (this.editForm.data.first) postPatientData.first = this.editForm.data.first
         if (this.editForm.data.wechat) postPatientData.wechat = this.editForm.data.wechat
         if (this.editForm.data.keyword) postPatientData.keyword = this.editForm.data.keyword
         if (this.editForm.data.pageurl) postPatientData.pageurl = this.editForm.data.pageurl
@@ -326,30 +344,22 @@
           }
         })
       },
-      getPriceSum ({ columns, data }) {
+      getPriceSum ({columns, data}) {
         const sums = []
         columns.forEach((column, index) => {
-          console.log(index)
           if (index === 0) {
             sums[index] = 'Sum'
             return
+          } else if (column.label === 'price') {
+            const values = data.map(item => Number(item[column.property]))
+            const priceSum = values.reduce((prev, curr) => {
+              return prev + curr
+            }, 0)
+            sums[index] = `$ ${priceSum}`
+          } else {
+            sums[index] = ''
           }
-          // const values = data.map(item => Number(item[column.property]))
-          // if (!values.every(value => isNaN(value))) {
-          //   sums[index] = values.reduce((prev, curr) => {
-          //     console.log(prev)
-          //     const value = Number(curr)
-          //     if (!isNaN(value)) {
-          //       return prev + curr
-          //     } else {
-          //       return prev
-          //     }
-          //   }, 0)
-          // } else {
-          //   sums[index] = ''
-          // }
         })
-
         return sums
       }
     },
@@ -375,7 +385,8 @@
       margin-bottom: 15px;
     }
   }
-  .table-expandsss > .el-form-item{
+
+  .table-expandsss > .el-form-item {
     display: block;
     margin-bottom: 0
   }

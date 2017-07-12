@@ -23,8 +23,8 @@ class PatientsSeeder extends Seeder
             'pageurl' => 'http://localhost',
             'mark' => 'mark...',
             'price' => 1024,
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+3600*24),
-            'arrive_date' => date('Y-m-d h:m:s', time()+3800*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -46,6 +46,7 @@ class PatientsSeeder extends Seeder
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'price' => 2048,
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
             'arrive_date' => date('Y-m-d h:m:s', time()+10500*24),
             'created_at' => date('Y-m-d h:m:s'),
@@ -69,6 +70,7 @@ class PatientsSeeder extends Seeder
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'price' => 4096,
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
             'arrive_date' => date('Y-m-d h:m:s', time()+11500*24),
             'created_at' => date('Y-m-d h:m:s'),
@@ -91,6 +93,7 @@ class PatientsSeeder extends Seeder
             'keyword' => 'keywordkeyword',
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
             'arrive_date' => date('Y-m-d h:m:s', time()+9600*24),
             'created_at' => date('Y-m-d h:m:s'),
@@ -114,7 +117,9 @@ class PatientsSeeder extends Seeder
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'price' => 1024,
+            'first' => false,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
+            'arrive_date' => date('Y-m-d h:m:s', time()+9600*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -135,7 +140,9 @@ class PatientsSeeder extends Seeder
             'keyword' => 'keywordkeyword',
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
+            'arrive_date' => date('Y-m-d h:m:s', time()+9600*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -157,6 +164,7 @@ class PatientsSeeder extends Seeder
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'price' => 10.6,
+            'first' => true,
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
             'arrive_date' => date('Y-m-d h:m:s', time()+10500*24),
             'created_at' => date('Y-m-d h:m:s'),
@@ -175,12 +183,11 @@ class PatientsSeeder extends Seeder
             'age' => 35,
             'tel' => '15264798652',
             'wechat' => 'wechatusernamewechatusername',
-            'state' => 2,
+            'state' => 3,
             'keyword' => 'keywordkeyword',
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
-            'arrive_date' => date('Y-m-d h:m:s', time()+10500*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -197,12 +204,11 @@ class PatientsSeeder extends Seeder
             'age' => 35,
             'tel' => '15264798652',
             'wechat' => 'wechatusernamewechatusername',
-            'state' => 2,
+            'state' => 1,
             'keyword' => 'keywordkeyword',
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
-            'arrive_date' => date('Y-m-d h:m:s', time()+10500*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -219,12 +225,11 @@ class PatientsSeeder extends Seeder
             'age' => 35,
             'tel' => '15264798652',
             'wechat' => 'wechatusernamewechatusername',
-            'state' => 2,
+            'state' => 1,
             'keyword' => 'keywordkeyword',
             'pageurl' => 'http://localhost:8080',
             'mark' => 'mark...mark...',
             'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
-            'arrive_date' => date('Y-m-d h:m:s', time()+10500*24),
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -233,5 +238,26 @@ class PatientsSeeder extends Seeder
         DB::table('patient_channel')->insert(['patient_id' => '10', 'channel_id' => '3']);
         DB::table('patient_advisory')->insert(['patient_id' => '10', 'advisory_id' => '2']);
         DB::table('patient_user')->insert(['patient_id' => '10', 'user_id' => '6']);
+
+        DB::table('patients')->insert([
+            'id' => 11,
+            'name' => 'patient11',
+            'sex' => false,
+            'age' => 25,
+            'tel' => '15264798644',
+            'wechat' => 'wechatusernamewechatusername11',
+            'state' => 0,
+            'keyword' => 'keywordkeyword',
+            'pageurl' => 'http://localhost:8080',
+            'mark' => 'mark...mark...',
+            'advisory_date' => date('Y-m-d h:m:s', time()+10500*24),
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('patient_disease')->insert(['patient_id' => '11', 'disease_id' => '5']);
+        DB::table('patient_doctor')->insert(['patient_id' => '11', 'doctor_id' => '3']);
+        DB::table('patient_channel')->insert(['patient_id' => '11', 'channel_id' => '3']);
+        DB::table('patient_advisory')->insert(['patient_id' => '11', 'advisory_id' => '2']);
+        DB::table('patient_user')->insert(['patient_id' => '11', 'user_id' => '6']);
     }
 }

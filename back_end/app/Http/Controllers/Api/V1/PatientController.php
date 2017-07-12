@@ -66,6 +66,7 @@ class PatientController extends Controller
             'pageurl' => 'url',
             'mark' => 'string',
             'price' => 'numeric',
+            'first' => 'boolean',
             'advisory_date' => 'required|date',
             'arrive_date' => 'date',
             'advisory_id' => 'required|numeric|exists:advisories,id',
@@ -88,6 +89,7 @@ class PatientController extends Controller
         if (array_key_exists('pageurl', $parameters)) $patient->pageurl = $parameters['pageurl'];
         if (array_key_exists('mark', $parameters)) $patient->mark = $parameters['mark'];
         if (array_key_exists('price', $parameters)) $patient->price = $parameters['price'];
+        if (array_key_exists('first', $parameters)) $patient->first = $parameters['first'];
         if (array_key_exists('arrive_date', $parameters)) $patient->arrive_date = $parameters['arrive_date'];
         if (!$patient->save()) $this->response->errorInternal();
 
@@ -151,6 +153,7 @@ class PatientController extends Controller
             'pageurl' => 'url',
             'mark' => 'string',
             'price' => 'numeric',
+            'first' => 'boolean',
             'advisory_date' => 'date',
             'arrive_date' => 'date',
             'advisory_id' => 'numeric|exists:advisories,id',
@@ -172,6 +175,7 @@ class PatientController extends Controller
         if (key_exists('pageurl', $parameters)) $patient->pageurl = $parameters['pageurl'];
         if (key_exists('mark', $parameters)) $patient->mark = $parameters['mark'];
         if (key_exists('price', $parameters)) $patient->price = $parameters['price'];
+        if (key_exists('first', $parameters)) $patient->first = $parameters['first'];
         if (key_exists('advisory_date', $parameters)) $patient->advisory_date = $parameters['advisory_date'];
         if (key_exists('arrive_date', $parameters)) $patient->arrive_date = $parameters['arrive_date'];
         if (key_exists('advisory_id', $parameters)) DB::update('update patient_advisory set advisory_id = ? where patient_id = ?', [$parameters['advisory_id'], $parameters['id']]);

@@ -81,7 +81,7 @@ class MenuSeeder extends Seeder
             'rgt' => '12',
             'depth' => '2',
             'name' => 'Track list',
-            'url' => '/track/list',
+            'url' => '/home/track/list',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -92,7 +92,7 @@ class MenuSeeder extends Seeder
             'rgt' => '14',
             'depth' => '2',
             'name' => 'My track',
-            'url' => '/track/my',
+            'url' => '/home/track/my',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -103,7 +103,7 @@ class MenuSeeder extends Seeder
             'rgt' => '16',
             'depth' => '2',
             'name' => 'Track task',
-            'url' => '/track/task',
+            'url' => '/home/track/task',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -124,7 +124,7 @@ class MenuSeeder extends Seeder
             'rgt' => '20',
             'depth' => '2',
             'name' => 'Diseases management',
-            'url' => '/management/diseases',
+            'url' => '/home/management/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -135,7 +135,7 @@ class MenuSeeder extends Seeder
             'rgt' => '22',
             'depth' => '2',
             'name' => 'Doctors management',
-            'url' => '/management/doctors',
+            'url' => '/home/management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -146,7 +146,7 @@ class MenuSeeder extends Seeder
             'rgt' => '24',
             'depth' => '2',
             'name' => 'Channels management',
-            'url' => '/management/channel',
+            'url' => '/home/management/channel',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -157,7 +157,7 @@ class MenuSeeder extends Seeder
             'rgt' => '26',
             'depth' => '2',
             'name' => 'Advisory management',
-            'url' => '/management/advisory',
+            'url' => '/home/management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -178,7 +178,7 @@ class MenuSeeder extends Seeder
             'rgt' => '30',
             'depth' => '2',
             'name' => 'Group data',
-            'url' => '/data/group',
+            'url' => '/home/data/group',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -189,7 +189,7 @@ class MenuSeeder extends Seeder
             'rgt' => '32',
             'depth' => '2',
             'name' => 'Performance data',
-            'url' => '/data/performance',
+            'url' => '/home/data/performance',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -200,7 +200,7 @@ class MenuSeeder extends Seeder
             'rgt' => '34',
             'depth' => '2',
             'name' => 'Report data',
-            'url' => '/data/report',
+            'url' => '/home/data/report',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -221,7 +221,7 @@ class MenuSeeder extends Seeder
             'rgt' => '38',
             'depth' => '2',
             'name' => 'System parameters',
-            'url' => '/setting/parameter',
+            'url' => '/home/setting/parameter',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -232,7 +232,7 @@ class MenuSeeder extends Seeder
             'rgt' => '40',
             'depth' => '2',
             'name' => 'Log',
-            'url' => '/setting/log',
+            'url' => '/home/setting/log',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
