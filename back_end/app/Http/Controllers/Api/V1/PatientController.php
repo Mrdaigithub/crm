@@ -20,19 +20,19 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patient_paginate = Patient::paginate(10)->toArray();
-        $patient_paginate['data'] = array_map(function ($e) {
-            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
-            foreach ($props as $prop) {
-                $item = Patient::find($e['id'])[$prop];
-                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
-                else {
-                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
-                    else $e[$prop] = ['id' => '', 'name' => ''];
-                }
-            }
-            return $e;
-        }, $patient_paginate['data']);
+        $patient_paginate = Patient::paginate(5)->appends(['sort' => 'votes'])->render();
+//        $patient_paginate['data'] = array_map(function ($e) {
+//            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
+//            foreach ($props as $prop) {
+//                $item = Patient::find($e['id'])[$prop];
+//                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
+//                else {
+//                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
+//                    else $e[$prop] = ['id' => '', 'name' => ''];
+//                }
+//            }
+//            return $e;
+//        }, $patient_paginate['data']);
         return $patient_paginate;
     }
 

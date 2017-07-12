@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
-      <el-table :data="patientData" style="width: 100%" height="500" show-summary :summary-method="getPriceSum">
+      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum">
         <el-table-column type="expand">
           <template scope="props">
             <el-form label-position="left" inline class="table-expandsss">
@@ -112,6 +112,9 @@
                              v-if="!disease.children.length"></el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="price" prop="price">
+                <el-input v-model.number="editForm.data.price"></el-input>
+              </el-form-item>
             </el-card>
           </el-col>
           <el-col :span="13" :offset="1">
@@ -179,6 +182,7 @@
             channelId: '',
             doctorId: '',
             diseaseId: '',
+            price: '',
             age: '',
             sex: '',
             first: '',
@@ -197,6 +201,7 @@
                 trigger: 'change'
               }
             ],
+            price: {type: 'number', message: 'must number', trigger: 'blur'},
             age: {type: 'number', message: 'must number', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
             pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
@@ -239,7 +244,6 @@
         if (this.stateClock) return
         if (patientState === 2) {
           let now = new Date()
-          console.log(now)
           let year = now.getFullYear()
           let month = (now.getMonth() + 1).toString().length === 1 ? `0${(now.getMonth() + 1)}` : now.getMonth() + 1
           let day = now.getDay().toString().length === 1 ? `0${now.getDay()}` : now.getDay()
@@ -247,13 +251,16 @@
           let minutes = now.getMinutes().toString().length === 1 ? `0${now.getMinutes()}` : now.getMinutes()
           let seconds = now.getSeconds().toString().length === 1 ? `0${now.getSeconds()}` : now.getSeconds()
           this.patientData[index]['arrive_date'] = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+
+          axios.patch(`/patients/${patientId}`, qs.stringify({
+            state: patientState,
+            arrive_date: this.patientData[index]['arrive_date']
+          })).then(res => {})
+          return
         }
         axios.patch(`/patients/${patientId}`, qs.stringify({
-          state: patientState,
-          arrive_date: this.patientData[index]['arrive_date']
-        }))
-          .then(res => {
-          })
+          state: patientState
+        })).then(res => {})
       },
       changePage (currentPage) {
         this.loading = true
@@ -322,6 +329,7 @@
           doctor_id: this.editForm.data.doctorId,
           user_id: this.$store.state.oneself.id
         }
+        if (this.editForm.data.price) postPatientData.price = this.editForm.data.price
         if (this.editForm.data.age) postPatientData.age = this.editForm.data.age
         if (this.editForm.data.sex) postPatientData.sex = this.editForm.data.sex
         if (this.editForm.data.first) postPatientData.first = this.editForm.data.first
@@ -348,7 +356,7 @@
         const sums = []
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = 'Sum'
+            sums[index] = 'Price'
             return
           } else if (column.label === 'price') {
             const values = data.map(item => Number(item[column.property]))
