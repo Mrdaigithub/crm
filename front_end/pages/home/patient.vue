@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
-      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum">
+      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum" @sort-change="sortChange">
         <el-table-column type="expand">
           <template scope="props">
             <el-form label-position="left" inline class="table-expandsss">
@@ -28,20 +28,20 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="id" label="id" width="70"></el-table-column>
+        <el-table-column prop="id" label="id" width="70" sortable="custom"></el-table-column>
         <el-table-column prop="name" label="name" width="120"></el-table-column>
-        <el-table-column prop="sex" label="sex" width="100"></el-table-column>
-        <el-table-column prop="age" label="age" width="80"></el-table-column>
+        <el-table-column prop="sex" label="sex" width="100" sortable="custom"></el-table-column>
+        <el-table-column prop="age" label="age" width="80" sortable="custom"></el-table-column>
         <el-table-column prop="tel" label="tel" width="140"></el-table-column>
-        <el-table-column prop="created_at" label="created time" width="180"></el-table-column>
-        <el-table-column prop="advisory_date" label="advisory date" width="180"></el-table-column>
-        <el-table-column prop="arrive_date" label="arrive date" width="180"></el-table-column>
+        <el-table-column prop="created_at" label="created time" width="180" sortable="custom"></el-table-column>
+        <el-table-column prop="advisory_date" label="advisory date" width="180" sortable="custom"></el-table-column>
+        <el-table-column prop="arrive_date" label="arrive date" width="180" sortable="custom"></el-table-column>
         <el-table-column label="user" width="100">
           <template scope="scope">
             <p>{{ scope.row.user.username }}</p>
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="price" width="120"></el-table-column>
+        <el-table-column prop="price" label="price" width="120" sortable="custom"></el-table-column>
         <el-table-column label="state" width="140">
           <template scope="scope">
             <el-select v-model="scope.row.state" :disabled="scope.row.state === 2" @change="changeState(scope.row.id, scope.row.state, scope.$index)">
@@ -268,11 +268,10 @@
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients (callback = () => {
-      }) {
+      fetchPatients (callback = () => {}) {
         let self = this
         !(async function () {
-          self.patients = await axios.get(`/patients?page=${self.currentPage}`)
+          self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=id`)
           setTimeout(() => {
             self.stateClock = false
             self.loading = false
@@ -369,6 +368,9 @@
           }
         })
         return sums
+      },
+      sortChange (column, b) {
+        console.log(column, b)
       }
     },
     mounted () {

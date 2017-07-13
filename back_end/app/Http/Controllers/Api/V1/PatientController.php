@@ -15,25 +15,30 @@ class PatientController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patient_paginate = Patient::paginate(5)->appends(['sort' => 'votes'])->render();
-//        $patient_paginate['data'] = array_map(function ($e) {
-//            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
-//            foreach ($props as $prop) {
-//                $item = Patient::find($e['id'])[$prop];
-//                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
-//                else {
-//                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
-//                    else $e[$prop] = ['id' => '', 'name' => ''];
-//                }
-//            }
-//            return $e;
-//        }, $patient_paginate['data']);
-        return $patient_paginate;
+        $parameters = $request->all();
+        $parameters['page'] = array_key_exists('page', $parameters) ? $parameters['page'] : 1;
+        $parameters['limit'] = array_key_exists('limit', $parameters) ? $parameters['limit'] : 10;
+        $parameters['sortby'] = array_key_exists('sortby', $parameters) ? $parameters['sortby'] : 'id';
+        $parameters['order'] = array_key_exists('order', $parameters) ? $parameters['order'] : 'asc';
+        $patient_paginate = Patient::orderBy($parameters['sortby'], $parameters['order'])->paginate($parameters['limit'])->toArray();
+        $patient_paginate['data'] = array_map(function ($e) {
+            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
+            foreach ($props as $prop) {
+                $item = Patient::find($e['id'])[$prop];
+                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
+                else {
+                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
+                    else $e[$prop] = ['id' => '', 'name' => ''];
+                }
+            }
+            return $e;
+        }, $patient_paginate['data']);
+        return json_encode($patient_paginate);
     }
 
     /**
