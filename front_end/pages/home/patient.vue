@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
-      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum" @sort-change="sortChange">
+      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum" @sort-change="sortChange" border>
         <el-table-column type="expand">
           <template scope="props">
             <el-form label-position="left" inline class="table-expandsss">
@@ -28,11 +28,11 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="id" label="id" width="70" sortable="custom"></el-table-column>
-        <el-table-column prop="name" label="name" width="120"></el-table-column>
+        <el-table-column prop="id" label="id" width="100" sortable="custom"></el-table-column>
+        <el-table-column prop="name" label="name" width="150"></el-table-column>
         <el-table-column prop="sex" label="sex" width="100" sortable="custom"></el-table-column>
-        <el-table-column prop="age" label="age" width="80" sortable="custom"></el-table-column>
-        <el-table-column prop="tel" label="tel" width="140"></el-table-column>
+        <el-table-column prop="age" label="age" width="100" sortable="custom"></el-table-column>
+        <el-table-column prop="tel" label="tel" width="150"></el-table-column>
         <el-table-column prop="created_at" label="created time" width="180" sortable="custom"></el-table-column>
         <el-table-column prop="advisory_date" label="advisory date" width="180" sortable="custom"></el-table-column>
         <el-table-column prop="arrive_date" label="arrive date" width="180" sortable="custom"></el-table-column>
@@ -52,7 +52,7 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="tools" width="200">
+        <el-table-column label="tools" width="130">
           <template scope="scope">
             <el-button size="small" icon="edit" @click="editPatient(scope.$index, scope.row)"></el-button>
             <el-button size="small" type="danger" icon="delete"
@@ -169,6 +169,8 @@
       return {
         loading: true,
         currentPage: 1,
+        sortby: 'id',
+        order: 'asc',
         patients: {},
         stateClock: false,
         dialogVisible: false,
@@ -271,7 +273,7 @@
       fetchPatients (callback = () => {}) {
         let self = this
         !(async function () {
-          self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=id`)
+          self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
           setTimeout(() => {
             self.stateClock = false
             self.loading = false
@@ -369,8 +371,11 @@
         })
         return sums
       },
-      sortChange (column, b) {
-        console.log(column, b)
+      sortChange (args) {
+        this.sortby = args.prop ? args.prop : 'id'
+        if (args.order === 'ascending')
+        this.order = args.order === 'ascending' ? 'asc' : 'desc'
+        console.log(this.sortby, this.order)
       }
     },
     mounted () {
