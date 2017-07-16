@@ -33,6 +33,11 @@ $api->version('v1', function ($api) {
                 $api->post('/', 'MenuController@store');
             });
 
+            // ranks
+            $api->group(['prefix' => 'ranks'], function ($api) {
+                $api->get('/', 'RankController@index');
+            });
+
             // patients
             $api->group(['prefix' => 'patients'], function ($api) {
                 $api->get('/', 'PatientController@index');

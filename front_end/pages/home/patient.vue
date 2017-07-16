@@ -265,12 +265,12 @@
         })).then(res => {})
       },
       changePage (currentPage) {
-        this.loading = true
-        this.stateClock = true
         this.currentPage = currentPage
         this.fetchPatients()
       },
       fetchPatients (callback = () => {}) {
+        this.loading = true
+        this.stateClock = true
         let self = this
         !(async function () {
           self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
@@ -285,7 +285,7 @@
         if (this.operationState === 'new') {
           this.editForm.data.name = ''
           this.editForm.data.tel = ''
-          this.editForm.data.date = ''
+          this.editForm.data.advisoryDate = ''
           this.editForm.data.advisoryId = ''
           this.editForm.data.channelId = ''
           this.editForm.data.doctorId = ''
@@ -301,12 +301,12 @@
         if (this.operationState === 'edit') {
           this.editForm.data.name = row.name
           this.editForm.data.tel = row.tel
-          this.editForm.data.date = new Date(row['advisory_date'])
-          this.editForm.data.advisory = row.advisory.id
-          this.editForm.data.channel = row.channel.id
-          this.editForm.data.doctor = row.doctor.id
-          this.editForm.data.disease = row.disease.id
-          this.editForm.data.doctor = row.doctor.id
+          this.editForm.data.advisoryDate = new Date(row['advisory_date'])
+          this.editForm.data.advisoryId = row.advisory.id
+          this.editForm.data.channelId = row.channel.id
+          this.editForm.data.diseaseId = row.disease.id
+          this.editForm.data.doctorId = row.doctor.id
+          this.editForm.data.price = row.price
           this.editForm.data.age = row.age
           this.editForm.data.sex = row.sex
           this.editForm.data.first = row.first
@@ -373,9 +373,9 @@
       },
       sortChange (args) {
         this.sortby = args.prop ? args.prop : 'id'
-        if (args.order === 'ascending')
-        this.order = args.order === 'ascending' ? 'asc' : 'desc'
-        console.log(this.sortby, this.order)
+        if (args.order === 'ascending' || !args.order) this.order = 'asc'
+        else this.order = 'desc'
+        this.fetchPatients()
       }
     },
     mounted () {

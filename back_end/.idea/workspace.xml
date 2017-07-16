@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec1d54d7-455c-4c7b-ae4f-2547e59254a3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/webServers.xml" afterPath="$PROJECT_DIR$/.idea/webServers.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PatientController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PatientController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Management/AdvisoryController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Management/AdvisoryController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Management/DoctorsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Management/DoctorsController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/MenuController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/MenuController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../front_end/pages/home/patient.vue" afterPath="$PROJECT_DIR$/../front_end/pages/home/patient.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../front_end/pages/home/rank.vue" afterPath="$PROJECT_DIR$/../front_end/pages/home/rank.vue" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,34 +53,31 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PatientController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/PatientController.php">
+      <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="40" column="46" lean-forward="true" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
+            <state relative-caret-position="200">
+              <caret line="37" column="55" lean-forward="true" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
               <folding>
-                <element signature="e#1072#1575#1#PHP" expanded="false" />
-                <marker date="1499917008418" expanded="true" signature="7801:7865" ph="update patie... " />
-                <marker date="1499917008418" expanded="true" signature="7981:8043" ph="update patie... " />
-                <marker date="1499917008418" expanded="true" signature="8158:8220" ph="update patie... " />
-                <marker date="1499917008418" expanded="true" signature="8334:8394" ph="update patie... " />
-                <marker date="1499917008418" expanded="true" signature="8505:8561" ph="update patie... " />
+                <element signature="e#850#1030#0#PHP" expanded="false" />
+                <element signature="e#1228#1551#0#PHP" expanded="false" />
+                <element signature="e#1587#1908#0#PHP" expanded="false" />
+                <element signature="e#1944#2389#0#PHP" expanded="false" />
+                <element signature="e#2431#2635#0#PHP" expanded="false" />
+                <element signature="e#2676#4445#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="crm.patients" pinned="false" current-in-tab="true">
-        <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
+      <file leaf-file-name="RankController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/RankController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+              <folding>
+                <element signature="e#47#75#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -91,6 +91,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PatientController.php" />
+        <option value="$PROJECT_DIR$/app/Http/routes.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/V1/RankController.php" />
       </list>
     </option>
   </component>
@@ -109,8 +111,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1456" />
-    <option name="height" value="876" />
+    <option name="width" value="1376" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -258,8 +260,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -368,26 +370,26 @@
       <workItem from="1499690328789" duration="270000" />
       <workItem from="1499862190348" duration="4994000" />
       <workItem from="1499907105794" duration="4896000" />
+      <workItem from="1500200877190" duration="4623000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12478000" />
+    <option name="totallyTimeSpent" value="17101000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25033647" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24918033" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29475102" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3147541" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21117562" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3147541" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21048632" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13825215" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15114613" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13981763" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15045592" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -411,28 +413,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_25_111137_create_management_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Seeder.php" />
-    <entry file="file://$PROJECT_DIR$/database/seeds/MenuSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="21" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_16_080059_entrust_setup_tables.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1488">
-          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/seeds/ManagementSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-288">
@@ -529,20 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#850#1030#0#PHP" expanded="false" />
-            <element signature="e#1428#1749#0#PHP" expanded="false" />
-            <element signature="e#1785#2230#0#PHP" expanded="false" />
-            <element signature="e#2272#2476#0#PHP" expanded="false" />
-            <element signature="e#2517#4286#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="dbDummy://dbtable:/27025f34/8dbc3801-aacf-4f84-b119-02a6b5434d83/crm.diseases" />
     <entry file="file://$PROJECT_DIR$/app/Models/Role.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -584,12 +550,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1072#1575#1#PHP" expanded="false" />
-            <marker date="1499917008418" expanded="true" signature="7801:7865" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="7981:8043" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8158:8220" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8334:8394" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8505:8561" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="7801:7865" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="7981:8043" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8158:8220" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8334:8394" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8505:8561" ph="update patie... " />
           </folding>
         </state>
       </provider>
@@ -603,8 +568,48 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../挂号带短信平台(有数据库)/数据库/guahao_x.sql" />
-    <entry file="dbDummy://dbtable:/68fa0fef/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients" />
-    <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patient_user">
+    <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patient_user" />
+    <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients" />
+    <entry file="dbDummy://dbtable:/68fa0fef/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.advisories">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/68fa0fef/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patient_advisory">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/68fa0fef/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/68fa0fef/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.users">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -619,29 +624,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/PatientController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="40" column="46" lean-forward="true" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
+        <state relative-caret-position="220">
+          <caret line="55" column="6" lean-forward="true" selection-start-line="55" selection-start-column="6" selection-end-line="55" selection-end-column="6" />
           <folding>
-            <element signature="e#1072#1575#1#PHP" expanded="false" />
-            <marker date="1499917008418" expanded="true" signature="7801:7865" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="7981:8043" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8158:8220" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8334:8394" ph="update patie... " />
-            <marker date="1499917008418" expanded="true" signature="8505:8561" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="7801:7865" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="7981:8043" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8158:8220" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8334:8394" ph="update patie... " />
+            <marker date="1499917008000" expanded="true" signature="8505:8561" ph="update patie... " />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="37" column="55" lean-forward="true" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
+          <folding>
+            <element signature="e#850#1030#0#PHP" expanded="false" />
+            <element signature="e#1228#1551#0#PHP" expanded="false" />
+            <element signature="e#1587#1908#0#PHP" expanded="false" />
+            <element signature="e#1944#2389#0#PHP" expanded="false" />
+            <element signature="e#2431#2635#0#PHP" expanded="false" />
+            <element signature="e#2676#4445#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/RankController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+          <folding>
+            <element signature="e#47#75#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
