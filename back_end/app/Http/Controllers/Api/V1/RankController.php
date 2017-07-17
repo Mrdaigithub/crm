@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Patient;
+use App\Models\User;
+use DB;
+use function PHPSTORM_META\type;
+use Validator;
+use Dingo\Api\Routing\Helpers;
 
 class RankController extends Controller
 {
+    use Helpers;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,7 @@ class RankController extends Controller
      */
     public function index()
     {
-        return 'rank index';
+        //
     }
 
     /**
@@ -46,9 +52,16 @@ class RankController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($type)
     {
-        //
+        $users = User::all();
+        $patients = new Patient();
+        if ($type === 'advisory'){
+            return User::find(1)['patient'];
+//            foreach ($users as $user){
+//
+//            }
+        }
     }
 
     /**

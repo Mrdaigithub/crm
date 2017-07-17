@@ -35,7 +35,7 @@ $api->version('v1', function ($api) {
 
             // ranks
             $api->group(['prefix' => 'ranks'], function ($api) {
-                $api->get('/', 'RankController@index');
+                $api->get('/{type}', 'RankController@show');
             });
 
             // patients
