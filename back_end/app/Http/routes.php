@@ -106,6 +106,15 @@ $api->version('v1', function ($api) {
                     $api->delete('/{id}', 'AdvisoryController@destroy');
                 });
             });
+
+            // Data
+            $api->group(['prefix' => 'data', 'namespace' => 'Data'], function ($api){
+
+                // diseases
+                $api->group(['prefix' => 'group'], function ($api){
+                    $api->get('/{name}', 'GroupController@show');
+                });
+            });
         });
     });
 });

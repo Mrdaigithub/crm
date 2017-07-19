@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
 use App\Models\User;
-use DB;
-use function PHPSTORM_META\type;
 use Validator;
 use Dingo\Api\Routing\Helpers;
 
