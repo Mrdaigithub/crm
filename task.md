@@ -13,7 +13,7 @@
 
 6. ~~添加patient表单 加入选择登记人选项 加入 first~~
 
-7. 添加月排行榜模块 （预约排行TOP, 实到排行TOP, 流失数量TOP, 回访数量TOP）
+7. ~~添加月排行榜模块 （预约排行TOP, 实到排行TOP, 流失数量TOP, 回访数量TOP）~~
 ![task1](./task1.png)
 
 8. 添加分组数据表格 ![task1](./task2.png)
