@@ -1,5 +1,5 @@
 <template>
-  <div class="disease-management">
+  <div class="disease-management" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Disease management</h2>
       <el-tree
@@ -82,6 +82,7 @@
         .then(res => {
           for (let disease in res.diseases) {
             self.diseases[0].children.push(res.diseases[disease])
+            self.$store.state.loading = false
           }
         })
     }

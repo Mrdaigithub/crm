@@ -1,5 +1,5 @@
 <template>
-  <div class="patient" v-loading.body="loading">
+  <div class="patient" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Patient</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
@@ -167,7 +167,6 @@
     name: 'patient',
     data () {
       return {
-        loading: true,
         currentPage: 1,
         sortby: 'id',
         order: 'asc',
@@ -269,14 +268,13 @@
         this.fetchPatients()
       },
       fetchPatients (callback = () => {}) {
-        this.loading = true
         this.stateClock = true
         let self = this
         !(async function () {
           self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
           setTimeout(() => {
             self.stateClock = false
-            self.loading = false
+            self.$store.state.loading = false
             callback()
           }, 0)
         }())

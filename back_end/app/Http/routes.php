@@ -50,7 +50,7 @@ $api->version('v1', function ($api) {
             $api->group(['prefix' => 'roles'], function ($api) {
                 $api->get('/', 'RoleController@index');
                 $api->get('/{name}/create', 'RoleController@create');
-                $api->PATCH('/{id}', 'RoleController@update');
+                $api->patch('/{id}', 'RoleController@update');
                 $api->delete('/{id}', 'RoleController@destroy');
             });
 

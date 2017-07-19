@@ -1,5 +1,5 @@
 <template>
-  <div class="doctor-managemnet">
+  <div class="doctor-managemnet" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Doctors management</h2>
       <el-button type="success" icon="plus" class="add-doctor" @click="addDoctor"></el-button>
@@ -87,6 +87,7 @@
       axios.get('/management/doctors')
         .then(res => {
           self.doctors = res.doctors
+          self.$store.state.loading = false
         })
     }
   }

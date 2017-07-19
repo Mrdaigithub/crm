@@ -2,7 +2,7 @@ import axios from 'axios'
 import {Message} from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {createRouter} from '~router'
+const router = require('~router')
 
 let axiosInstance = axios.create({
   baseURL: 'http://crm.mrdaisite.com/api',
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
           break
         case 401:
           Message.error({message: 'Unauthorized'})
-          createRouter.replace('/login')
+          console.log(router)
           break
         case 403:
           Message.error({message: 'Forbidden'})

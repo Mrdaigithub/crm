@@ -41,4 +41,7 @@ module.exports = {
   plugins: ['~plugins/element-ui', '~plugins/router-protect'],
 
   css: ['element-ui/lib/theme-default/index.css'],
+  router: {
+    middleware: 'loading'
+  }
 }

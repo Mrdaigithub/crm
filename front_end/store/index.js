@@ -7,6 +7,7 @@ Vue.use(Vuex)
 const store = () => new Vuex.Store({
 
   state: {
+    loading: true,
     oneself: {},
     menus: null,
     advisories: null,

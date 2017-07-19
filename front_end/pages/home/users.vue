@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="user" v-loading.body="$store.state.loading">
     <el-row>
       <el-col :span="6" class="role-area">
         <el-card class="box-card">
@@ -338,6 +338,7 @@
         let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')])
         self.roles = roles['roles']
         self.users = users['users']
+        self.$store.state.loading = false
       }())
     }
   }

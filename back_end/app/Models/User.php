@@ -38,6 +38,6 @@ class User extends Model implements AuthenticatableContract,
 
     public function patient()
     {
-        return $this->belongsToMany('App\Models\Patient', 'patient_user', 'advisory_id', 'patient_id');
+        return $this->belongsToMany('App\Models\Patient', 'patient_user', 'user_id', 'patient_id');
     }
 }

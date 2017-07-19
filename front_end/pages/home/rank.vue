@@ -1,5 +1,5 @@
 <template>
-  <div class="rank">
+  <div class="rank" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Rank</h2>
       <el-row>
@@ -9,11 +9,10 @@
               <span>Advisory top</span>
             </div>
             <div class="rank-list">
-              <div class="rank-item">asdasd<el-badge :value="advisoryTop" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
+              <div v-for="advisoryTop of advisoryTopData" class="rank-item">
+                {{advisoryTop.username}}
+                <el-badge :value="advisoryTop['patient_len']" class="item"></el-badge>
+              </div>
             </div>
           </el-card>
         </el-col>
@@ -23,31 +22,23 @@
               <span>Arrive top</span>
             </div>
             <div class="rank-list">
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
+              <div v-for="arriveTop of arriveTopData" class="rank-item">
+                {{arriveTop.username}}
+                <el-badge :value="arriveTop['patient_len']" class="item"></el-badge>
+              </div>
             </div>
           </el-card>
         </el-col>
         <el-col :span='6'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
-              <span>Lost top</span>
+              <span>Lose top</span>
             </div>
             <div class="rank-list">
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
+              <div v-for="loseTop of loseTopData" class="rank-item">
+                {{loseTop.username}}
+                <el-badge :value="loseTop['patient_len']" class="item"></el-badge>
+              </div>
             </div>
           </el-card>
         </el-col>
@@ -70,12 +61,31 @@
 </template>
 
 <script>
+  import axios from '../../config/axios'
+
   export default {
     name: 'rank',
     data () {
       return {
-        advisoryTop: 10023
+        advisoryTopData: [],
+        arriveTopData: [],
+        loseTopData: []
       }
+    },
+    mounted () {
+      let self = this
+      !(async function () {
+        [
+          self.advisoryTopData,
+          self.arriveTopData,
+          self.loseTopData
+        ] = await Promise.all([
+          axios.get('/ranks/advisory'),
+          axios.get('/ranks/arrive'),
+          axios.get('/ranks/lose')
+        ])
+        self.$store.state.loading = false
+      })()
     }
   }
 </script>

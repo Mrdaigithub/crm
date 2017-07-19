@@ -1,5 +1,5 @@
 <template>
-  <div class="channel-managemnet">
+  <div class="channel-managemnet" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Channels management</h2>
       <el-button type="success" icon="plus" class="add-channel" @click="addChannel"></el-button>
@@ -91,6 +91,7 @@
       axios.get('/management/channels')
         .then(res => {
           self.channels = res.channels
+          self.$store.state.loading = false
         })
     }
   }
