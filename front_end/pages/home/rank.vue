@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <h2>Rank</h2>
       <el-row>
-        <el-col :span='6'>
+        <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
               <span>Advisory top</span>
@@ -16,7 +16,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span='6'>
+        <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
               <span>Arrive top</span>
@@ -29,7 +29,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span='6'>
+        <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
               <span>Lose top</span>
@@ -39,19 +39,6 @@
                 {{loseTop.username}}
                 <el-badge :value="loseTop['patient_len']" class="item"></el-badge>
               </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span='6'>
-          <el-card class="rank-card">
-            <div slot="header" class="clearfix">
-              <span>Track top</span>
-            </div>
-            <div class="rank-list">
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
-              <div class="rank-item">asdasd<el-badge :value="12" class="item"></el-badge></div>
             </div>
           </el-card>
         </el-col>
@@ -98,7 +85,7 @@
       margin-bottom: 25px;
     }
     .rank-card {
-      margin: 0 8px;
+      margin: 0 25px;
       .rank-list{
         .rank-item{
           border-bottom: 1px solid #E9E9E9;
