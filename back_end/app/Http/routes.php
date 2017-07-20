@@ -110,9 +110,14 @@ $api->version('v1', function ($api) {
             // Data
             $api->group(['prefix' => 'data', 'namespace' => 'Data'], function ($api){
 
-                // diseases
+                // group
                 $api->group(['prefix' => 'group'], function ($api){
                     $api->get('/{name}', 'GroupController@show');
+                });
+
+                // group
+                $api->group(['prefix' => 'performance'], function ($api){
+                    $api->get('/{name}', 'PerformanceController@show');
                 });
             });
         });
