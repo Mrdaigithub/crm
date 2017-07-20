@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec1d54d7-455c-4c7b-ae4f-2547e59254a3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/back_end.iml" afterPath="$PROJECT_DIR$/.idea/back_end.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../front_end/pages/home/data/group.vue" afterPath="$PROJECT_DIR$/../front_end/pages/home/data/group.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../front_end/pages/home/rank.vue" afterPath="$PROJECT_DIR$/../front_end/pages/home/rank.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../task.md" afterPath="$PROJECT_DIR$/../task.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -58,8 +54,8 @@
       <file leaf-file-name="GroupController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/Data/GroupController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="111" column="35" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="35" />
+            <state relative-caret-position="376">
+              <caret line="131" column="0" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="35" />
               <folding>
                 <element signature="e#52#80#0#PHP" expanded="true" />
                 <element signature="e#1105#3880#0#PHP" expanded="false" />
@@ -99,11 +95,11 @@
         <option value="$USER_HOME$/www/crm/core/config.php" />
         <option value="$USER_HOME$/www/crm/m/main.php" />
         <option value="$USER_HOME$/www/crm/res/index.tpl.php" />
-        <option value="$PROJECT_DIR$/../task.md" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/V1/RankController.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Data/GroupController.php" />
+        <option value="$PROJECT_DIR$/../task.md" />
       </list>
     </option>
   </component>
@@ -192,9 +188,8 @@
       <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-12" />
-    <option name="y" value="34" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="23" />
     <option name="width" value="1456" />
     <option name="height" value="876" />
   </component>
@@ -341,22 +336,23 @@
       <workItem from="1500424797240" duration="509000" />
       <workItem from="1500425321463" duration="19975000" />
       <workItem from="1500513567248" duration="52000" />
-      <workItem from="1500513668719" duration="2808000" />
+      <workItem from="1500513668719" duration="3392000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46485000" />
+    <option name="totallyTimeSpent" value="47069000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
+    <frame x="23" y="0" width="1456" height="876" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20972644" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15186246" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1504298" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1504298" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29475102" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13896848" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -471,16 +467,6 @@
     <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.users" />
     <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patient_user" />
     <entry file="dbDummy://dbtable:/27025f34/7fce72a9-f47e-415c-8e49-38df0b47cf8c/crm.patients" />
-    <entry file="file://$PROJECT_DIR$/../task.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
-            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Management/Disease.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="519">
@@ -535,10 +521,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../task.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="432">
+            <caret line="18" column="41" lean-forward="true" selection-start-line="18" selection-start-column="41" selection-end-line="18" selection-end-column="41" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/V1/Data/GroupController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="111" column="35" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="35" />
+        <state relative-caret-position="376">
+          <caret line="131" column="0" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="35" />
           <folding>
             <element signature="e#52#80#0#PHP" expanded="true" />
             <element signature="e#1105#3880#0#PHP" expanded="false" />

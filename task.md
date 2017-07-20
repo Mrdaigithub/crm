@@ -16,6 +16,6 @@
 7. ~~添加月排行榜模块 （预约排行TOP, 实到排行TOP, 流失数量TOP, 回访数量TOP）~~
 ![task1](./task1.png-del)
 
-8. 添加分组数据表格 ![task1](./task2.png)
+8. ~~添加分组数据表格~~ ![task1](./task2.png-del)
 
 9. 添加绩效数据表格 ![task1](./task3.png)
