@@ -2,7 +2,7 @@
   <div class="channel-managemnet" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Channels management</h2>
-      <el-button type="success" icon="plus" class="add-channel" @click="addChannel"></el-button>
+      <float-button @click.native="addChannel"/>
       <el-table style="width: 100%" border :data="channelData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
@@ -24,10 +24,15 @@
 </template>
 
 <script>
+  import FloatButton from '~components/FloatButton.vue'
   import axios from '../../../config/axios'
   import qs from 'qs'
+
   export default {
     name: 'channelManagement',
+    components: {
+      FloatButton
+    },
     data () {
       return {
         channels: []

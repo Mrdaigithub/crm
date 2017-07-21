@@ -1,8 +1,8 @@
 <template>
   <div class="advisory-managemnet"  v-loading.body="$store.state.loading">
     <el-card class="box-card">
-      <h2>Doctors management</h2>
-      <el-button type="success" icon="plus" class="add-advisory" @click="addAdvisory"></el-button>
+      <h2>Advisory management</h2>
+      <float-button @click.native="addAdvisory"/>
       <el-table style="width: 100%" border :data="advisories">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
@@ -19,11 +19,15 @@
 </template>
 
 <script>
+  import FloatButton from '~components/FloatButton.vue'
   import axios from '../../../config/axios'
   import qs from 'qs'
 
   export default {
     name: 'advisoryManagement',
+    components: {
+      FloatButton
+    },
     data () {
       return {
         advisories: []

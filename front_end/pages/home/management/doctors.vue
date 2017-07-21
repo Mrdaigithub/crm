@@ -2,7 +2,7 @@
   <div class="doctor-managemnet" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Doctors management</h2>
-      <el-button type="success" icon="plus" class="add-doctor" @click="addDoctor"></el-button>
+      <float-button @click.native="addDoctor"/>
       <el-table style="width: 100%" border :data="doctorData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
@@ -21,10 +21,15 @@
 </template>
 
 <script>
+  import FloatButton from '~components/FloatButton.vue'
   import axios from '../../../config/axios'
   import qs from 'qs'
+
   export default {
     name: 'doctorsManagement',
+    components: {
+      FloatButton
+    },
     data () {
       return {
         doctors: []

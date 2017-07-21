@@ -2,7 +2,7 @@
   <div class="patient" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Patient</h2>
-      <el-button type="success" icon="plus" class="add-doctor" @click="addPatient"></el-button>
+      <float-button @click.native="addPatient"/>
       <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum" @sort-change="sortChange" border>
         <el-table-column type="expand">
           <template scope="props">
@@ -161,10 +161,15 @@
 </template>
 
 <script>
+  import FloatButton from '~components/FloatButton.vue'
   import axios from '../../config/axios'
   import qs from 'qs'
+
   export default {
     name: 'patient',
+    components: {
+      FloatButton
+    },
     data () {
       return {
         currentPage: 1,

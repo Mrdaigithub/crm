@@ -26,7 +26,7 @@
       <el-col :span="18" class="user-area">
         <el-card class="box-card">
           <h2>User List</h2>
-          <el-button type="success" icon="plus" class="add_btn" @click="initUserFormData('new')"></el-button>
+          <float-button @click.native="initUserFormData('new')"/>
           <el-table :data="showUsersData" border style="width: 100%">
             <el-table-column prop="id" label="id" width="70"></el-table-column>
             <el-table-column prop="username" label="username" width="120"></el-table-column>
@@ -95,11 +95,15 @@
 </template>
 
 <script>
+  import FloatButton from '~components/FloatButton.vue'
   import axios from '../../config/axios'
   import qs from 'qs'
 
   export default {
     name: 'user',
+    components: {
+      FloatButton
+    },
     data () {
       return {
         roles: [],
