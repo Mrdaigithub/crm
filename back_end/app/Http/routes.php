@@ -64,7 +64,7 @@ $api->version('v1', function ($api) {
                 $api->delete('/{id}', 'UserController@destroy');
             });
 
-            // permissions
+            // permissions (待重构)
             $api->group(['prefix' => 'permissions'], function ($api){
                 $api->get('/{id}', 'PermissionController@show');
                 $api->put('/{id}', 'PermissionController@update');
@@ -76,7 +76,7 @@ $api->version('v1', function ($api) {
                 // diseases
                 $api->group(['prefix' => 'diseases'], function ($api){
                     $api->get('/', 'DiseaseController@index');
-                    $api->get('/create', 'DiseaseController@create');
+                    $api->get('/create', 'DiseaseController@create'); // (test)
                     $api->get('/{pid}/{name}', 'DiseaseController@store');
                     $api->patch('/{id}', 'DiseaseController@update');
                     $api->delete('/{id}', 'DiseaseController@destroy');

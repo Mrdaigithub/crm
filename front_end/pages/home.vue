@@ -13,7 +13,6 @@
 <script>
   import TopBar from '~components/TopBar.vue'
   import MenuBar from '~components/MenuBar.vue'
-  import FloatButton from '~components/FloatButton.vue'
 
   export default {
     name: 'home',
@@ -24,8 +23,7 @@
     },
     components: {
       TopBar,
-      MenuBar,
-      FloatButton
+      MenuBar
     },
     mounted () {
       if (!this.$store.oneself) this.$store.dispatch('getOneself')

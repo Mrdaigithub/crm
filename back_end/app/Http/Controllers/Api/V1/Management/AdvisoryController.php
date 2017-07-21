@@ -30,96 +30,47 @@ class AdvisoryController extends Controller
      */
     public function create($name)
     {
-        $validator = validator::make(
-            [
-                'name' => $name,
-            ],
-            [
-                'name' => 'string|unique:advisories'
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['name' => $name], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400032);
+        if (Validator::make(['name' => $name], ['name' => 'unique:advisories'])->fails()) $this->response->errorBadRequest(400033);
 
         $advisory = new Advisory();
         $advisory->name = $name;
-        if (!$advisory->save()) $this->response->errorInternal();
+        if (!$advisory->save()) $this->response->errorInternal(500001);
         return $advisory;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:advisories',
-            'name' => 'string|unique:advisories',
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:advisories'])->fails()) $this->response->errorBadRequest(400034);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400032);
+        if (Validator::make($parameters, ['name' => 'unique:advisories'])->fails()) $this->response->errorBadRequest(400033);
 
         $advisory = Advisory::find($id);
         if (key_exists('name', $parameters)) $advisory->name = $parameters['name'];
-        if (!$advisory->save()) $this->response->errorInternal();
+        if (!$advisory->save()) $this->response->errorInternal(500001);
         return $advisory;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $validator = validator::make(
-            [
-                'id' => $id,
-            ],
-            [
-                'id' => 'numeric|exists:advisories',
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['id' => $id], ['id' => 'exists:advisories'])->fails()) $this->response->errorBadRequest(400034);
 
         $advisory = Advisory::find($id);
-        if (!$advisory->delete()) $this->response->errorInternal();
-        return;
+        $advisory->delete();
     }
 }

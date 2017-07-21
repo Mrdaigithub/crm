@@ -20,26 +20,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function index(Request $request)
+    public function index()
     {
         $users = User::all();
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $user->roles;
         }
         return $users;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -51,16 +40,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $parameters = $request->all();
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|min:4|max:10|unique:users|string',
-            'password' => 'required|min:4|max:20|string',
-            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
-            'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
-            'ip' => 'ip',
-            'role_id' => 'required|exists:roles,id',
-            'state' => 'boolean'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['username' => 'required'])->fails()) $this->response->errorBadRequest(400005);
+        if (Validator::make($parameters, ['username' => 'min:4'])->fails()) $this->response->errorBadRequest(400006);
+        if (Validator::make($parameters, ['username' => 'max:10'])->fails()) $this->response->errorBadRequest(400007);
+        if (Validator::make($parameters, ['username' => 'string'])->fails()) $this->response->errorBadRequest(400008);
+        if (Validator::make($parameters, ['username' => 'unique:users'])->fails()) $this->response->errorBadRequest(400009);
+        if (Validator::make($parameters, ['password' => 'required'])->fails()) $this->response->errorBadRequest(400010);
+        if (Validator::make($parameters, ['password' => 'min:4'])->fails()) $this->response->errorBadRequest(4000011);
+        if (Validator::make($parameters, ['password' => 'max:15'])->fails()) $this->response->errorBadRequest(400012);
+        if (Validator::make($parameters, ['password' => 'string'])->fails()) $this->response->errorBadRequest(400013);
+        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400014);
+        if (Validator::make($parameters, ['headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/']])->fails()) $this->response->errorBadRequest(400015);
+        if (Validator::make($parameters, ['ip' => 'ip'])->fails()) $this->response->errorBadRequest(400016);
+        if (Validator::make($parameters, ['role_id' => 'required'])->fails()) $this->response->errorBadRequest(400017);
+        if (Validator::make($parameters, ['role_id' => 'exists:roles,id'])->fails()) $this->response->errorBadRequest(400018);
+        if (Validator::make($parameters, ['state' => 'boolean'])->fails()) $this->response->errorBadRequest(400019);
 
         $user = new User();
         $user->username = $parameters['username'];
@@ -69,7 +63,7 @@ class UserController extends Controller
         if (key_exists('headimgurl', $parameters)) $user->headimgurl = $parameters['headimgurl'];
         if (key_exists('ip', $parameters)) $user->ip = $parameters['ip'];
         if (key_exists('state', $parameters)) $user->state = $parameters['state'];
-        if (!$user->save()) $this->response->errorInternal();
+        if (!$user->save()) $this->response->errorInternal(500001);
         $user->attachRole(Role::find($parameters['role_id']));
         $user->roles;
         return $user;
@@ -83,26 +77,9 @@ class UserController extends Controller
      */
     public function show_by_uid($id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
-
-        if ($id == 0) {
-            $user = JWTAuth::parseToken()->authenticate();
-            return $user;
-        }
-
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:users'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
-
-        $user = User::find($id);
-        return $user;
+        if ($id == 0) return JWTAuth::parseToken()->authenticate();
+        if (Validator::make(['id' => $id], ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);
+        return User::find($id);
     }
 
     /**
@@ -113,28 +90,8 @@ class UserController extends Controller
      */
     public function show_by_rid($id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
-
-        $role = Role::find($id);
-        $users = $role->users;
-        return $users;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
+        return Role::find($id)->users;
     }
 
     /**
@@ -148,17 +105,20 @@ class UserController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:users',
-            'username' => 'min:4|max:10|unique:users|string',
-            'password' => 'min:4|max:20|string',
-            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
-            'headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/'],
-            'ip' => 'ip',
-            'state' => 'boolean',
-            'role_id' => 'exists:roles,id'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);
+        if (Validator::make($parameters, ['username' => 'min:4'])->fails()) $this->response->errorBadRequest(400006);
+        if (Validator::make($parameters, ['username' => 'max:10'])->fails()) $this->response->errorBadRequest(400007);
+        if (Validator::make($parameters, ['username' => 'string'])->fails()) $this->response->errorBadRequest(400008);
+        if (Validator::make($parameters, ['username' => 'unique:users'])->fails()) $this->response->errorBadRequest(400009);
+        if (Validator::make($parameters, ['password' => 'min:4'])->fails()) $this->response->errorBadRequest(4000011);
+        if (Validator::make($parameters, ['password' => 'max:15'])->fails()) $this->response->errorBadRequest(400012);
+        if (Validator::make($parameters, ['password' => 'string'])->fails()) $this->response->errorBadRequest(400013);
+        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400014);
+        if (Validator::make($parameters, ['headimgurl' => ['regex:/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*\.{1}(png|jpg|bmp|gif)$/']])->fails()) $this->response->errorBadRequest(400015);
+        if (Validator::make($parameters, ['ip' => 'ip'])->fails()) $this->response->errorBadRequest(400016);
+        if (Validator::make($parameters, ['role_id' => 'exists:roles,id'])->fails()) $this->response->errorBadRequest(400018);
+        if (Validator::make($parameters, ['state' => 'boolean'])->fails()) $this->response->errorBadRequest(400019);
+
         $user = User::find($id);
         if (key_exists('username', $parameters)) $user->username = $parameters['username'];
         if (key_exists('password', $parameters)) $user->password = bcrypt($parameters['password']);
@@ -170,7 +130,7 @@ class UserController extends Controller
             $user->detachRoles($user->roles);
             $user->attachRole(Role::find($parameters['role_id']));
         }
-        if (!$user->save()) $this->response->errorInternal();
+        if (!$user->save()) $this->response->errorInternal(500001);
         $user = User::find($parameters['id']);
         $user->roles;
         return $user;
@@ -184,13 +144,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:users'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make(['id' => $id], ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);
 
         $user = User::find($id);
         $user->detachRoles($user->roles);

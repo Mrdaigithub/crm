@@ -42,16 +42,6 @@ class PatientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -82,6 +72,13 @@ class PatientController extends Controller
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
 
+        if (Validator::make($parameters, ['name' => 'required'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['sex' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['age' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['tel' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+
+
         $patient = new Patient();
         $patient->name = $parameters['name'];
         $patient->tel = $parameters['tel'];
@@ -111,28 +108,6 @@ class PatientController extends Controller
         $patient_res['disease'] = $patient->disease;
         $patient_res['doctor'] = $patient->doctor;
         return $patient_res;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

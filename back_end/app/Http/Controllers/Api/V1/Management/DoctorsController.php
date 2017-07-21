@@ -30,52 +30,13 @@ class DoctorsController extends Controller
      */
     public function create($name)
     {
-        $validator = validator::make(
-            [
-                'name' => $name,
-            ],
-            [
-                'name' => 'string|unique:doctors'
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['name' => $name], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400023);
+        if (Validator::make(['name' => $name], ['name' => 'unique:doctors'])->fails()) $this->response->errorBadRequest(400024);
 
         $doctor = new Doctor();
         $doctor->name = $name;
-        if (!$doctor->save()) $this->response->errorInternal();
+        if (!$doctor->save()) $this->response->errorInternal(500001);
         return $doctor;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -89,17 +50,15 @@ class DoctorsController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:doctors',
-            'name' => 'unique:doctors|string',
-            'state' => 'boolean',
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:doctors'])->fails()) $this->response->errorBadRequest(400025);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400023);
+        if (Validator::make($parameters, ['name' => 'unique:doctors'])->fails()) $this->response->errorBadRequest(400024);
+        if (Validator::make($parameters, ['state' => 'boolean'])->fails()) $this->response->errorBadRequest(400026);
 
         $doctor = Doctor::find($id);
         if (key_exists('name', $parameters)) $doctor->name = $parameters['name'];
         if (key_exists('state', $parameters)) $doctor->state = $parameters['state'];
-        if (!$doctor->save()) $this->response->errorInternal();
+        if (!$doctor->save()) $this->response->errorInternal(500001);
         return $doctor;
     }
 
@@ -111,17 +70,9 @@ class DoctorsController extends Controller
      */
     public function destroy($id)
     {
-        $validator = validator::make(
-            [
-                'id' => $id,
-            ],
-            [
-                'id' => 'numeric|exists:doctors',
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['id' => $id], ['id' => 'exists:doctors'])->fails()) $this->response->errorBadRequest(400025);
 
         $doctor = Doctor::find($id);
-        if (!$doctor->delete()) $this->response->errorInternal();
-        return;
+        $doctor->delete();
     }
 }

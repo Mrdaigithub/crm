@@ -20,8 +20,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = new Role();
-        return $role->all();
+        return Role::all();
     }
 
     /**
@@ -32,52 +31,13 @@ class RoleController extends Controller
      */
     public function create($name)
     {
-        $parameters = [
-            'name' => $name
-        ];
-        $validator = Validator::make($parameters, [
-            'name' => 'unique:roles|string'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make(['name' => $name], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make(['name' => $name], ['name' => 'unique:roles'])->fails()) $this->response->errorBadRequest(400001);
 
         $role = new Role();
         $role->name = $name;
-        if (!$role->save()) $this->response->errorInternal();
+        if (!$role->save()) $this->response->errorInternal(500001);
         return $role;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @param $name
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, $name)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -91,14 +51,15 @@ class RoleController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:roles',
-            'name' => 'required|string|unique:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400002);
+        if (Validator::make($parameters, ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
+        if (Validator::make($parameters, ['name' => 'required'])->fails()) $this->response->errorBadRequest(400004);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['name' => 'unique:roles'])->fails()) $this->response->errorBadRequest(400001);
+
         $role = Role::find($id);
         $role->name = $parameters['name'];
-        if (!$role->save()) $this->response->errorInternal();
+        if (!$role->save()) $this->response->errorInternal(500001);
         return $role;
     }
 
@@ -110,15 +71,11 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400002);
+        if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
+
         $role = Role::find($id);
-        if (count($role->users)) $this->response->errorInternal();
+        if (count($role->users)) $this->response->errorInternal(500002);
         Role::find($id)->detachPermissions();
         Role::destroy($id);
     }

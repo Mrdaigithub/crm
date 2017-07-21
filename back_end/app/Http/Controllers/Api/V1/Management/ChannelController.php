@@ -23,16 +23,6 @@ class ChannelController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -40,44 +30,14 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = validator::make(
-            [
-                'name' => $request['name'],
-                'state' => $request['state'],
-            ],
-            [
-                'name' => 'required|string|unique:roles',
-                'state' => 'boolean',
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['name' => $request['name']], ['name' => 'required'])->fails()) $this->response->errorBadRequest(400027);
+        if (Validator::make(['name' => $request['name']], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400028);
+        if (Validator::make(['name' => $request['name']], ['name' => 'unique:channels'])->fails()) $this->response->errorBadRequest(400029);
 
         $channel = new Channel();
         $channel->name = $request['name'];
-        if (array_key_exists('state', $request)) $channel->state = $request['state'];
-        if (!$channel->save()) $this->response->errorInternal();
+        if (!$channel->save()) $this->response->errorInternal(500001);
         return $channel;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -91,17 +51,15 @@ class ChannelController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:channels',
-            'name' => 'unique:channels|string',
-            'state' => 'boolean',
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:channels'])->fails()) $this->response->errorBadRequest(400030);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400028);
+        if (Validator::make($parameters, ['name' => 'unique:channels'])->fails()) $this->response->errorBadRequest(400029);
+        if (Validator::make($parameters, ['state' => 'boolean'])->fails()) $this->response->errorBadRequest(400031);
 
         $channel = Channel::find($id);
         if (key_exists('name', $parameters)) $channel->name = $parameters['name'];
         if (key_exists('state', $parameters)) $channel->state = $parameters['state'];
-        if (!$channel->save()) $this->response->errorInternal();
+        if (!$channel->save()) $this->response->errorInternal(500001);
         return $channel;
     }
 
@@ -113,17 +71,8 @@ class ChannelController extends Controller
      */
     public function destroy($id)
     {
-        $validator = validator::make(
-            [
-                'id' => $id,
-            ],
-            [
-                'id' => 'numeric|exists:channels',
-            ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['id' => $id], ['id' => 'exists:channels'])->fails()) $this->response->errorBadRequest(400030);
 
-        $channel = Channel::find($id);
-        if (!$channel->delete()) $this->response->errorInternal();
-        return;
+        Channel::find($id)->delete();
     }
 }

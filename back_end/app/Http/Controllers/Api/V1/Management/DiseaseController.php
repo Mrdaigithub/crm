@@ -53,38 +53,12 @@ class DiseaseController extends Controller
      */
     public function store($pid, $name)
     {
-        $parameters['id'] = $pid;
-        $parameters['name'] = $name;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:diseases',
-            'name' => 'string'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        $parameters = ['id'=>$pid, 'name'=>$name];
+        if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400022);
 
         $c_node = Disease::find($parameters['id'])->children()->create(['name' => $parameters['name']]);
         return $c_node;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -98,15 +72,12 @@ class DiseaseController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:diseases',
-            'name' => 'string'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400022);
 
         $node = Disease::find($parameters['id']);
         $node->name = $parameters['name'];
-        $node->save();
+        if (!$node->save()) $this->response->errorInternal(500001);
         return $node;
     }
 
@@ -119,12 +90,10 @@ class DiseaseController extends Controller
     public function destroy($id)
     {
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:diseases',
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
+        if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
+
         $node = Disease::find($id);
-        if (count($node->children()->get())) $this->response->errorBadRequest();
-        if (!Disease::find($id)->delete()) $this->response->errorInternal();
+        if (count($node->children()->get())) $this->response->errorInternal(500003);
+        $node->delete();
     }
 }
