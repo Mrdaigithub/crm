@@ -35,7 +35,7 @@ module.exports = {
       }
     },
 
-    vendor: ['axios', 'element-ui']
+    vendor: ['axios', 'element-ui', 'echarts']
   },
 
   plugins: ['~plugins/element-ui', '~plugins/router-protect'],
