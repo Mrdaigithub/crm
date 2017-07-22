@@ -14,16 +14,16 @@
 - ~~添加patient表单 加入选择登记人选项 加入 first~~
 
 - ~~添加月排行榜模块 （预约排行TOP, 实到排行TOP, 流失数量TOP, 回访数量TOP）~~
-![task1](./task1.png)
+![todo1](./todo1.png)
 
-- ~~添加分组数据表格~~ ![task2](./task2.png)
+- ~~添加分组数据表格~~ ![todo2](./todo2.png)
 
 + 添加绩效数据表格 
   - 总体数据 (以月份输出和以年份输出) 
-   ![task3](./task3.png)
+   ![todo3](./todo3.png)
 
   - 客服数据 报表条件
   (状态：4个基本状态)
   (统计类型：按年，月，日)
   （渠道来源：channel属性）
-   ![task3](./task4.png)
+   ![todo4](./todo4.png)

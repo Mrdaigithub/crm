@@ -56,7 +56,7 @@ class PatientController extends Controller
             'age' => 'numeric',
             'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
             'wechat' => 'string',
-            'state' => 'required|numeric',
+            'state' => 'numeric',
             'keyword' => 'string',
             'pageurl' => 'url',
             'mark' => 'string',
@@ -76,7 +76,15 @@ class PatientController extends Controller
         if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400000);
         if (Validator::make($parameters, ['sex' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
         if (Validator::make($parameters, ['age' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['tel' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['wechat' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['state' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['keyword' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['pageurl' => 'url'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['mark' => 'string'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['price' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
 
 
         $patient = new Patient();

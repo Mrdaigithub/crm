@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
          $this->call(Role_userSeede::class);
          $this->call(PermissionsSeeder::class);
          $this->call(Permission_roleSeede::class);
-         $this->call(MenuSeeder::class);
+//         $this->call(MenuSeeder::class);
          $this->call(ManagementSeeder::class);
          $this->call(PatientsSeeder::class);
 

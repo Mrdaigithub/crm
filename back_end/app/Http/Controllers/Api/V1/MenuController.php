@@ -44,14 +44,18 @@ class MenuController extends Controller
     {
         $children = [
             ['name' => 'root', 'children' => [
-                ['name' => 'Console', 'url' => '/home'],
-                ['name' => 'Rank', 'url' => '/rank'],
-                ['name' => 'Patients', 'url' => '/patient'],
-                ['name' => 'Users list', 'url' => '/users'],
-                ['name' => 'Patient track', 'children' => [
-                    ['name' => 'Patient track list', 'url' => '/patient/track/list'],
-                    ['name' => 'My track', 'url' => '/patient/track/my'],
-                    ['name' => 'Track task', 'url' => '/patient/track/task'],
+                ['name' => 'Console', 'url' => '/home/console'],
+                ['name' => 'Rank', 'url' => '/home/rank'],
+                ['name' => 'Patients', 'url' => '/home/patient'],
+                ['name' => 'Users list', 'url' => '/home/users'],
+                ['name' => 'Data', 'children' => [
+                    ['name' => 'Total data', 'url' => '/home/data/total'],
+                    ['name' => 'Users data', 'url' => '/home/data/users'],
+                    ['name' => 'Diseases data', 'url' => '/home/data/diseases'],
+                    ['name' => 'Channels data', 'url' => '/home/data/channels'],
+                    ['name' => 'Advisories data', 'url' => '/home/data/advisories'],
+                    ['name' => 'Doctors data', 'url' => '/home/data/doctors'],
+                    ['name' => 'Patients data', 'url' => '/home/data/patients']
                 ]],
                 ['name' => 'Project info', 'children' => [
                     ['name' => 'Diseases management', 'url' => '/patient/diseases'],
@@ -59,18 +63,12 @@ class MenuController extends Controller
                     ['name' => 'Channel management', 'url' => '/patient/channel'],
                     ['name' => 'Advisory management', 'url' => '/patient/advisory'],
                 ]],
-                ['name' => 'Data', 'children' => [
-                    ['name' => 'Group data', 'url' => '/data/group'],
-                    ['name' => 'Performance data', 'url' => '/data/performance'],
-                    ['name' => 'Report data', 'url' => '/data/report'],
-                ]],
                 ['name' => 'System setting', 'children' => [
                     ['name' => 'Parameter setting', 'url' => '/setting/parameter'],
                     ['name' => 'log', 'url' => '/setting/log']
                 ]]
             ]]
         ];
-
         return response()->json(Menu::buildTree($children));
     }
 

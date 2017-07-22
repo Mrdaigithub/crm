@@ -4,6 +4,7 @@
     <data-source source="LOCAL" name="crm@47.90.4.16" uuid="7fce72a9-f47e-415c-8e49-38df0b47cf8c">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://47.90.4.16:3306/crm</jdbc-url>
       <driver-properties>

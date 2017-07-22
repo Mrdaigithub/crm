@@ -1,43 +1,43 @@
 <template>
   <div class="performance-data" v-loading.body="$store.state.loading">
     <el-card class="box-card">
-      <h2>performance data</h2>
+      <h2>Total data</h2>
       <!--<el-button-group class="el-button-group">-->
-        <!--<el-button @click="type='user'">user</el-button>-->
-        <!--<el-button @click="type='disease'">disease</el-button>-->
-        <!--<el-button @click="type='channel'">channel</el-button>-->
-        <!--<el-button @click="type='advisory'">advisory</el-button>-->
+      <!--<el-button @click="type='user'">user</el-button>-->
+      <!--<el-button @click="type='disease'">disease</el-button>-->
+      <!--<el-button @click="type='channel'">channel</el-button>-->
+      <!--<el-button @click="type='advisory'">advisory</el-button>-->
       <!--</el-button-group>-->
       <!--<el-table stripe show-summary sum-text="Sum" :data="showData">-->
-        <!--<el-table-column-->
-          <!--prop="name"-->
-          <!--:label="type">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="advisory_len"-->
-          <!--label="advisory number">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="arrive_len"-->
-          <!--label="arrive number">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="lose_len"-->
-          <!--label="lose number">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--label="proportion">-->
-          <!--<template scope="scope">-->
-            <!--<p style="color: #ff0000;">{{getProportion(scope.row)}}</p>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="name"-->
+      <!--:label="type">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="advisory_len"-->
+      <!--label="advisory number">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="arrive_len"-->
+      <!--label="arrive number">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="lose_len"-->
+      <!--label="lose number">-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--label="proportion">-->
+      <!--<template scope="scope">-->
+      <!--<p style="color: #ff0000;">{{getProportion(scope.row)}}</p>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
       <!--</el-table>-->
     </el-card>
   </div>
 </template>
 
 <script>
-//  import axios from '../../../config/axios'
+  //  import axios from '../../../config/axios'
 
   export default {
     name: 'performanceData',
