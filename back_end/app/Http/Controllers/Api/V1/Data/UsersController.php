@@ -49,28 +49,38 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $parameters = Input::all();
-        $users = User::all();
-        $res = [];
-        $date_type = $parameters['date_type'] === 'created' ? 'created_at' : 'arrive_date';
-        if ($parameters['statistical_type'] === 'day' &&
-            date_diff(date_create($parameters['start_date']), date_create($parameters['end_date']))->m >= 1) {
-            // 按日计算, 范围超过一个月就按一个月算, 根据end_date修改start_date
-            $parameters['start_date'] = date('Y-m-d', strtotime($parameters['end_date'] . " -1 Month"));
-        }
-        if ($parameters['statistical_type'] === 'year') {
-            $start_date_year = date('Y', strtotime($parameters['start_date']));
-            $end_date_year = (int)date('Y', strtotime($parameters['end_date']));
-            for ($year = $end_date_year; $year >= $start_date_year; --$year) {
-                $item['date'] = $year;
-                $item['data'] = [];
-                foreach ($users as $user) {
-                    array_push($item['data'], $user);
-                }
-                array_push($res, $item);
-            }
-        }
-        return $res;
+        return User::where('id', 6)->with(['patient'=>function($query){
+            $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
+            $query->with(['channel'=>function($c_query){
+                return $c_query->where('id', 3);
+            }]);
+            return $query->where('state', 2);
+        }])->get();
+//        $parameters = Input::all();
+//        $users = User::all();
+//        $res = [];
+//        $date_type = $parameters['date_type'] === 'created' ? 'created_at' : 'arrive_date';
+//        if ($parameters['statistical_type'] === 'day' &&
+//            date_diff(date_create($parameters['start_date']), date_create($parameters['end_date']))->m >= 1) {
+//            // 按日计算, 范围超过一个月就按一个月算, 根据end_date修改start_date
+//            $parameters['start_date'] = date('Y-m-d', strtotime($parameters['end_date'] . " -1 Month"));
+//        }
+//        if ($parameters['statistical_type'] === 'year') {
+//            $start_date_year = date('Y', strtotime($parameters['start_date']));
+//            $end_date_year = (int)date('Y', strtotime($parameters['end_date']));
+//            for ($year = $end_date_year; $year >= $start_date_year; --$year) {
+//                $item['date'] = $year;
+//                $item['data'] = [];
+//                foreach ($users as $user) {
+//                    array_push($item['data'], $user);
+//                }
+//                array_push($res, $item);
+//            }
+//        }
+//        return $res;
+
+
+
 //        $patients = Patient::whereBetween($date_type, [$parameters['start_date'], $parameters['end_date']])->get();
 //        if (key_exists('channel', $parameters)) {
 //            $arr = [];
