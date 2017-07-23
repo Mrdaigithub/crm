@@ -58,10 +58,10 @@ class MenuController extends Controller
                     ['name' => 'Patients data', 'url' => '/home/data/patients']
                 ]],
                 ['name' => 'Project info', 'children' => [
-                    ['name' => 'Diseases management', 'url' => '/patient/diseases'],
-                    ['name' => 'Doctor management', 'url' => '/patient/doctors'],
-                    ['name' => 'Channel management', 'url' => '/patient/channel'],
-                    ['name' => 'Advisory management', 'url' => '/patient/advisory'],
+                    ['name' => 'Diseases management', 'url' => '/home/management/diseases'],
+                    ['name' => 'Doctor management', 'url' => '/home/management/doctors'],
+                    ['name' => 'Channel management', 'url' => '/home/management/channel'],
+                    ['name' => 'Advisory management', 'url' => '/home/management/advisory'],
                 ]],
                 ['name' => 'System setting', 'children' => [
                     ['name' => 'Parameter setting', 'url' => '/setting/parameter'],

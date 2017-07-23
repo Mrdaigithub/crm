@@ -32,7 +32,7 @@ class PatientsSeeder extends Seeder
         DB::table('patient_doctor')->insert(['patient_id' => '1', 'doctor_id' => '1']);
         DB::table('patient_channel')->insert(['patient_id' => '1', 'channel_id' => '2']);
         DB::table('patient_advisory')->insert(['patient_id' => '1', 'advisory_id' => '3']);
-        DB::table('patient_user')->insert(['patient_id' => '1', 'user_id' => '4']);
+        DB::table('patient_user')->insert(['patient_id' => '1', 'user_id' => '1']);
 
         DB::table('patients')->insert([
             'id' => 2,
@@ -56,7 +56,7 @@ class PatientsSeeder extends Seeder
         DB::table('patient_doctor')->insert(['patient_id' => '2', 'doctor_id' => '3']);
         DB::table('patient_channel')->insert(['patient_id' => '2', 'channel_id' => '3']);
         DB::table('patient_advisory')->insert(['patient_id' => '2', 'advisory_id' => '2']);
-        DB::table('patient_user')->insert(['patient_id' => '2', 'user_id' => '4']);
+        DB::table('patient_user')->insert(['patient_id' => '2', 'user_id' => '2']);
 
         DB::table('patients')->insert([
             'id' => 3,
@@ -80,7 +80,7 @@ class PatientsSeeder extends Seeder
         DB::table('patient_doctor')->insert(['patient_id' => '3', 'doctor_id' => '3']);
         DB::table('patient_channel')->insert(['patient_id' => '3', 'channel_id' => '3']);
         DB::table('patient_advisory')->insert(['patient_id' => '3', 'advisory_id' => '2']);
-        DB::table('patient_user')->insert(['patient_id' => '3', 'user_id' => '6']);
+        DB::table('patient_user')->insert(['patient_id' => '3', 'user_id' => '3']);
 
         DB::table('patients')->insert([
             'id' => 4,
