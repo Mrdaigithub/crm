@@ -5,58 +5,58 @@
       <el-card class="sub-box">
         <h3>Patients Data by year</h3>
         <el-table stripe :data="yearData">
-        <el-table-column
-          prop="date"
-          label="date">
-        </el-table-column>
-        <el-table-column
-          prop="advisory"
-          label="advisory patients">
-        </el-table-column>
-        <el-table-column
-          prop="arrive"
-          label="arrive patients">
-        </el-table-column>
-        <el-table-column
-          prop="lose"
-          label="lose patients">
-        </el-table-column>
-         <el-table-column
-          label="proportion">
-          <template scope="scope">
-            <p>{{getProportion(scope.row)}}</p>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div id="yearChart"></div>
+          <el-table-column
+            prop="date"
+            label="date">
+          </el-table-column>
+          <el-table-column
+            prop="advisory"
+            label="advisory patients">
+          </el-table-column>
+          <el-table-column
+            prop="arrive"
+            label="arrive patients">
+          </el-table-column>
+          <el-table-column
+            prop="lose"
+            label="lose patients">
+          </el-table-column>
+          <el-table-column
+            label="proportion">
+            <template scope="scope">
+              <p>{{getProportion(scope.row)}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div id="yearChart"></div>
       </el-card>
       <el-card class="sub-box">
         <h3>Patients Data by month</h3>
         <el-table stripe :data="monthData">
-        <el-table-column
-          prop="date"
-          label="date">
-        </el-table-column>
-        <el-table-column
-          prop="advisory"
-          label="advisory patients">
-        </el-table-column>
-        <el-table-column
-          prop="arrive"
-          label="arrive patients">
-        </el-table-column>
-        <el-table-column
-          prop="lose"
-          label="lose patients">
-        </el-table-column>
-         <el-table-column
-          label="proportion">
-          <template scope="scope">
-            <p>{{getProportion(scope.row)}}</p>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div id="monthChart"></div>
+          <el-table-column
+            prop="date"
+            label="date">
+          </el-table-column>
+          <el-table-column
+            prop="advisory"
+            label="advisory patients">
+          </el-table-column>
+          <el-table-column
+            prop="arrive"
+            label="arrive patients">
+          </el-table-column>
+          <el-table-column
+            prop="lose"
+            label="lose patients">
+          </el-table-column>
+          <el-table-column
+            label="proportion">
+            <template scope="scope">
+              <p>{{getProportion(scope.row)}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div id="monthChart"></div>
       </el-card>
     </el-card>
   </div>
@@ -64,6 +64,7 @@
 
 <script>
   import axios from '../../../config/axios'
+
   const echarts = require('echarts')
 
   export default {
@@ -111,7 +112,7 @@
     methods: {
       getProportion (data) {
         if (data['advisory'] === 0) return '0.00%'
-        return `${(data['arrive'] / data['advisory']).toFixed(2)}%`
+        return `${((data['arrive'] / data['advisory']) * 100).toFixed(2)}%`
       }
     },
     mounted () {
@@ -205,12 +206,12 @@
     h2 {
       margin-bottom: 25px;
     }
-    .sub-box{
+    .sub-box {
       margin: 40px 0;
-      h3{
+      h3 {
         margin-bottom: 15px;
       }
-      #yearChart, #monthChart{
+      #yearChart, #monthChart {
         height: 400px;
       }
     }
