@@ -63,8 +63,9 @@ typings/
 # Nuxt generate
 dist
 
-.idea
-.vscode
+back_end/.idea
+front_end/.idea
+front_end/.vscode
 
 
 vendor/
