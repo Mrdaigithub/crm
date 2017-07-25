@@ -21,12 +21,17 @@
             <el-date-picker
               v-model="userFrom.dateRange"
               type="daterange"
-              placeholder="date range">
+              :picker-options="pickerOptions"
+              placeholder="date range"
+              format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="dateType">
+          <el-form-item prop="state">
             <el-select v-model="userFrom.state">
-              <el-option label="created_at" value="created_at"></el-option>
+              <el-option :value="0" label="untreated"></el-option>
+              <el-option :value="1" label="wait"></el-option>
+              <el-option :value="2" label="confirm"></el-option>
+              <el-option :value="3" label="cancel"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -36,31 +41,24 @@
           </el-form-item>
         </el-form>
         <h3>Patients Data by year</h3>
-        <!--<el-table stripe :data="yearData">-->
-        <!--<el-table-column-->
-        <!--prop="date"-->
-        <!--label="date">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--prop="advisory"-->
-        <!--label="advisory patients">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--prop="arrive"-->
-        <!--label="arrive patients">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--prop="lose"-->
-        <!--label="lose patients">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--label="proportion">-->
-        <!--<template scope="scope">-->
-        <!--<p>{{getProportion(scope.row)}}</p>-->
-        <!--</template>-->
-        <!--</el-table-column>-->
-        <!--</el-table>-->
-        <!--<div id="yearChart"></div>-->
+        <el-table
+          :data="usersData"
+          style="width: 100%">
+          <el-table-column
+            v-for="key in col"
+            :key="key"
+            :prop="key"
+            :label="key"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            label="Sum" fixed="right">
+            <template scope="scope">
+              <p>{{getSum(scope.row)}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div id="yearChart"></div>
       </el-card>
     </el-card>
   </div>
@@ -75,48 +73,88 @@
     name: 'usersData',
     data () {
       return {
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() > Date.now()
+          },
+          shortcuts: [{
+            text: 'one week',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: 'one month',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: 'three month',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
         userFrom: {
           statisticalType: 'month',
           dateType: 'created_at',
-          dateRange: ''
+          dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
+          state: 2
         },
-        yearData: []
+        sUsersData: null
       }
     },
     computed: {
-//      yearXData () {
-//        if (!this.yearData || !this.yearData.length) return []
-//        return this.yearData.map(item => item.date)
-//      },
-//      yearSeriesAdvisory () {
-//        if (!this.yearData || !this.yearData.length) return []
-//        return this.yearData.map(item => item.advisory)
-//      },
-//      yearSeriesArrive () {
-//        if (!this.yearData || !this.yearData.length) return []
-//        return this.yearData.map(item => item.arrive)
-//      },
-//      yearSeriesLose () {
-//        if (!this.yearData || !this.yearData.length) return []
-//        return this.yearData.map(item => item.lose)
-//      }
+      startDate () {
+        if (!this.userFrom.dateRange[0]) return
+        return this.userFrom.dateRange[0].toLocaleDateString().replace(/\//g, '-')
+      },
+      endDate () {
+        if (!this.userFrom.dateRange[1]) return
+        return this.userFrom.dateRange[1].toLocaleDateString().replace(/\//g, '-')
+      },
+      col () {
+        if (!this.sUsersData) return []
+        let res = Object.keys(this.sUsersData.data[0])
+        res.unshift('date')
+        return res
+      },
+      usersData () {
+        if (!this.sUsersData) return []
+        return this.sUsersData.data.map((val, index) => {
+          val.date = this.sUsersData.date[index]
+          return val
+        })
+      }
     },
     methods: {
-      getProportion (data) {
-        if (data['advisory'] === 0) return '0.00%'
-        return `${((data['arrive'] / data['advisory']) * 100).toFixed(2)}%`
+      fetchUserData () {
+        let self = this
+        axios.get(`/data/users?statistical_type=${self.userFrom.statisticalType}&date_type=${self.userFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}&state=${self.userFrom.state}`)
+          .then(res => {
+            self.sUsersData = res
+            self.$store.state.loading = false
+          })
+      },
+      getSum (data) {
+        let sum = 0
+        for (let key in data) {
+          if (key === 'date') continue
+          sum += data[key]
+        }
+        return sum
       }
     },
     mounted () {
-      let self = this
-      !(async function () {
-        [
-          self.yearData,
-          self.monthData
-        ] = await Promise.all([
-          axios.get('/data/total/year')
-        ])
-        self.$store.state.loading = false
+      this.fetchUserData()
 //        const yearChart = echarts.init(document.getElementById('yearChart'))
 //        yearChart.setOption({
 //          tooltip: {
@@ -151,7 +189,7 @@
 //            }
 //          ]
 //        })
-      })()
+//      })()
     }
   }
 </script>
