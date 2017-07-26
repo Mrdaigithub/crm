@@ -35,7 +35,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="search('loginFrom')">
+            <el-button type="primary" @click="searchUserData('userFrom')">
               Search
             </el-button>
           </el-form-item>
@@ -48,8 +48,7 @@
             v-for="key in col"
             :key="key"
             :prop="key"
-            :label="key"
-            width="180">
+            :label="key">
           </el-table-column>
           <el-table-column
             label="Sum" fixed="right">
@@ -67,7 +66,7 @@
 <script>
   import axios from '../../../config/axios'
 
-  //  const echarts = require('echarts')
+  const echarts = require('echarts')
 
   export default {
     name: 'usersData',
@@ -109,7 +108,8 @@
           dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
           state: 2
         },
-        sUsersData: null
+        sUsersData: null,
+        chartType: 'bar'
       }
     },
     computed: {
@@ -123,7 +123,10 @@
       },
       col () {
         if (!this.sUsersData) return []
-        let res = Object.keys(this.sUsersData.data[0])
+        let res = []
+        Object.keys(this.sUsersData.data[0]).forEach(item => {
+          if (item !== 'date') res.push(item)
+        })
         res.unshift('date')
         return res
       },
@@ -133,14 +136,48 @@
           val.date = this.sUsersData.date[index]
           return val
         })
+      },
+      usersLegend () {
+        return this.col.filter(item => item !== 'date')
+      },
+      usersXData () {
+        return this.usersData.map(item => item.date)
+      },
+      usersSeries () {
+        return this.usersLegend.map(label => {
+          return {
+            name: label,
+            type: this.chartType,
+            data: this.usersData.map(item => item[label])
+          }
+        })
       }
     },
     methods: {
       fetchUserData () {
         let self = this
+        self.$store.state.loading = true
         axios.get(`/data/users?statistical_type=${self.userFrom.statisticalType}&date_type=${self.userFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}&state=${self.userFrom.state}`)
           .then(res => {
             self.sUsersData = res
+            const userChart = echarts.init(document.getElementById('yearChart'))
+            userChart.setOption({
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'shadow'
+                }
+              },
+              legend: {
+                data: self.usersLegend,
+                bottom: 0
+              },
+              xAxis: {
+                data: self.usersXData
+              },
+              yAxis: {},
+              series: self.usersSeries
+            })
             self.$store.state.loading = false
           })
       },
@@ -151,45 +188,19 @@
           sum += data[key]
         }
         return sum
+      },
+      searchUserData (userFrom) {
+        this.$refs[userFrom].validate(valid => {
+          if (valid) {
+            this.fetchUserData()
+          } else {
+            return 'err'
+          }
+        })
       }
     },
     mounted () {
       this.fetchUserData()
-//        const yearChart = echarts.init(document.getElementById('yearChart'))
-//        yearChart.setOption({
-//          tooltip: {
-//            trigger: 'axis',
-//            axisPointer: {
-//              type: 'shadow'
-//            }
-//          },
-//          legend: {
-//            data: ['Advisory', 'Arrive', 'Lose'],
-//            bottom: 0
-//          },
-//          xAxis: {
-//            data: self.yearXData
-//          },
-//          yAxis: {},
-//          series: [
-//            {
-//              name: 'Advisory',
-//              type: 'bar',
-//              data: self.yearSeriesAdvisory
-//            },
-//            {
-//              name: 'Arrive',
-//              type: 'bar',
-//              data: self.yearSeriesArrive
-//            },
-//            {
-//              name: 'Lose',
-//              type: 'bar',
-//              data: self.yearSeriesLose
-//            }
-//          ]
-//        })
-//      })()
     }
   }
 </script>
