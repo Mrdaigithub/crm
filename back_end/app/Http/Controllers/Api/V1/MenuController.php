@@ -46,7 +46,7 @@ class MenuController extends Controller
             ['name' => 'root', 'children' => [
                 ['name' => 'Console', 'url' => '/home/console'],
                 ['name' => 'Rank', 'url' => '/home/rank'],
-                ['name' => 'Patients', 'url' => '/home/patient'],
+                ['name' => 'Patients', 'url' => '/home/patients'],
                 ['name' => 'Users list', 'url' => '/home/users'],
                 ['name' => 'Data', 'children' => [
                     ['name' => 'Total data', 'url' => '/home/data/total'],
@@ -64,8 +64,8 @@ class MenuController extends Controller
                     ['name' => 'Advisory management', 'url' => '/home/management/advisory'],
                 ]],
                 ['name' => 'System setting', 'children' => [
-                    ['name' => 'Parameter setting', 'url' => '/setting/parameter'],
-                    ['name' => 'log', 'url' => '/setting/log']
+                    ['name' => 'Parameter setting', 'url' => '/home/setting/parameter'],
+                    ['name' => 'log', 'url' => '/home/setting/log']
                 ]]
             ]]
         ];

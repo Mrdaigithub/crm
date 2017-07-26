@@ -276,6 +276,7 @@
         this.stateClock = true
         let self = this
         !(async function () {
+          self.$store.state.loading = true
           self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
           setTimeout(() => {
             self.stateClock = false

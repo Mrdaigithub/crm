@@ -49,7 +49,7 @@ class MenuSeeder extends Seeder
             'rgt' => '7',
             'depth' => '1',
             'name' => 'Patients',
-            'url' => '/home/patient',
+            'url' => '/home/patients',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -68,9 +68,9 @@ class MenuSeeder extends Seeder
             'id' => '6',
             'parent_id' => '1',
             'lft' => '10',
-            'rgt' => '17',
+            'rgt' => '25',
             'depth' => '1',
-            'name' => 'Track',
+            'name' => 'Data',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -80,8 +80,8 @@ class MenuSeeder extends Seeder
             'lft' => '11',
             'rgt' => '12',
             'depth' => '2',
-            'name' => 'Track list',
-            'url' => '/home/track/list',
+            'name' => 'Total data',
+            'url' => '/home/data/total',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -91,8 +91,8 @@ class MenuSeeder extends Seeder
             'lft' => '13',
             'rgt' => '14',
             'depth' => '2',
-            'name' => 'My track',
-            'url' => '/home/track/my',
+            'name' => 'Users data',
+            'url' => '/home/data/users',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -102,26 +102,70 @@ class MenuSeeder extends Seeder
             'lft' => '15',
             'rgt' => '16',
             'depth' => '2',
-            'name' => 'Track task',
-            'url' => '/home/track/task',
+            'name' => 'Diseases data',
+            'url' => '/home/data/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
             'id' => '10',
-            'parent_id' => '1',
-            'lft' => '18',
-            'rgt' => '27',
-            'depth' => '1',
-            'name' => 'Project management',
+            'parent_id' => '6',
+            'lft' => '17',
+            'rgt' => '18',
+            'depth' => '2',
+            'name' => 'Channels data',
+            'url' => '/home/data/channels',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
             'id' => '11',
-            'parent_id' => '10',
+            'parent_id' => '6',
             'lft' => '19',
             'rgt' => '20',
+            'depth' => '2',
+            'name' => 'Advisories data',
+            'url' => '/home/data/advisories',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('menus')->insert([
+            'id' => '12',
+            'parent_id' => '6',
+            'lft' => '21',
+            'rgt' => '22',
+            'depth' => '2',
+            'name' => 'Doctors data',
+            'url' => '/home/data/doctors',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('menus')->insert([
+            'id' => '13',
+            'parent_id' => '6',
+            'lft' => '23',
+            'rgt' => '24',
+            'depth' => '2',
+            'name' => 'Patients data',
+            'url' => '/home/data/patients',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('menus')->insert([
+            'id' => '14',
+            'parent_id' => '1',
+            'lft' => '26',
+            'rgt' => '35',
+            'depth' => '1',
+            'name' => 'Project info',
+            'created_at' => date('Y-m-d h:m:s'),
+            'updated_at' => date('Y-m-d h:m:s')
+        ]);
+        DB::table('menus')->insert([
+            'id' => '15',
+            'parent_id' => '14',
+            'lft' => '27',
+            'rgt' => '28',
             'depth' => '2',
             'name' => 'Diseases management',
             'url' => '/home/management/diseases',
@@ -129,78 +173,35 @@ class MenuSeeder extends Seeder
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '12',
-            'parent_id' => '10',
-            'lft' => '21',
-            'rgt' => '22',
+            'id' => '16',
+            'parent_id' => '14',
+            'lft' => '29',
+            'rgt' => '30',
             'depth' => '2',
-            'name' => 'Doctors management',
+            'name' => 'Doctor management',
             'url' => '/home/management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '13',
-            'parent_id' => '10',
-            'lft' => '23',
-            'rgt' => '24',
+            'id' => '17',
+            'parent_id' => '14',
+            'lft' => '31',
+            'rgt' => '32',
             'depth' => '2',
-            'name' => 'Channels management',
+            'name' => 'Channel management',
             'url' => '/home/management/channel',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '14',
-            'parent_id' => '10',
-            'lft' => '25',
-            'rgt' => '26',
-            'depth' => '2',
-            'name' => 'Advisory management',
-            'url' => '/home/management/advisory',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
-            'id' => '15',
-            'parent_id' => '1',
-            'lft' => '28',
-            'rgt' => '35',
-            'depth' => '1',
-            'name' => 'Data',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
-            'id' => '16',
-            'parent_id' => '15',
-            'lft' => '29',
-            'rgt' => '30',
-            'depth' => '2',
-            'name' => 'Group data',
-            'url' => '/home/data/group',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
-            'id' => '17',
-            'parent_id' => '15',
-            'lft' => '31',
-            'rgt' => '32',
-            'depth' => '2',
-            'name' => 'Performance data',
-            'url' => '/home/data/performance',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
             'id' => '18',
-            'parent_id' => '15',
+            'parent_id' => '14',
             'lft' => '33',
             'rgt' => '34',
             'depth' => '2',
-            'name' => 'Report data',
-            'url' => '/home/data/report',
+            'name' => 'Advisory management',
+            'url' => '/home/management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -209,7 +210,7 @@ class MenuSeeder extends Seeder
             'parent_id' => '1',
             'lft' => '36',
             'rgt' => '41',
-            'depth' => '2',
+            'depth' => '1',
             'name' => 'System setting',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -220,7 +221,7 @@ class MenuSeeder extends Seeder
             'lft' => '37',
             'rgt' => '38',
             'depth' => '2',
-            'name' => 'System parameters',
+            'name' => 'Parameter setting',
             'url' => '/home/setting/parameter',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
