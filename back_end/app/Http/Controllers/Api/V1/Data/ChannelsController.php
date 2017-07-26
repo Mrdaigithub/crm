@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
-use App\Models\User;
+use App\Models\Management\Channel;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Dingo\Api\Routing\Helpers;
 
-class UsersController extends Controller
+class ChannelsController extends Controller
 {
     use Helpers;
 
@@ -22,37 +22,42 @@ class UsersController extends Controller
     {
         $parameters = Input::all();
 
-        if (!key_exists('statistical_type', $parameters))$parameters['statistical_type'] = 'month';
+        if (!key_exists('statistical_type', $parameters)) $parameters['statistical_type'] = 'month';
         if (Validator::make($parameters, ['statistical_type' => 'required'])->fails()) $this->response->errorBadRequest(400067);
         if (Validator::make($parameters, ['statistical_type' => ['regex:/^(year|month|day)$/']])->fails()) $this->response->errorBadRequest(400068);
-        if (!key_exists('date_type', $parameters))$parameters['date_type'] = 'created_at';
+        if (!key_exists('date_type', $parameters)) $parameters['date_type'] = 'created_at';
         if (Validator::make($parameters, ['date_type' => 'required'])->fails()) $this->response->errorBadRequest(400069);
         if (Validator::make($parameters, ['date_type' => ['regex:/^(created_at|arrive_date)$/']])->fails()) $this->response->errorBadRequest(400070);
         if (Validator::make($parameters, ['start_date' => 'required'])->fails()) $this->response->errorBadRequest(400071);
         if (Validator::make($parameters, ['start_date' => 'date'])->fails()) $this->response->errorBadRequest(400072);
         if (Validator::make($parameters, ['end_date' => 'required'])->fails()) $this->response->errorBadRequest(400073);
         if (Validator::make($parameters, ['end_date' => 'date'])->fails()) $this->response->errorBadRequest(400074);
-        if (!key_exists('state', $parameters))$parameters['state'] = 2;
+        if (!key_exists('state', $parameters)) $parameters['state'] = 2;
         if (Validator::make($parameters, ['state' => ['regex:/^(0|1|2|3)$/']])->fails()) $this->response->errorBadRequest(400041);
 
         $dates = $this->createDateRange($parameters['statistical_type'], $parameters['start_date'], $parameters['end_date']);
         $res = [];
         $res['data'] = $res['date'] = [];
+//        2016-04-01
+//        2016-05-01
+        $channels = Channel::find(1)->with(['patient' => function ($query) use ($parameters) {
+            $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
+            return $query;
+        }])->get();
+        return $channels;
         foreach ($dates as $date) {
-            $users = User::find(1)->with(['patient' => function ($query) use ($parameters, $date) {
-                $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
-                return $query->where('state', $parameters['state'])
-                    ->whereBetween($parameters['date_type'], [$date[0], $date[1]]);
-            }])->get();
-            foreach ($users as $user) {
-                $item[$user->username] = count($user->patient);
-            }
-            array_push($res['data'], $item);
+
+//            $users = User::find(1)->with(['patient' => function ($query) use ($parameters, $date) {
+//                $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
+//                return $query->where('state', $parameters['state'])
+//                    ->whereBetween($parameters['date_type'], [$date[0], $date[1]]);
+//            }])->get();
+//            foreach ($users as $user) {
+//                $item[$user->username] = count($user->patient);
+//            }
+//            array_push($res['data'], $item);
         }
-        foreach ($dates as $date) {
-            array_push($res['date'], $date[0]);
-        }
-        return $res;
+//        return $dates;
     }
 
     /**

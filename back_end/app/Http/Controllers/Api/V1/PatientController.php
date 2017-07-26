@@ -124,28 +124,6 @@ class PatientController extends Controller
     {
         $parameters = $request->all();
         $parameters['id'] = $id;
-        $validator = Validator::make($parameters, [
-            'id' => 'numeric|exists:patients',
-            'name' => 'string',
-            'sex' => 'boolean',
-            'age' => 'numeric',
-            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
-            'wechat' => 'string',
-            'state' => 'numeric',
-            'keyword' => 'string',
-            'pageurl' => 'url',
-            'mark' => 'string',
-            'price' => 'numeric',
-            'first' => 'boolean',
-            'advisory_date' => 'date',
-            'arrive_date' => 'date',
-            'advisory_id' => 'numeric|exists:advisories,id',
-            'channel_id' => 'numeric|exists:channels,id',
-            'disease_id' => 'numeric|exists:diseases,id',
-            'doctor_id' => 'numeric|exists:doctors,id',
-            'user_id' => 'numeric|exists:users,id'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
 
         if (Validator::make($parameters, ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400065);
         if (Validator::make($parameters, ['id' => 'exists:patients'])->fails()) $this->response->errorBadRequest(400066);

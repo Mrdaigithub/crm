@@ -65,16 +65,16 @@ $api->version('v1', function ($api) {
             });
 
             // permissions (待重构)
-            $api->group(['prefix' => 'permissions'], function ($api){
+            $api->group(['prefix' => 'permissions'], function ($api) {
                 $api->get('/{id}', 'PermissionController@show');
                 $api->put('/{id}', 'PermissionController@update');
             });
 
             // Management
-            $api->group(['prefix' => 'management', 'namespace' => 'Management'], function ($api){
+            $api->group(['prefix' => 'management', 'namespace' => 'Management'], function ($api) {
 
                 // diseases
-                $api->group(['prefix' => 'diseases'], function ($api){
+                $api->group(['prefix' => 'diseases'], function ($api) {
                     $api->get('/', 'DiseaseController@index');
                     $api->get('/create', 'DiseaseController@create'); // (test)
                     $api->get('/{pid}/{name}', 'DiseaseController@store');
@@ -83,7 +83,7 @@ $api->version('v1', function ($api) {
                 });
 
                 // doctors
-                $api->group(['prefix' => 'doctors'], function ($api){
+                $api->group(['prefix' => 'doctors'], function ($api) {
                     $api->get('/', 'DoctorsController@index');
                     $api->get('/create/{name}', 'DoctorsController@create');
                     $api->patch('/{id}', 'DoctorsController@update');
@@ -91,7 +91,7 @@ $api->version('v1', function ($api) {
                 });
 
                 // channels
-                $api->group(['prefix' => 'channels'], function ($api){
+                $api->group(['prefix' => 'channels'], function ($api) {
                     $api->get('/', 'ChannelController@index');
                     $api->post('/', 'ChannelController@store');
                     $api->patch('/{id}', 'ChannelController@update');
@@ -99,7 +99,7 @@ $api->version('v1', function ($api) {
                 });
 
                 // advisories
-                $api->group(['prefix' => 'advisories'], function ($api){
+                $api->group(['prefix' => 'advisories'], function ($api) {
                     $api->get('/', 'AdvisoryController@index');
                     $api->get('/create/{name}', 'AdvisoryController@create');
                     $api->patch('/{id}', 'AdvisoryController@update');
@@ -108,7 +108,7 @@ $api->version('v1', function ($api) {
             });
 
             // Data
-            $api->group(['prefix' => 'data', 'namespace' => 'Data'], function ($api){
+            $api->group(['prefix' => 'data', 'namespace' => 'Data'], function ($api) {
 
                 // show total data by year
                 $api->get('/total/year', 'TotalController@show_by_year');
@@ -118,14 +118,16 @@ $api->version('v1', function ($api) {
 
                 $api->get('/users', 'UsersController@index');
 
+                $api->get('/channels', 'ChannelsController@index');
+
 
                 // group
-                $api->group(['prefix' => 'group'], function ($api){
+                $api->group(['prefix' => 'group'], function ($api) {
                     $api->get('/{name}', 'GroupController@show');
                 });
 
                 // group
-                $api->group(['prefix' => 'performance'], function ($api){
+                $api->group(['prefix' => 'performance'], function ($api) {
                     $api->get('/{name}', 'PerformanceController@show');
                 });
             });
