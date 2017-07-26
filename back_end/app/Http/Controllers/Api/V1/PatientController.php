@@ -50,42 +50,37 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $parameters = $request->all();
-        $validator = Validator::make($parameters, [
-            'name' => 'required|string',
-            'sex' => 'boolean',
-            'age' => 'numeric',
-            'tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/'],
-            'wechat' => 'string',
-            'state' => 'numeric',
-            'keyword' => 'string',
-            'pageurl' => 'url',
-            'mark' => 'string',
-            'price' => 'numeric',
-            'first' => 'boolean',
-            'advisory_date' => 'required|date',
-            'arrive_date' => 'date',
-            'advisory_id' => 'required|numeric|exists:advisories,id',
-            'channel_id' => 'required|numeric|exists:channels,id',
-            'disease_id' => 'required|numeric|exists:diseases,id',
-            'doctor_id' => 'required|numeric|exists:doctors,id',
-            'user_id' => 'required|numeric|exists:users,id'
-        ]);
-        if ($validator->fails()) $this->response->errorBadRequest();
 
-        if (Validator::make($parameters, ['name' => 'required'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['sex' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['age' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['wechat' => 'string'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['state' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['keyword' => 'string'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['pageurl' => 'url'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['mark' => 'string'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['price' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400000);
-
+        if (Validator::make($parameters, ['name' => 'required'])->fails()) $this->response->errorBadRequest(400035);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400036);
+        if (Validator::make($parameters, ['sex' => 'boolean'])->fails()) $this->response->errorBadRequest(400037);
+        if (Validator::make($parameters, ['age' => 'numeric'])->fails()) $this->response->errorBadRequest(400038);
+        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400039);
+        if (Validator::make($parameters, ['wechat' => 'string'])->fails()) $this->response->errorBadRequest(400040);
+        if (Validator::make($parameters, ['state' => 'numeric'])->fails()) $this->response->errorBadRequest(400041);
+        if (Validator::make($parameters, ['keyword' => 'string'])->fails()) $this->response->errorBadRequest(400042);
+        if (Validator::make($parameters, ['pageurl' => 'url'])->fails()) $this->response->errorBadRequest(400043);
+        if (Validator::make($parameters, ['mark' => 'string'])->fails()) $this->response->errorBadRequest(400044);
+        if (Validator::make($parameters, ['price' => 'numeric'])->fails()) $this->response->errorBadRequest(400045);
+        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400046);
+        if (Validator::make($parameters, ['advisory_date' => 'required'])->fails()) $this->response->errorBadRequest(400047);
+        if (Validator::make($parameters, ['advisory_date' => 'date'])->fails()) $this->response->errorBadRequest(400048);
+        if (Validator::make($parameters, ['arrive_date' => 'date'])->fails()) $this->response->errorBadRequest(400049);
+        if (Validator::make($parameters, ['advisory_id' => 'required'])->fails()) $this->response->errorBadRequest(400050);
+        if (Validator::make($parameters, ['advisory_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400051);
+        if (Validator::make($parameters, ['advisory_id' => 'exists:advisories,id'])->fails()) $this->response->errorBadRequest(400052);
+        if (Validator::make($parameters, ['channel_id' => 'required'])->fails()) $this->response->errorBadRequest(400053);
+        if (Validator::make($parameters, ['channel_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400054);
+        if (Validator::make($parameters, ['channel_id' => 'exists:channels,id'])->fails()) $this->response->errorBadRequest(400055);
+        if (Validator::make($parameters, ['disease_id' => 'required'])->fails()) $this->response->errorBadRequest(400056);
+        if (Validator::make($parameters, ['disease_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400057);
+        if (Validator::make($parameters, ['disease_id' => 'exists:diseases,id'])->fails()) $this->response->errorBadRequest(400058);
+        if (Validator::make($parameters, ['doctor_id' => 'required'])->fails()) $this->response->errorBadRequest(400059);
+        if (Validator::make($parameters, ['doctor_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400060);
+        if (Validator::make($parameters, ['doctor_id' => 'exists:doctors,id'])->fails()) $this->response->errorBadRequest(400061);
+        if (Validator::make($parameters, ['user_id' => 'required'])->fails()) $this->response->errorBadRequest(400062);
+        if (Validator::make($parameters, ['user_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400063);
+        if (Validator::make($parameters, ['user_id' => 'exists:users,id'])->fails()) $this->response->errorBadRequest(400064);
 
         $patient = new Patient();
         $patient->name = $parameters['name'];
@@ -101,7 +96,7 @@ class PatientController extends Controller
         if (array_key_exists('price', $parameters)) $patient->price = $parameters['price'];
         if (array_key_exists('first', $parameters)) $patient->first = $parameters['first'];
         if (array_key_exists('arrive_date', $parameters)) $patient->arrive_date = $parameters['arrive_date'];
-        if (!$patient->save()) $this->response->errorInternal();
+        if (!$patient->save()) $this->response->errorInternal(500001);
 
         $patient->user()->attach($parameters['user_id']);
         $patient->advisory()->attach($parameters['advisory_id']);
@@ -151,6 +146,32 @@ class PatientController extends Controller
             'user_id' => 'numeric|exists:users,id'
         ]);
         if ($validator->fails()) $this->response->errorBadRequest();
+
+        if (Validator::make($parameters, ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400065);
+        if (Validator::make($parameters, ['id' => 'exists:patients'])->fails()) $this->response->errorBadRequest(400066);
+        if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400036);
+        if (Validator::make($parameters, ['sex' => 'boolean'])->fails()) $this->response->errorBadRequest(400037);
+        if (Validator::make($parameters, ['age' => 'numeric'])->fails()) $this->response->errorBadRequest(400038);
+        if (Validator::make($parameters, ['tel' => ['regex:/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/']])->fails()) $this->response->errorBadRequest(400039);
+        if (Validator::make($parameters, ['wechat' => 'string'])->fails()) $this->response->errorBadRequest(400040);
+        if (Validator::make($parameters, ['state' => 'numeric'])->fails()) $this->response->errorBadRequest(400041);
+        if (Validator::make($parameters, ['keyword' => 'string'])->fails()) $this->response->errorBadRequest(400042);
+        if (Validator::make($parameters, ['pageurl' => 'url'])->fails()) $this->response->errorBadRequest(400043);
+        if (Validator::make($parameters, ['mark' => 'string'])->fails()) $this->response->errorBadRequest(400044);
+        if (Validator::make($parameters, ['price' => 'numeric'])->fails()) $this->response->errorBadRequest(400045);
+        if (Validator::make($parameters, ['first' => 'boolean'])->fails()) $this->response->errorBadRequest(400046);
+        if (Validator::make($parameters, ['advisory_date' => 'date'])->fails()) $this->response->errorBadRequest(400048);
+        if (Validator::make($parameters, ['arrive_date' => 'date'])->fails()) $this->response->errorBadRequest(400049);
+        if (Validator::make($parameters, ['advisory_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400051);
+        if (Validator::make($parameters, ['advisory_id' => 'exists:advisories,id'])->fails()) $this->response->errorBadRequest(400052);
+        if (Validator::make($parameters, ['channel_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400054);
+        if (Validator::make($parameters, ['channel_id' => 'exists:channels,id'])->fails()) $this->response->errorBadRequest(400055);
+        if (Validator::make($parameters, ['disease_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400057);
+        if (Validator::make($parameters, ['disease_id' => 'exists:diseases,id'])->fails()) $this->response->errorBadRequest(400058);
+        if (Validator::make($parameters, ['doctor_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400060);
+        if (Validator::make($parameters, ['doctor_id' => 'exists:doctors,id'])->fails()) $this->response->errorBadRequest(400061);
+        if (Validator::make($parameters, ['user_id' => 'numeric'])->fails()) $this->response->errorBadRequest(400063);
+        if (Validator::make($parameters, ['user_id' => 'exists:users,id'])->fails()) $this->response->errorBadRequest(400064);
 
         $patient = Patient::find($parameters['id']);
         if (key_exists('name', $parameters)) $patient->name = $parameters['name'];

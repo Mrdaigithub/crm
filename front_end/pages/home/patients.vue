@@ -1,5 +1,5 @@
 <template>
-  <div class="patient" v-loading.body="$store.state.loading">
+  <div class="patients" v-loading.body="$store.state.loading">
     <el-card class="box-card">
       <h2>Patient</h2>
       <float-button @click.native="addPatient"/>
@@ -166,7 +166,7 @@
   import qs from 'qs'
 
   export default {
-    name: 'patient',
+    name: 'patients',
     components: {
       FloatButton
     },
@@ -208,7 +208,7 @@
               }
             ],
             price: {type: 'number', message: 'must number', trigger: 'blur'},
-            age: {type: 'number', message: 'must number', trigger: 'blur'},
+            age: {pattern: /^(\d{1,2})?$/, message: 'must number', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
             pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
             advisoryId: { validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur' },
@@ -294,6 +294,7 @@
           this.editForm.data.channelId = ''
           this.editForm.data.doctorId = ''
           this.editForm.data.diseaseId = ''
+          this.editForm.data.price = 0
           this.editForm.data.age = ''
           this.editForm.data.sex = ''
           this.editForm.data.first = ''
@@ -303,6 +304,7 @@
           this.editForm.data.mark = ''
         }
         if (this.operationState === 'edit') {
+          this.editForm.data.id = row.id
           this.editForm.data.name = row.name
           this.editForm.data.tel = row.tel
           this.editForm.data.advisoryDate = new Date(row['advisory_date'])
@@ -312,7 +314,7 @@
           this.editForm.data.doctorId = row.doctor.id
           this.editForm.data.price = row.price
           this.editForm.data.age = row.age
-          this.editForm.data.sex = row.sex
+          this.editForm.data.sex = row.sex === 'man' ? '0' : '1'
           this.editForm.data.first = row.first
           this.editForm.data.wechat = row.wechat
           this.editForm.data.keyword = row.keyword
@@ -324,6 +326,7 @@
       savePatient (formName) {
         let self = this
         let postPatientData = {
+          id: this.editForm.data.id,
           name: this.editForm.data.name,
           tel: this.editForm.data.tel,
           state: 0,
@@ -344,14 +347,25 @@
         if (this.editForm.data.mark) postPatientData.mark = this.editForm.data.mark
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            axios.post('/patients', qs.stringify(postPatientData))
-              .then(res => {
-                self.currentPage = self.patients['last_page']
-                self.fetchPatients(() => {
+            if (this.operationState === 'new') {
+              axios.post('/patients', qs.stringify(postPatientData))
+                .then(res => {
                   self.currentPage = self.patients['last_page']
-                  self.dialogVisible = false
+                  self.fetchPatients(() => {
+                    self.currentPage = self.patients['last_page']
+                    self.dialogVisible = false
+                  })
                 })
-              })
+            } else if (this.operationState === 'edit') {
+              axios.patch('/patients', qs.stringify(postPatientData))
+                .then(res => {
+                  self.currentPage = self.patients['last_page']
+                  self.fetchPatients(() => {
+                    self.currentPage = self.patients['last_page']
+                    self.dialogVisible = false
+                  })
+                })
+            }
           } else {
             return false
           }
