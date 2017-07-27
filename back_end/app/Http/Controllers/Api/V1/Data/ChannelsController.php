@@ -32,32 +32,32 @@ class ChannelsController extends Controller
         if (Validator::make($parameters, ['start_date' => 'date'])->fails()) $this->response->errorBadRequest(400072);
         if (Validator::make($parameters, ['end_date' => 'required'])->fails()) $this->response->errorBadRequest(400073);
         if (Validator::make($parameters, ['end_date' => 'date'])->fails()) $this->response->errorBadRequest(400074);
-        if (!key_exists('state', $parameters)) $parameters['state'] = 2;
-        if (Validator::make($parameters, ['state' => ['regex:/^(0|1|2|3)$/']])->fails()) $this->response->errorBadRequest(400041);
+        if (key_exists('state', $parameters) && Validator::make($parameters, ['state' => ['regex:/^(0|1|2|3)$/']])->fails()) $this->response->errorBadRequest(400041);
 
         $dates = $this->createDateRange($parameters['statistical_type'], $parameters['start_date'], $parameters['end_date']);
         $res = [];
         $res['data'] = $res['date'] = [];
-//        2016-04-01
-//        2016-05-01
-        $channels = Channel::find(1)->with(['patient' => function ($query) use ($parameters) {
-            $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
-            return $query;
-        }])->get();
-        return $channels;
         foreach ($dates as $date) {
-
-//            $users = User::find(1)->with(['patient' => function ($query) use ($parameters, $date) {
-//                $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
-//                return $query->where('state', $parameters['state'])
-//                    ->whereBetween($parameters['date_type'], [$date[0], $date[1]]);
-//            }])->get();
-//            foreach ($users as $user) {
-//                $item[$user->username] = count($user->patient);
-//            }
-//            array_push($res['data'], $item);
+            $channels = Channel::find(1)->with(['patient' => function ($query) use ($parameters, $date) {
+                $query->select('id', 'name', 'state', 'created_at', 'arrive_date');
+                if (key_exists('state', $parameters)) {
+                    return $query->where('state', $parameters['state'])
+                        ->whereBetween($parameters['date_type'], [$date[0], $date[1]]);
+                } else {
+                    return $query->whereBetween($parameters['date_type'], [$date[0], $date[1]]);
+                }
+            }])->get();
+            foreach ($channels as $channel) {
+                $item[$channel->name] = count($channel->patient);
+            }
+            array_push($res['data'], $item);
         }
-//        return $dates;
+        foreach ($dates as $date) {
+            if ($parameters['statistical_type'] === 'year') array_push($res['date'], date('Y', strtotime($date[0])));
+            elseif ($parameters['statistical_type'] === 'month') array_push($res['date'], date('Y-m', strtotime($date[0])));
+            elseif ($parameters['statistical_type'] === 'day') array_push($res['date'], date('Y-m-d', strtotime($date[0])));
+        }
+        return $res;
     }
 
     /**
