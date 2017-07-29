@@ -26,14 +26,6 @@
               format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
-          <!--<el-form-item prop="state">-->
-            <!--<el-select v-model="patientsFrom.state">-->
-              <!--<el-option :value="0" label="untreated"></el-option>-->
-              <!--<el-option :value="1" label="wait"></el-option>-->
-              <!--<el-option :value="2" label="confirm"></el-option>-->
-              <!--<el-option :value="3" label="cancel"></el-option>-->
-            <!--</el-select>-->
-          <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="searchpatientsData('patientsFrom')">
               Search
