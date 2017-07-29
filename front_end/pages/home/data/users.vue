@@ -106,7 +106,7 @@
           statisticalType: 'month',
           dateType: 'created_at',
           dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
-          state: 2
+          state: ''
         },
         sUsersData: null,
         chartType: 'bar'
@@ -156,8 +156,10 @@
     methods: {
       fetchUserData () {
         let self = this
+        let url = `/data/users?statistical_type=${self.userFrom.statisticalType}&date_type=${self.userFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}`
+        if (/0|1|2|3/.test(self.userFrom.state.toString())) url += `&state=${self.userFrom.state}`
         self.$store.state.loading = true
-        axios.get(`/data/users?statistical_type=${self.userFrom.statisticalType}&date_type=${self.userFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}&state=${self.userFrom.state}`)
+        axios.get(url)
           .then(res => {
             self.sUsersData = res
             const userChart = echarts.init(document.getElementById('yearChart'))

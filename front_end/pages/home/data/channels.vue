@@ -57,7 +57,7 @@
             </template>
           </el-table-column>
         </el-table>
-         <div id="yearChart"></div> 
+         <div id="yearChart"></div>
       </el-card>
     </el-card>
   </div>
@@ -106,7 +106,7 @@
           statisticalType: 'month',
           dateType: 'created_at',
           dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
-          state: 2
+          state: ''
         },
         sChannelsData: null,
         chartType: 'bar'
@@ -156,8 +156,10 @@
     methods: {
       fetchChannelsData () {
         let self = this
+        let url = `/data/channels?statistical_type=${self.channelsFrom.statisticalType}&date_type=${self.channelsFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}`
+        if (/0|1|2|3/.test(self.channelsFrom.state.toString())) url += `&state=${self.channelsFrom.state}`
         self.$store.state.loading = true
-        axios.get(`/data/channels?statistical_type=${self.channelsFrom.statisticalType}&date_type=${self.channelsFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}&state=${self.channelsFrom.state}`)
+        axios.get(url)
           .then(res => {
             self.sChannelsData = res
             const channelChart = echarts.init(document.getElementById('yearChart'))
