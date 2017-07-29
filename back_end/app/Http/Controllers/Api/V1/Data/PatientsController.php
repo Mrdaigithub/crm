@@ -34,16 +34,15 @@ class PatientsController extends Controller
         $dates = $this->createDateRange($parameters['statistical_type'], $parameters['start_date'], $parameters['end_date']);
         $patient = new Patient();
         $res = [];
+        $labels = ['untreated', 'wait', 'confirm', 'cancel'];
         $res['data'] = $res['date'] = [];
         foreach ($dates as $date) {
             $item = [];
             for ($i = 0; $i <= 3; $i++) {
-                array_push(
-                    $item,
-                    $patient
-                        ->whereBetween($parameters['date_type'], $date)
-                        ->where('state', $i)
-                        ->count());
+                $item[$labels[$i]] = $patient
+                    ->whereBetween($parameters['date_type'], $date)
+                    ->where('state', $i)
+                    ->count();
             }
             array_push($res['data'], $item);
         }
