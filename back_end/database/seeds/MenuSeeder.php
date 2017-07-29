@@ -14,7 +14,7 @@ class MenuSeeder extends Seeder
         DB::table('menus')->insert([
             'id' => '1',
             'lft' => '1',
-            'rgt' => '42',
+            'rgt' => '40',
             'depth' => '0',
             'name' => 'root',
             'created_at' => date('Y-m-d h:m:s'),
@@ -68,7 +68,7 @@ class MenuSeeder extends Seeder
             'id' => '6',
             'parent_id' => '1',
             'lft' => '10',
-            'rgt' => '25',
+            'rgt' => '23',
             'depth' => '1',
             'name' => 'Data',
             'created_at' => date('Y-m-d h:m:s'),
@@ -124,8 +124,8 @@ class MenuSeeder extends Seeder
             'lft' => '19',
             'rgt' => '20',
             'depth' => '2',
-            'name' => 'Advisories data',
-            'url' => '/home/data/advisories',
+            'name' => 'Doctors data',
+            'url' => '/home/data/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -135,37 +135,26 @@ class MenuSeeder extends Seeder
             'lft' => '21',
             'rgt' => '22',
             'depth' => '2',
-            'name' => 'Doctors data',
-            'url' => '/home/data/doctors',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
-            'id' => '13',
-            'parent_id' => '6',
-            'lft' => '23',
-            'rgt' => '24',
-            'depth' => '2',
             'name' => 'Patients data',
             'url' => '/home/data/patients',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '14',
+            'id' => '13',
             'parent_id' => '1',
-            'lft' => '26',
-            'rgt' => '35',
+            'lft' => '24',
+            'rgt' => '33',
             'depth' => '1',
             'name' => 'Project info',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '15',
-            'parent_id' => '14',
-            'lft' => '27',
-            'rgt' => '28',
+            'id' => '14',
+            'parent_id' => '13',
+            'lft' => '25',
+            'rgt' => '26',
             'depth' => '2',
             'name' => 'Diseases management',
             'url' => '/home/management/diseases',
@@ -173,10 +162,10 @@ class MenuSeeder extends Seeder
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '16',
-            'parent_id' => '14',
-            'lft' => '29',
-            'rgt' => '30',
+            'id' => '15',
+            'parent_id' => '13',
+            'lft' => '27',
+            'rgt' => '28',
             'depth' => '2',
             'name' => 'Doctor management',
             'url' => '/home/management/doctors',
@@ -184,21 +173,21 @@ class MenuSeeder extends Seeder
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '17',
-            'parent_id' => '14',
-            'lft' => '31',
-            'rgt' => '32',
+            'id' => '16',
+            'parent_id' => '13',
+            'lft' => '29',
+            'rgt' => '30',
             'depth' => '2',
             'name' => 'Channel management',
-            'url' => '/home/management/channel',
+            'url' => '/home/management/channels',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '18',
-            'parent_id' => '14',
-            'lft' => '33',
-            'rgt' => '34',
+            'id' => '17',
+            'parent_id' => '13',
+            'lft' => '31',
+            'rgt' => '32',
             'depth' => '2',
             'name' => 'Advisory management',
             'url' => '/home/management/advisory',
@@ -206,20 +195,20 @@ class MenuSeeder extends Seeder
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '19',
+            'id' => '18',
             'parent_id' => '1',
-            'lft' => '36',
-            'rgt' => '41',
+            'lft' => '34',
+            'rgt' => '39',
             'depth' => '1',
             'name' => 'System setting',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '20',
-            'parent_id' => '19',
-            'lft' => '37',
-            'rgt' => '38',
+            'id' => '19',
+            'parent_id' => '18',
+            'lft' => '35',
+            'rgt' => '36',
             'depth' => '2',
             'name' => 'Parameter setting',
             'url' => '/home/setting/parameter',
@@ -227,10 +216,10 @@ class MenuSeeder extends Seeder
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('menus')->insert([
-            'id' => '21',
-            'parent_id' => '19',
-            'lft' => '39',
-            'rgt' => '40',
+            'id' => '20',
+            'parent_id' => '18',
+            'lft' => '37',
+            'rgt' => '38',
             'depth' => '2',
             'name' => 'Log',
             'url' => '/home/setting/log',

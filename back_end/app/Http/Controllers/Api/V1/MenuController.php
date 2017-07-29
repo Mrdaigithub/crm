@@ -53,7 +53,6 @@ class MenuController extends Controller
                     ['name' => 'Users data', 'url' => '/home/data/users'],
                     ['name' => 'Diseases data', 'url' => '/home/data/diseases'],
                     ['name' => 'Channels data', 'url' => '/home/data/channels'],
-                    ['name' => 'Advisories data', 'url' => '/home/data/advisories'],
                     ['name' => 'Doctors data', 'url' => '/home/data/doctors'],
                     ['name' => 'Patients data', 'url' => '/home/data/patients']
                 ]],

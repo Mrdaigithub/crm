@@ -122,6 +122,8 @@ $api->version('v1', function ($api) {
 
                 $api->get('/doctors', 'DoctorsController@index');
 
+                $api->get('/patients', 'PatientsController@index');
+
 
                 // group
                 $api->group(['prefix' => 'group'], function ($api) {
