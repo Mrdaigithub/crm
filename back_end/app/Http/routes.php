@@ -120,6 +120,8 @@ $api->version('v1', function ($api) {
 
                 $api->get('/channels', 'ChannelsController@index');
 
+                $api->get('/doctors', 'DoctorsController@index');
+
 
                 // group
                 $api->group(['prefix' => 'group'], function ($api) {
