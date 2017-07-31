@@ -110,30 +110,13 @@ $api->version('v1', function ($api) {
             // Data
             $api->group(['prefix' => 'data', 'namespace' => 'Data'], function ($api) {
 
-                // show total data by year
                 $api->get('/total/year', 'TotalController@show_by_year');
-
-                // show total data by month
                 $api->get('/total/month', 'TotalController@show_by_month');
-
                 $api->get('/users', 'UsersController@index');
-
                 $api->get('/channels', 'ChannelsController@index');
-
                 $api->get('/doctors', 'DoctorsController@index');
-
                 $api->get('/patients', 'PatientsController@index');
-
-
-                // group
-                $api->group(['prefix' => 'group'], function ($api) {
-                    $api->get('/{name}', 'GroupController@show');
-                });
-
-                // group
-                $api->group(['prefix' => 'performance'], function ($api) {
-                    $api->get('/{name}', 'PerformanceController@show');
-                });
+                $api->get('/diseases', 'DiseasesController@index');
             });
         });
     });
