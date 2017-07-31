@@ -118,6 +118,11 @@ $api->version('v1', function ($api) {
                 $api->get('/patients', 'PatientsController@index');
                 $api->get('/diseases', 'DiseasesController@index');
             });
+
+            // logs
+            $api->group(['prefix' => 'logs'], function ($api) {
+                $api->get('/', 'LogsController@index');
+            });
         });
     });
 });
