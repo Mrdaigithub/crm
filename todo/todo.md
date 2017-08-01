@@ -39,8 +39,14 @@
    - ~~病种数据 报表条件(状态：4个基本状态)(统计类型：按年，月，日)~~
    ![todo4](./todo5.png-del)
 
-- 行为日志 模块
-![todo4](./todo9.png)
+- ~~行为日志 模块~~
+![todo4](./todo9.png-del)
+
+- patient 添加数据导出功能
+![todo4](./todo12.png)
+
+- patient 添加数据重复提示
+![todo4](./todo13.png-del)
 
 - 完善错误处理 (patient)
 
