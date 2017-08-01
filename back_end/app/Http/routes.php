@@ -22,8 +22,10 @@ Route::get('/user/', 'Api\V1\UserController@index');
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
 
-        // token
-        $api->post('/token', 'TokenController@store');
+        $api->group(['middleware' => ['log']], function ($api) {
+            $api->post('/login', 'TokenController@login');
+            $api->get('/logout', 'TokenController@logout');
+        });
 
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
 

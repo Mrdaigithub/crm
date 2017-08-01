@@ -12,15 +12,14 @@ class CreateLogTable extends Migration
      */
     public function up()
     {
-        Schema::create('log', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uid')->unique();
-            $table->string('username')->unique();
-            $table->string('method', 11)->default('GET');
+            $table->string('username');
             $table->string('ip', 15)->default('0.0.0.0');
-            $table->string('action', 15)->nullable();
-            $table->string('description')->nullable();
-            $table->string('data')->nullable();
+            $table->string('method', 11)->default('GET');
+            $table->string('path')->default('/', 20);
+            $table->string('data')->default('');
+            $table->string('description')->default('', 100);
             $table->timestamps();
         });
     }

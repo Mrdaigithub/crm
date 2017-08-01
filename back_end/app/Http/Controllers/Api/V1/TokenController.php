@@ -16,7 +16,7 @@ class TokenController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
         if (Validator::make($request->all(), ['username' => 'required'])->fails()) $this->response->errorUnauthorized(401000);
         if (Validator::make($request->all(), ['password' => 'required'])->fails()) $this->response->errorUnauthorized(401001);
@@ -36,5 +36,10 @@ class TokenController extends Controller
             return $this->response->errorInternal(500000);
         }
         return response()->json(compact('token'));
+    }
+
+    public function logout()
+    {
+        return response()->json(true);
     }
 }

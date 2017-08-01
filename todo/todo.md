@@ -45,5 +45,5 @@
 - 完善错误处理 (patient)
 
 - 重构权限详情
-![todo4](./todo10.png)
-![todo4](./todo11.png)
+![todo4](./todo10.png-del)
+![todo4](./todo11.png-del)
