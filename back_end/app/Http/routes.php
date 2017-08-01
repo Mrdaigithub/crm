@@ -122,7 +122,7 @@ $api->version('v1', function ($api) {
             });
 
             // logs
-            $api->group(['prefix' => 'logs'], function ($api) {
+            $api->group(['prefix' => 'log'], function ($api) {
                 $api->get('/', 'LogsController@index');
             });
         });

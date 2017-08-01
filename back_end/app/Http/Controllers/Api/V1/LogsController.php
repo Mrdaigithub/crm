@@ -15,6 +15,6 @@ class LogsController extends Controller
      */
     public function index()
     {
-        return Log::paginate();
+        return Log::paginate(20);
     }
 }

@@ -15,10 +15,12 @@
     </el-dropdown>
 
     <el-menu theme="default" class="el-menu-vertical">
-      <el-menu-item v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id" v-if="!menu.children.length">
+      <el-menu-item v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
+                    v-if="!menu.children.length">
         <router-link :to="menu.url">{{menu.name}}</router-link>
       </el-menu-item>
-      <el-submenu v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id" v-if="menu.children.length">
+      <el-submenu v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
+                  v-if="menu.children.length">
         <template slot="title">{{menu.name}}</template>
         <el-menu-item v-for="subMenu in menu.children" :index="subMenu.id.toString()" :key="subMenu.id">
           <router-link :to="subMenu.url">{{subMenu.name}}</router-link>
@@ -29,11 +31,17 @@
 </template>
 
 <script>
+  import axios from '../config/axios'
+
   export default {
     methods: {
       logout () {
-        if (sessionStorage.token) delete sessionStorage.token
-        this.$router.replace('login')
+        let self = this
+        axios.get('/logout')
+          .then(res => {
+            if (sessionStorage.token) delete sessionStorage.token
+            self.$router.replace('login')
+          })
       }
     },
     mounted () {
