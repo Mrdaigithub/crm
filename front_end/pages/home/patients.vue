@@ -66,83 +66,80 @@
       <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
                      @current-change="changePage"></el-pagination>
     </el-card>
-    <el-dialog title="" :visible.sync="exportDialogVisible" size="large" top="5%">
-      <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
-        <el-card>
+    <el-dialog title="" :visible.sync="exportDialogVisible">
+      <el-card>
+        <el-form :model="exportForm.data">
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="name" prop="name">
-                <el-input v-model="exportForm.data.name"></el-input>
+            <el-col :span="9">
+              <el-form-item prop="name">
+                <el-input v-model="exportForm.data.name" placeholder="name"></el-input>
               </el-form-item>
-              <el-form-item label="tel" prop="tel">
-                <el-input v-model="exportForm.data.tel"></el-input>
+              <el-form-item prop="tel">
+                <el-input v-model="exportForm.data.tel" placeholder="tel"></el-input>
               </el-form-item>
-              <el-form-item label="state" prop="state">
-                <el-select v-model="exportForm.data.state" placeholder="select state"  width="100%">
+              <el-form-item prop="state">
+                <el-select v-model="exportForm.data.state" placeholder="select state">
                   <el-option :value="0" label="untreated"></el-option>
                   <el-option :value="1" label="wait"></el-option>
                   <el-option :value="2" label="confirm"></el-option>
                   <el-option :value="3" label="cancel"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="dateType" prop="dateType">
+              <el-form-item prop="dateType">
                 <el-select v-model="exportForm.data.dateType" placeholder="select date type">
                   <el-option label="created_at" value="created_at"></el-option>
                   <el-option label="arrive_date" value="arrive_date"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="dateRange" prop="dateRange">
-                <el-date-picker
-                  v-model="exportForm.dateRange"
-                  type="daterange"
-                  :picker-options="exportForm.pickerOptions"
-                  placeholder="date range"
-                  format="yyyy-MM-dd">
+              <el-form-item prop="dateRange">
+                <el-date-picker v-model="exportForm.data.dateRange" type="daterange"
+                                :picker-options="exportForm.pickerOptions" placeholder="date range" format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="13" :offset="1">
-              <el-form-item label="user" prop="userId">
-                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+            <el-col :span="11" :offset="3">
+              <el-form-item prop="userId">
+                <el-select v-model="exportForm.data.userId" placeholder="select user">
                   <el-option v-for="user of $store.state.users" :label="user.username" :value="user.id"
                              :key="user.id"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="channel" prop="channelId">
-                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+              <el-form-item prop="channelId">
+                <el-select v-model="exportForm.data.channelId" placeholder="select channel">
                   <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
                              :key="channel.id"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="disease" prop="diseaseId">
-                <el-select v-model="editForm.data.diseaseId" placeholder="select disease">
+              <el-form-item prop="diseaseId">
+                <el-select v-model="exportForm.data.diseaseId" placeholder="select disease">
                   <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
                                    v-if="disease.children.length">
                     <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
                   </el-option-group>
                   <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                             :value="disease.id"
-                             v-if="!disease.children.length"></el-option>
+                             :value="disease.id" v-if="!disease.children.length"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="doctor" prop="doctorId">
-                <el-select v-model="editForm.data.doctorId" placeholder="select doctor">
+              <el-form-item prop="doctorId">
+                <el-select v-model="exportForm.data.doctorId" placeholder="select doctor">
                   <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
                              :key="doctor.id"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="advisory" prop="advisoryId">
-                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
+              <el-form-item prop="advisoryId">
+                <el-select v-model="exportForm.data.advisoryId" placeholder="select advisory">
                   <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
                              :key="advisory.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
-        </el-card>
-      </el-form>
+        </el-form>
+      </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">Export</el-button>
+        <a :href="exportUrl" target="_blank">
+          <el-button style="width: 100%" type="primary" @click="exportDialogVisible = false">Export</el-button>
+        </a>
       </span>
     </el-dialog>
     <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
@@ -150,7 +147,9 @@
         <el-row>
           <el-col :span="10">
             <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix"><h2>Base info</h2></div>
+              <div slot="header" class="clearfix">
+                <h2>Base info</h2>
+              </div>
               <el-form-item label="name" prop="name">
                 <el-input v-model="editForm.data.name"></el-input>
               </el-form-item>
@@ -158,12 +157,8 @@
                 <el-input v-model="editForm.data.tel"></el-input>
               </el-form-item>
               <el-form-item label="advisory date" prop="advisoryDate" required>
-                <el-date-picker
-                  v-model="editForm.data.advisoryDate"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  align="right"
-                  format="yy-MM-dd hh:mm:ss"></el-date-picker>
+                <el-date-picker v-model="editForm.data.advisoryDate" type="datetime" placeholder="选择日期时间" align="right"
+                                format="yy-MM-dd hh:mm:ss"></el-date-picker>
               </el-form-item>
               <el-form-item label="advisory" prop="advisoryId">
                 <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
@@ -190,8 +185,7 @@
                     <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
                   </el-option-group>
                   <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                             :value="disease.id"
-                             v-if="!disease.children.length"></el-option>
+                             :value="disease.id" v-if="!disease.children.length"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="price" prop="price">
@@ -201,7 +195,9 @@
           </el-col>
           <el-col :span="13" :offset="1">
             <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix"><h2>Detail info</h2></div>
+              <div slot="header" class="clearfix">
+                <h2>Detail info</h2>
+              </div>
               <el-form-item label="age" prop="age">
                 <el-input v-model.number="editForm.data.age" type="age" auto-complete="off"></el-input>
               </el-form-item>
@@ -382,6 +378,20 @@
       patientTotal () {
         if (!this.patients) return 0
         return this.patients.total
+      },
+      exportUrl () {
+        let url = 'http://crm.mrdaisite.com/api/export?'
+        if (this.exportForm.data.userId !== '') url += `user_id=${this.exportForm.data.userId}&`
+        if (this.exportForm.data.channelId !== '') url += `channel_id=${this.exportForm.data.channelId}&`
+        if (this.exportForm.data.advisoryId !== '') url += `advisory_id=${this.exportForm.data.advisoryId}&`
+        if (this.exportForm.data.doctorId !== '') url += `doctor_id=${this.exportForm.data.doctorId}&`
+        if (this.exportForm.data.diseaseId !== '') url += `disease_id=${this.exportForm.data.diseaseId}&`
+        if (this.exportForm.data.state !== '') url += `state=${this.exportForm.data.state}&`
+        if (this.exportForm.data.name !== '') url += `name=${this.exportForm.data.name}&`
+        if (this.exportForm.data.tel !== '') url += `tel=${this.exportForm.data.tel}&`
+        if (this.exportForm.data.dateType !== '') url += `date_type=${this.exportForm.data.dateType}&`
+        url += `start_date=${this.exportForm.data.dateRange[0].toLocaleDateString().replace(/\//g, '-')}&end_date=${this.exportForm.data.dateRange[1].toLocaleDateString().replace(/\//g, '-')}`
+        return url
       }
     },
     methods: {
@@ -412,18 +422,21 @@
           axios.patch(`/patients/${patientId}`, qs.stringify({
             state: patientState,
             arrive_date: this.patientData[index]['arrive_date']
-          })).then(res => {})
+          })).then(res => {
+          })
           return
         }
         axios.patch(`/patients/${patientId}`, qs.stringify({
           state: patientState
-        })).then(res => {})
+        })).then(res => {
+        })
       },
       changePage (currentPage) {
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients (callback = () => {}) {
+      fetchPatients (callback = () => {
+      }) {
         this.stateClock = true
         let self = this
         !(async function () {
@@ -545,9 +558,6 @@
         if (args.order === 'ascending' || !args.order) this.order = 'asc'
         else this.order = 'desc'
         this.fetchPatients()
-      },
-      exportData () {
-        this.exportDialogVisible = false
       }
     },
     mounted () {
