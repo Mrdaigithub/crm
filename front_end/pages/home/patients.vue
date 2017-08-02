@@ -3,7 +3,9 @@
     <el-card class="box-card">
       <h2>Patient</h2>
       <float-button @click.native="addPatient"/>
-      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum" @sort-change="sortChange" border>
+      <el-button @click="exportDialogVisible = true">export</el-button>
+      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum"
+                @sort-change="sortChange" border>
         <el-table-column type="expand">
           <template scope="props">
             <el-form label-position="left" inline class="table-expandsss">
@@ -44,7 +46,8 @@
         <el-table-column prop="price" label="price" width="120" sortable="custom"></el-table-column>
         <el-table-column label="state" width="140">
           <template scope="scope">
-            <el-select v-model="scope.row.state" :disabled="scope.row.state === 2" @change="changeState(scope.row.id, scope.row.state, scope.$index)">
+            <el-select v-model="scope.row.state" :disabled="scope.row.state === 2"
+                       @change="changeState(scope.row.id, scope.row.state, scope.$index)">
               <el-option :value="0" label="untreated"></el-option>
               <el-option :value="1" label="wait"></el-option>
               <el-option :value="2" label="confirm"></el-option>
@@ -63,7 +66,86 @@
       <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
                      @current-change="changePage"></el-pagination>
     </el-card>
-    <el-dialog title="" :visible.sync="dialogVisible" size="large" top="5%">
+    <el-dialog title="" :visible.sync="exportDialogVisible" size="large" top="5%">
+      <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
+        <el-card>
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="name" prop="name">
+                <el-input v-model="exportForm.data.name"></el-input>
+              </el-form-item>
+              <el-form-item label="tel" prop="tel">
+                <el-input v-model="exportForm.data.tel"></el-input>
+              </el-form-item>
+              <el-form-item label="state" prop="state">
+                <el-select v-model="exportForm.data.state" placeholder="select state"  width="100%">
+                  <el-option :value="0" label="untreated"></el-option>
+                  <el-option :value="1" label="wait"></el-option>
+                  <el-option :value="2" label="confirm"></el-option>
+                  <el-option :value="3" label="cancel"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="dateType" prop="dateType">
+                <el-select v-model="exportForm.data.dateType" placeholder="select date type">
+                  <el-option label="created_at" value="created_at"></el-option>
+                  <el-option label="arrive_date" value="arrive_date"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="dateRange" prop="dateRange">
+                <el-date-picker
+                  v-model="exportForm.dateRange"
+                  type="daterange"
+                  :picker-options="exportForm.pickerOptions"
+                  placeholder="date range"
+                  format="yyyy-MM-dd">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="13" :offset="1">
+              <el-form-item label="user" prop="userId">
+                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+                  <el-option v-for="user of $store.state.users" :label="user.username" :value="user.id"
+                             :key="user.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="channel" prop="channelId">
+                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+                  <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
+                             :key="channel.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="disease" prop="diseaseId">
+                <el-select v-model="editForm.data.diseaseId" placeholder="select disease">
+                  <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                                   v-if="disease.children.length">
+                    <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
+                  </el-option-group>
+                  <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                             :value="disease.id"
+                             v-if="!disease.children.length"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="doctor" prop="doctorId">
+                <el-select v-model="editForm.data.doctorId" placeholder="select doctor">
+                  <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
+                             :key="doctor.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="advisory" prop="advisoryId">
+                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
+                  <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
+                             :key="advisory.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">Export</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
       <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
         <el-row>
           <el-col :span="10">
@@ -154,8 +236,8 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">S u b m i t</el-button>
-    </span>
+        <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">S u b m i t</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -177,7 +259,8 @@
         order: 'asc',
         patients: {},
         stateClock: false,
-        dialogVisible: false,
+        addDialogVisible: false,
+        exportDialogVisible: false,
         operationState: 'new',
         editForm: {
           data: {
@@ -211,10 +294,78 @@
             age: {pattern: /^(\d{1,2})?$/, message: 'must number', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
             pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
-            advisoryId: { validator: (rule, value, callback) => { if (value) callback(); else callback('please select advisory') }, trigger: 'blur' },
-            channelId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a channel') }, trigger: 'blur' },
-            doctorId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a doctor') }, trigger: 'blur' },
-            diseaseId: { validator: (rule, value, callback) => { if (value) callback(); else callback('select a disease') }, trigger: 'blur' }
+            advisoryId: {
+              validator: (rule, value, callback) => {
+                if (value) callback()
+                else callback('please select advisory')
+              },
+              trigger: 'blur'
+            },
+            channelId: {
+              validator: (rule, value, callback) => {
+                if (value) callback()
+                else callback('select a channel')
+              },
+              trigger: 'blur'
+            },
+            doctorId: {
+              validator: (rule, value, callback) => {
+                if (value) callback()
+                else callback('select a doctor')
+              },
+              trigger: 'blur'
+            },
+            diseaseId: {
+              validator: (rule, value, callback) => {
+                if (value) callback()
+                else callback('select a disease')
+              },
+              trigger: 'blur'
+            }
+          }
+        },
+        exportForm: {
+          data: {
+            name: '',
+            tel: '',
+            state: '',
+            dateType: '',
+            dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
+            userId: '',
+            advisoryId: '',
+            channelId: '',
+            doctorId: '',
+            diseaseId: ''
+          },
+          pickerOptions: {
+            disabledDate (time) {
+              return time.getTime() > Date.now()
+            },
+            shortcuts: [{
+              text: 'one week',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+                picker.$emit('pick', [start, end])
+              }
+            }, {
+              text: 'one month',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+                picker.$emit('pick', [start, end])
+              }
+            }, {
+              text: 'three month',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+                picker.$emit('pick', [start, end])
+              }
+            }]
           }
         }
       }
@@ -223,7 +374,7 @@
       patientData () {
         if (!this.patients.data) return []
         let patientData = this.patients.data.map(patient => {
-          patient.sex = patient.sex ? 'man' : 'woman'
+          patient.sex = patient.sex ? 'woman' : 'man'
           return patient
         })
         return patientData
@@ -321,7 +472,7 @@
           this.editForm.data.pageurl = row.pageurl
           this.editForm.data.mark = row.mark
         }
-        this.dialogVisible = true
+        this.addDialogVisible = true
       },
       savePatient (formName) {
         let self = this
@@ -353,16 +504,16 @@
                   self.currentPage = self.patients['last_page']
                   self.fetchPatients(() => {
                     self.currentPage = self.patients['last_page']
-                    self.dialogVisible = false
+                    self.addDialogVisible = false
                   })
                 })
             } else if (this.operationState === 'edit') {
-              axios.patch('/patients', qs.stringify(postPatientData))
+              axios.patch(`/patients/${postPatientData.id}`, qs.stringify(postPatientData))
                 .then(res => {
                   self.currentPage = self.patients['last_page']
                   self.fetchPatients(() => {
                     self.currentPage = self.patients['last_page']
-                    self.dialogVisible = false
+                    self.addDialogVisible = false
                   })
                 })
             }
@@ -394,11 +545,15 @@
         if (args.order === 'ascending' || !args.order) this.order = 'asc'
         else this.order = 'desc'
         this.fetchPatients()
+      },
+      exportData () {
+        this.exportDialogVisible = false
       }
     },
     mounted () {
       this.currentPage = 1
       this.fetchPatients()
+      if (!this.$store.state.users) this.$store.dispatch('getUsers')
       if (!this.$store.state.advisories) this.$store.dispatch('getAdvisories')
       if (!this.$store.state.channels) this.$store.dispatch('getChannels')
       if (!this.$store.state.doctors) this.$store.dispatch('getDoctors')

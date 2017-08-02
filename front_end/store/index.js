@@ -8,6 +8,7 @@ const store = () => new Vuex.Store({
 
   state: {
     loading: true,
+    users: null,
     oneself: {},
     menus: null,
     advisories: null,
@@ -16,6 +17,9 @@ const store = () => new Vuex.Store({
     diseases: []
   },
   mutations: {
+    getUsers (state, users) {
+      state.users = users
+    },
     getOneself (state, oneself) {
       state.oneself = oneself
     },
@@ -38,6 +42,12 @@ const store = () => new Vuex.Store({
     }
   },
   actions: {
+    getUsers ({commit}) {
+      axios.get('/users')
+        .then(res => {
+          commit('getUsers', res.users)
+        })
+    },
     getOneself ({commit}) {
       axios.get('/users/0')
         .then(res => {
