@@ -126,5 +126,10 @@ $api->version('v1', function ($api) {
                 $api->get('/', 'LogsController@index');
             });
         });
+
+        // export
+        $api->group(['prefix' => 'export'], function ($api) {
+            $api->get('/', 'ExportController@index');
+        });
     });
 });

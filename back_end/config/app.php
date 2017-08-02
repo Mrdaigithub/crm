@@ -149,6 +149,7 @@ return [
         Dingo\Api\Provider\LaravelServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'Baum\Providers\BaumServiceProvider',
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -200,6 +201,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];
