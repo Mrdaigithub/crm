@@ -78,23 +78,16 @@
 </script>
 
 <style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 25px;
-    }
-    .rank-card {
-      margin: 0 25px;
-      .rank-list{
-        .rank-item{
-          border-bottom: 1px solid #E9E9E9;
-          padding: 10px 0;
-          color: #5E5E5E;
-          font-size: 14px;
-          .el-badge{
-            float: right
-          }
+  .rank-card {
+    margin: 0 25px;
+    .rank-list{
+      .rank-item{
+        border-bottom: 1px solid #E9E9E9;
+        padding: 10px 0;
+        color: #5E5E5E;
+        font-size: 14px;
+        .el-badge{
+          float: right
         }
       }
     }

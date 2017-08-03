@@ -13,27 +13,30 @@
         <el-dropdown-item @click.native="logout">logout</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-
     <el-menu theme="default" class="el-menu-vertical">
-      <el-menu-item v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
-                    v-if="!menu.children.length">
-        <router-link :to="menu.url">{{menu.name}}</router-link>
-      </el-menu-item>
-      <el-submenu v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
-                  v-if="menu.children.length">
-        <template slot="title">{{menu.name}}</template>
-        <el-menu-item v-for="subMenu in menu.children" :index="subMenu.id.toString()" :key="subMenu.id">
-          <router-link :to="subMenu.url">{{subMenu.name}}</router-link>
+      <el-scrollbar tag="ul" wrap-class="el-select-dropdown__wrap" view-class="el-select-dropdown__list" class="menu-item-warp">
+        <el-menu-item v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
+                      v-if="!menu.children.length">
+          <router-link :to="menu.url">{{menu.name}}</router-link>
         </el-menu-item>
-      </el-submenu>
+        <el-submenu v-for="menu in $store.state.menus" :index="menu.id.toString()" :key="menu.id"
+                    v-if="menu.children.length">
+          <template slot="title">{{menu.name}}</template>
+          <el-menu-item v-for="subMenu in menu.children" :index="subMenu.id.toString()" :key="subMenu.id">
+            <router-link :to="subMenu.url">{{subMenu.name}}</router-link>
+          </el-menu-item>
+        </el-submenu>
+      </el-scrollbar>
     </el-menu>
   </el-col>
 </template>
 
 <script>
   import axios from '../config/axios'
+  import { Scrollbar } from 'element-ui'
 
   export default {
+    components: {Scrollbar},
     methods: {
       logout () {
         let self = this
@@ -50,7 +53,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   a {
     text-decoration: none;
     color: #48576a;
@@ -88,11 +91,17 @@
         }
       }
     }
-    .el-menu-vertical {
-      overflow-y: scroll;
+    .menu-item-warp{
       height: 75vh;
-      a {
-        display: block;
+      .el-select-dropdown__wrap{
+        height: 60vh;
+        max-height: 60vh;
+        .el-select-dropdown__list{
+          height: 75vh;
+        }
+        a {
+          display: block;
+        }
       }
     }
   }

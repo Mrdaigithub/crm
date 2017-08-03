@@ -611,34 +611,27 @@
 </script>
 
 <style lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 5px;
-    }
-  }
-  .repeatDialog{
+  .repeatDialog {
     .el-dialog {
       .el-dialog__header, .el-dialog__body {
         background-color: #393d49;
         color: #fff;
       }
-      .el-dialog__header{
+      .el-dialog__header {
         padding: 0;
       }
-      .el-dialog__body{
+      .el-dialog__body {
         max-height: 60vh;
         overflow-y: scroll;
-        header{
-          font-size:18px;
-          line-height:36px;
-          margin-bottom:10px;
+        header {
+          font-size: 18px;
+          line-height: 36px;
+          margin-bottom: 10px;
         }
-        .repeat-patient-list{
-          .repeat-patient-item{
-            p{
-              line-height:20px;
+        .repeat-patient-list {
+          .repeat-patient-item {
+            p {
+              line-height: 20px;
             }
             hr {
               display: block;

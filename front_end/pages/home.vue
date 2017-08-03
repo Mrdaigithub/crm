@@ -31,7 +31,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   body, h1, h2, h3, h4, h5, h6, div, span, p, strong, canvas {
     margin: 0;
     padding: 0;
@@ -47,8 +47,16 @@
     overflow: hidden;
     .main {
       height: 90vh;
+      box-sizing: border-box;
       overflow-y: scroll;
       background-color: #f7f7f7;
+      .box-card {
+        margin: 10px;
+        min-height: 85vh;
+        h2 {
+          margin-bottom: 20px;
+        }
+      }
     }
   }
 </style>
