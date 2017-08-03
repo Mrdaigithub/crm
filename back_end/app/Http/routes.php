@@ -43,6 +43,7 @@ $api->version('v1', function ($api) {
             // patients
             $api->group(['prefix' => 'patients'], function ($api) {
                 $api->get('/', 'PatientController@index');
+                $api->get('/{name}', 'PatientController@show');
                 $api->post('/', 'PatientController@store');
                 $api->patch('/{id}', 'PatientController@update');
                 $api->delete('/{id}', 'PatientController@destroy');

@@ -180,6 +180,22 @@ class PatientController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  string $name
+     * @return \Illuminate\Http\Response
+     */
+    public function show($name)
+    {
+        $validator = validator::make(['name' => $name], [
+            'name' => 'string'
+        ]);
+        if ($validator->fails()) $this->response->errorbadrequest(400008);
+        $patients = Patient::where('name', $name);
+        return $patients->get()->toArray();
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
