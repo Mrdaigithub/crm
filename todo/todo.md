@@ -42,11 +42,11 @@
 - ~~行为日志 模块~~
 ![todo4](./todo9.png-del)
 
-- patient 添加数据导出功能
-![todo4](./todo12.png)
+- ~~patient 添加数据导出功能~~
+![todo4](./todo12.png-del)
 
 - patient 添加数据重复提示
-![todo4](./todo13.png-del)
+![todo4](./todo13.png)
 
 - 完善错误处理 (patient)
 
