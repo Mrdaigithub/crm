@@ -8,7 +8,7 @@
                 @sort-change="sortChange" border>
         <el-table-column type="expand">
           <template scope="props">
-            <el-form label-position="left" inline class="table-expandsss">
+            <el-form label-position="left" inline class="table-expands">
               <el-form-item label="disease: ">
                 <span>{{ props.row.disease.name }}</span>
               </el-form-item>
@@ -66,6 +66,103 @@
       <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
                      @current-change="changePage"></el-pagination>
     </el-card>
+    <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
+      <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
+        <el-row>
+          <el-col :span="10">
+            <el-card style="min-height: 68vh">
+              <div slot="header" class="clearfix">
+                <h2>Base info</h2>
+              </div>
+              <el-form-item prop="name">
+                <el-input v-model="editForm.data.name" placeholder="name" @blur="checkedRepeatName"></el-input>
+              </el-form-item>
+              <el-form-item prop="tel">
+                <el-input v-model="editForm.data.tel" placeholder="tel"></el-input>
+              </el-form-item>
+              <el-form-item prop="price">
+                <el-input v-model.number="editForm.data.price" placeholder="price"></el-input>
+              </el-form-item>
+              <el-form-item prop="advisoryDate" required>
+                <el-date-picker v-model="editForm.data.advisoryDate"
+                                type="datetime"
+                                placeholder="advisory date"
+                                align="right"
+                                format="yy-MM-dd hh:mm:ss"></el-date-picker>
+              </el-form-item>
+              <el-form-item prop="advisoryId">
+                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
+                  <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
+                             :key="advisory.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="channelId">
+                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+                  <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
+                             :key="channel.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="doctorId">
+                <el-select v-model="editForm.data.doctorId" placeholder="select doctor">
+                  <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
+                             :key="doctor.id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="diseaseId">
+                <el-select v-model="editForm.data.diseaseId" placeholder="select disease">
+                  <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                                   v-if="disease.children.length">
+                    <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
+                  </el-option-group>
+                  <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                             :value="disease.id" v-if="!disease.children.length"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-card>
+          </el-col>
+          <el-col :span="13" :offset="1">
+            <el-card style="min-height: 68vh">
+              <div slot="header" class="clearfix">
+                <h2>Detail info</h2>
+              </div>
+              <el-form-item prop="age">
+                <el-input v-model.number="editForm.data.age" type="age" auto-complete="off"
+                          placeholder="age"></el-input>
+              </el-form-item>
+              <el-form-item prop="sex">
+                <el-select v-model="editForm.data.sex" placeholder="sex">
+                  <el-option label="man" value="0"></el-option>
+                  <el-option label="woman" value="1"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="first">
+                <el-select v-model="editForm.data.first" placeholder="first">
+                  <el-option label="first" value="1"></el-option>
+                  <el-option label="more" value="0"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="wechat">
+                <el-input v-model="editForm.data.wechat" placeholder="wechat"></el-input>
+              </el-form-item>
+              <el-form-item prop="keyword">
+                <el-input v-model="editForm.data.keyword" placeholder="keyword"></el-input>
+              </el-form-item>
+              <el-form-item prop="pageurl">
+                <el-input v-model="editForm.data.pageurl" placeholder="www.pageurl.com">
+                  <template slot="prepend">http://</template>
+                </el-input>
+              </el-form-item>
+              <el-form-item prop="mark">
+                <el-input type="textarea" :rows="4" v-model="editForm.data.mark" placeholder="mark"></el-input>
+              </el-form-item>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">S u b m i t</el-button>
+      </span>
+    </el-dialog>
     <el-dialog title="" :visible.sync="exportDialogVisible">
       <el-card>
         <el-form :model="exportForm.data">
@@ -142,97 +239,19 @@
         </a>
       </span>
     </el-dialog>
-    <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
-      <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
-        <el-row>
-          <el-col :span="10">
-            <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix">
-                <h2>Base info</h2>
-              </div>
-              <el-form-item label="name" prop="name">
-                <el-input v-model="editForm.data.name"></el-input>
-              </el-form-item>
-              <el-form-item label="tel" prop="tel">
-                <el-input v-model="editForm.data.tel"></el-input>
-              </el-form-item>
-              <el-form-item label="advisory date" prop="advisoryDate" required>
-                <el-date-picker v-model="editForm.data.advisoryDate" type="datetime" placeholder="选择日期时间" align="right"
-                                format="yy-MM-dd hh:mm:ss"></el-date-picker>
-              </el-form-item>
-              <el-form-item label="advisory" prop="advisoryId">
-                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
-                  <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
-                             :key="advisory.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="channel" prop="channelId">
-                <el-select v-model="editForm.data.channelId" placeholder="select channel">
-                  <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
-                             :key="channel.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="doctor" prop="doctorId">
-                <el-select v-model="editForm.data.doctorId" placeholder="select doctor">
-                  <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
-                             :key="doctor.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="disease" prop="diseaseId">
-                <el-select v-model="editForm.data.diseaseId" placeholder="select disease">
-                  <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                                   v-if="disease.children.length">
-                    <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
-                  </el-option-group>
-                  <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                             :value="disease.id" v-if="!disease.children.length"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="price" prop="price">
-                <el-input v-model.number="editForm.data.price"></el-input>
-              </el-form-item>
-            </el-card>
-          </el-col>
-          <el-col :span="13" :offset="1">
-            <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix">
-                <h2>Detail info</h2>
-              </div>
-              <el-form-item label="age" prop="age">
-                <el-input v-model.number="editForm.data.age" type="age" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="sex" prop="sex">
-                <el-select v-model="editForm.data.sex" placeholder="man or woman?">
-                  <el-option label="man" value="0"></el-option>
-                  <el-option label="woman" value="1"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="first" prop="first">
-                <el-select v-model="editForm.data.first" placeholder="first?">
-                  <el-option label="first" value="1"></el-option>
-                  <el-option label="more" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="wechat" prop="wechat">
-                <el-input v-model="editForm.data.wechat"></el-input>
-              </el-form-item>
-              <el-form-item label="keyword" prop="keyword">
-                <el-input v-model="editForm.data.keyword"></el-input>
-              </el-form-item>
-              <el-form-item label="pageurl" prop="pageurl">
-                <el-input v-model="editForm.data.pageurl">
-                  <template slot="prepend">http://</template>
-                </el-input>
-              </el-form-item>
-              <el-form-item label="mark" prop="mark">
-                <el-input type="textarea" :rows="4" v-model="editForm.data.mark"></el-input>
-              </el-form-item>
-            </el-card>
-          </el-col>
-        </el-row>
-      </el-form>
+    <el-dialog :title="repeatDialogTitle" :show-close="false" :visible.sync="repeatDialogVisible" size="mini">
+      <div class="repeat-patient-list">
+        <div class="repeat-patient-item" v-for="repeatPatient of repeatPatients">
+          <p>name: {{repeatPatient.name}}</p>
+          <p>tel: {{repeatPatient.tel}}</p>
+          <p>sex: {{repeatPatient.sex}}</p>
+          <p>arrive_date: {{repeatPatient['arrive_date']}}</p>
+          <p>created_at: {{repeatPatient['created_at']}}</p>
+          <hr>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button style="width: 100%" type="primary" @click="savePatient('editForm')">S u b m i t</el-button>
+        <el-button type="primary" @click="repeatDialogVisible=false">ok</el-button>
       </span>
     </el-dialog>
   </div>
@@ -254,9 +273,11 @@
         sortby: 'id',
         order: 'asc',
         patients: {},
+        repeatPatients: [],
         stateClock: false,
         addDialogVisible: false,
         exportDialogVisible: false,
+        repeatDialogVisible: false,
         operationState: 'new',
         editForm: {
           data: {
@@ -286,10 +307,14 @@
                 trigger: 'change'
               }
             ],
-            price: {type: 'number', message: 'must number', trigger: 'blur'},
-            age: {pattern: /^(\d{1,2})?$/, message: 'must number', trigger: 'blur'},
+            price: {pattern: /^(\d*)$/, message: 'must number', trigger: 'blur'},
+            age: {pattern: /^\d*$/, message: 'must age', trigger: 'blur'},
             advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
-            pageurl: {type: 'url', message: 'must url', trigger: 'blur'},
+            pageurl: {
+              pattern: /^((http|ftp|https):\/\/)?[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&amp;:/~+#]*[\w\-@?^=%&amp;/~+#])?$/i,
+              message: 'must url',
+              trigger: 'blur'
+            },
             advisoryId: {
               validator: (rule, value, callback) => {
                 if (value) callback()
@@ -392,6 +417,10 @@
         if (this.exportForm.data.dateType !== '') url += `date_type=${this.exportForm.data.dateType}&`
         url += `start_date=${this.exportForm.data.dateRange[0].toLocaleDateString().replace(/\//g, '-')}&end_date=${this.exportForm.data.dateRange[1].toLocaleDateString().replace(/\//g, '-')}`
         return url
+      },
+      repeatDialogTitle () {
+        if (!this.repeatPatients) return `Tip! has 0 repeat patient`
+        return `Tip! has ${this.repeatPatients.length} repeat patient`
       }
     },
     methods: {
@@ -435,8 +464,7 @@
         this.currentPage = currentPage
         this.fetchPatients()
       },
-      fetchPatients (callback = () => {
-      }) {
+      fetchPatients (callback = () => {}) {
         this.stateClock = true
         let self = this
         !(async function () {
@@ -458,7 +486,7 @@
           this.editForm.data.channelId = ''
           this.editForm.data.doctorId = ''
           this.editForm.data.diseaseId = ''
-          this.editForm.data.price = 0
+          this.editForm.data.price = ''
           this.editForm.data.age = ''
           this.editForm.data.sex = ''
           this.editForm.data.first = ''
@@ -501,13 +529,13 @@
           doctor_id: this.editForm.data.doctorId,
           user_id: this.$store.state.oneself.id
         }
-        if (this.editForm.data.price) postPatientData.price = this.editForm.data.price
+        postPatientData.price = this.editForm.data.price ? this.editForm.data.price : 0
         if (this.editForm.data.age) postPatientData.age = this.editForm.data.age
         if (this.editForm.data.sex) postPatientData.sex = this.editForm.data.sex
         if (this.editForm.data.first) postPatientData.first = this.editForm.data.first
         if (this.editForm.data.wechat) postPatientData.wechat = this.editForm.data.wechat
         if (this.editForm.data.keyword) postPatientData.keyword = this.editForm.data.keyword
-        if (this.editForm.data.pageurl) postPatientData.pageurl = this.editForm.data.pageurl
+        if (this.editForm.data.pageurl) postPatientData.pageurl = this.editForm.data.pageurl.match(/^https?:\/\//) ? this.editForm.data.pageurl : `http://${this.editForm.data.pageurl}`
         if (this.editForm.data.mark) postPatientData.mark = this.editForm.data.mark
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -558,6 +586,15 @@
         if (args.order === 'ascending' || !args.order) this.order = 'asc'
         else this.order = 'desc'
         this.fetchPatients()
+      },
+      checkedRepeatName () {
+        let self = this
+        if (!this.editForm.data.name) return
+        axios.get(`patients/${this.editForm.data.name}`)
+          .then(res => {
+            self.repeatPatients = res
+            if (self.repeatPatients.length > 0) self.repeatDialogVisible = true
+          })
       }
     },
     mounted () {
@@ -582,9 +619,12 @@
     .add-doctor {
       margin-bottom: 15px;
     }
+    .repeat-patient-list{
+      background-color: #000;
+    }
   }
 
-  .table-expandsss > .el-form-item {
+  .table-expands > .el-form-item {
     display: block;
     margin-bottom: 0
   }

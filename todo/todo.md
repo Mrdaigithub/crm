@@ -45,8 +45,8 @@
 - ~~patient 添加数据导出功能~~
 ![todo4](./todo12.png-del)
 
-- patient 添加数据重复提示
-![todo4](./todo13.png)
+- ~~patient 添加数据重复提示~~
+![todo4](./todo13.png-del)
 
 - 完善错误处理 (patient)
 
