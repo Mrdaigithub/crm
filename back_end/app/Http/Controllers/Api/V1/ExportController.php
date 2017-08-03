@@ -70,7 +70,10 @@ class ExportController extends Controller
         if (key_exists('tel', $parameters)) {
             $patients = $patients->where('tel', $parameters['tel']);
         }
-        if (key_exists('date_type', $parameters) && key_exists('start_date', $parameters) && key_exists('end_date', $parameters)) {
+        if (!key_exists('date_type', $parameters)) {
+            $parameters['date_type'] = 'created_at';
+        }
+        if (key_exists('start_date', $parameters) && key_exists('end_date', $parameters)) {
             $patients = $patients->whereBetween($parameters['date_type'], [$parameters['start_date'], $parameters['end_date']]);
         }
         $patients = $patients->get();
@@ -99,6 +102,7 @@ class ExportController extends Controller
      */
     private function create_excel_data($data)
     {
+        if (!count($data)) return [];
         $excel_data = [];
         array_push($excel_data, array_keys($data[0]));
         foreach ($data as $item) {
@@ -116,7 +120,7 @@ class ExportController extends Controller
      * @param string $sheet_name
      * @param $excel_data
      */
-    private function create_excel_file($file_name='excel', $sheet_name='sheet', $excel_data)
+    private function create_excel_file($file_name = 'excel', $sheet_name = 'sheet', $excel_data)
     {
         Excel::create($file_name, function ($excel) use ($excel_data, $sheet_name) {
             $excel->sheet($sheet_name, function ($sheet) use ($excel_data) {
