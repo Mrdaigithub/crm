@@ -239,7 +239,8 @@
         </a>
       </span>
     </el-dialog>
-    <el-dialog :title="repeatDialogTitle" :show-close="false" :visible.sync="repeatDialogVisible" size="mini">
+    <el-dialog :show-close="false" :visible.sync="repeatDialogVisible" size="mini" class="repeatDialog">
+      <header>{{repeatDialogTitle}}</header>
       <div class="repeat-patient-list">
         <div class="repeat-patient-item" v-for="repeatPatient of repeatPatients">
           <p>name: {{repeatPatient.name}}</p>
@@ -479,7 +480,7 @@
       },
       initPatientFormData (index = null, row = null) {
         if (this.operationState === 'new') {
-          this.editForm.data.name = ''
+          this.editForm.data.name = 'patient13'
           this.editForm.data.tel = ''
           this.editForm.data.advisoryDate = ''
           this.editForm.data.advisoryId = ''
@@ -609,18 +610,47 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .box-card {
     margin: 15px;
     min-height: 85vh;
     h2 {
       margin-bottom: 5px;
     }
-    .add-doctor {
-      margin-bottom: 15px;
-    }
-    .repeat-patient-list{
-      background-color: #000;
+  }
+  .repeatDialog{
+    .el-dialog {
+      .el-dialog__header, .el-dialog__body {
+        background-color: #393d49;
+        color: #fff;
+      }
+      .el-dialog__header{
+        padding: 0;
+      }
+      .el-dialog__body{
+        max-height: 60vh;
+        overflow-y: scroll;
+        header{
+          font-size:18px;
+          line-height:36px;
+          margin-bottom:10px;
+        }
+        .repeat-patient-list{
+          .repeat-patient-item{
+            p{
+              line-height:20px;
+            }
+            hr {
+              display: block;
+              margin: 10px 0 20px 0;
+            }
+          }
+        }
+      }
+      .el-dialog__footer {
+        background-color: #fff;
+        text-align: center;
+      }
     }
   }
 
