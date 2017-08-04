@@ -1,7 +1,7 @@
 <template>
   <div class="channels-data" v-loading.body="$store.state.loading">
+    <h2>Channels data</h2>
     <el-card class="box-card">
-      <h2>Channels data</h2>
       <el-card class="sub-box">
          <el-form :model="channelsFrom" ref="channelsFrom" :inline="true">
           <el-form-item prop="statisticalType">
@@ -208,12 +208,7 @@
 </script>
 
 <style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 25px;
-    }
+  .channels-data {
     .sub-box {
       margin: 40px 0;
       h3 {

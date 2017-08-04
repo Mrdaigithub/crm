@@ -1,7 +1,7 @@
 <template>
-  <div class="advisory-managemnet"  v-loading.body="$store.state.loading">
+  <div class="advisory-managemnet" v-loading.body="$store.state.loading">
+    <h2>Advisory management</h2>
     <el-card class="box-card">
-      <h2>Advisory management</h2>
       <float-button @click.native="addAdvisory"/>
       <el-table style="width: 100%" border :data="advisories">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
@@ -81,15 +81,4 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 5px;
-    }
-    .add-advisory {
-      margin-bottom: 15px;
-    }
-  }
-</style>
+<style scoped lang="scss"></style>

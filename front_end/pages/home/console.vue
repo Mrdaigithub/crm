@@ -1,6 +1,9 @@
 <template>
   <div class="console">
-    {{msg}}
+    <h2>{{msg}}</h2>
+    <el-card class="box-card">
+      {{msg}}
+    </el-card>
   </div>
 </template>
 
@@ -9,11 +12,11 @@
     name: 'console',
     data () {
       return {
-        msg: 'console'
+        msg: 'Console'
       }
     }
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 </style>

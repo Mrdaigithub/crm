@@ -1,7 +1,7 @@
 <template>
   <div class="total-data" v-loading.body="$store.state.loading">
+    <h2>Total data</h2>
     <el-card class="box-card">
-      <h2>Total data</h2>
       <el-card class="sub-box">
         <h3>Patients Data by year</h3>
         <el-table stripe :data="yearData">
@@ -200,12 +200,7 @@
 </script>
 
 <style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 25px;
-    }
+  .total-data {
     .sub-box {
       margin: 40px 0;
       h3 {

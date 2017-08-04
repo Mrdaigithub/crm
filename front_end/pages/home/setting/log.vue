@@ -1,7 +1,7 @@
 <template>
   <div class="log" v-loading.body="$store.state.loading">
+    <h2>Log</h2>
     <el-card class="box-card">
-      <h2>Log</h2>
       <el-pagination layout="prev, pager, next" :total="logData.total" :current-page="currentPage" :page-size="20"
                      @current-change="changePage"></el-pagination>
       <el-table :data="logData.data" style="width: 100%" border>
@@ -49,20 +49,4 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 5px;
-    }
-    .add-doctor {
-      margin-bottom: 15px;
-    }
-  }
-
-  .table-expandsss > .el-form-item {
-    display: block;
-    margin-bottom: 0
-  }
-</style>
+<style scoped lang="scss"></style>

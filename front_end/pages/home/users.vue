@@ -1,96 +1,99 @@
 <template>
   <div class="user" v-loading.body="$store.state.loading">
-    <el-row>
-      <el-col :span="6" class="role-area">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix role-header">
+    <h2>User list</h2>
+    <el-card class="box-card">
+      <el-row>
+        <el-col :span="6" class="role-area">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix role-header">
             <span style="line-height: 36px" @click="currentRoleId = 'all'">
               All users<el-badge class="mark" :value="users.length"/>
             </span>
-          </div>
-          <div class="role-item-title">Role</div>
-          <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
-            {{role.name}}
-            <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
-            <el-button type="danger" size="mini" icon="delete" class="role-edit-btn"
-                       @click="removeRole(role.id)"></el-button>
-            <el-button type="default" size="mini" icon="edit" class="role-remove-btn"
-                       @click="editRole(role.id)"></el-button>
-            <el-button type="default" size="mini" icon="setting" class="setting-permission-btn"
-                       @click="editPermission(role.id)"></el-button>
-          </div>
-          <hr>
-          <div class="add-role" @click="addRole">Add new role</div>
-        </el-card>
-      </el-col>
-      <el-col :span="18" class="user-area">
-        <el-card class="box-card">
-          <h2>User List</h2>
-          <float-button @click.native="initUserFormData('new')"/>
-          <el-table :data="showUsersData" border style="width: 100%">
-            <el-table-column prop="id" label="id" width="70"></el-table-column>
-            <el-table-column prop="username" label="username" width="120"></el-table-column>
-            <el-table-column prop="tel" label="tel" width="120"></el-table-column>
-            <el-table-column prop="created_at" label="created_at" width="190"></el-table-column>
-            <el-table-column prop="updated_at" label="updated_at" width="190"></el-table-column>
-            <el-table-column prop="ip" label="ip" width="150"></el-table-column>
-            <el-table-column label="tools" width="120" fixed="right">
-              <template scope="scope">
-                <el-button
-                  size="small"
-                  @click="initUserFormData('edit', scope.$index, scope.row)" icon="edit"></el-button>
-                <el-button
-                  size="small"
-                  type="danger"
-                  @click="removeUser(scope.$index, scope.row)" icon="delete"></el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
-      <el-table
-        ref="permissionTable"
-        :data="permissions"
-        border
-        tooltip-effect="dark"
-        style="width: 100%"
-        @select="selectPermission"
-        @select-all="selectPermissionAll">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="name" width="280"></el-table-column>
-        <el-table-column prop="description" label="description"></el-table-column>
-      </el-table>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
-      <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
-               class="new-user">
-        <el-form-item label="username" prop="username">
-          <el-input v-model="userFormData.data.username"></el-input>
-        </el-form-item>
-        <el-form-item label="password" prop="password">
-          <el-input v-model="userFormData.data.password"></el-input>
-        </el-form-item>
-        <el-form-item label="tel" prop="tel">
-          <el-input v-model="userFormData.data.tel"></el-input>
-        </el-form-item>
-        <el-form-item label="state" prop="state">
-          <el-switch on-text="" off-text="" v-model="userFormData.data.state"></el-switch>
-        </el-form-item>
-        <el-form-item label="role" prop="role">
-          <el-radio-group v-model="userFormData.data.role">
-            <el-radio v-for="role in roles" key="role.id" :label="role.id.toString()">{{role.name}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
-      </div>
-    </el-dialog>
+            </div>
+            <div class="role-item-title">Role</div>
+            <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
+              {{role.name}}
+              <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
+              <el-button type="danger" size="mini" icon="delete" class="role-edit-btn"
+                         @click="removeRole(role.id)"></el-button>
+              <el-button type="default" size="mini" icon="edit" class="role-remove-btn"
+                         @click="editRole(role.id)"></el-button>
+              <el-button type="default" size="mini" icon="setting" class="setting-permission-btn"
+                         @click="editPermission(role.id)"></el-button>
+            </div>
+            <hr>
+            <div class="add-role" @click="addRole">Add new role</div>
+          </el-card>
+        </el-col>
+        <el-col :span="18" class="user-area">
+          <el-card class="box-card">
+            <h2>User List</h2>
+            <float-button @click.native="initUserFormData('new')"/>
+            <el-table :data="showUsersData" border style="width: 100%">
+              <el-table-column prop="id" label="id" width="70"></el-table-column>
+              <el-table-column prop="username" label="username" width="120"></el-table-column>
+              <el-table-column prop="tel" label="tel" width="120"></el-table-column>
+              <el-table-column prop="created_at" label="created_at" width="190"></el-table-column>
+              <el-table-column prop="updated_at" label="updated_at" width="190"></el-table-column>
+              <el-table-column prop="ip" label="ip" width="150"></el-table-column>
+              <el-table-column label="tools" width="120" fixed="right">
+                <template scope="scope">
+                  <el-button
+                    size="small"
+                    @click="initUserFormData('edit', scope.$index, scope.row)" icon="edit"></el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="removeUser(scope.$index, scope.row)" icon="delete"></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
+        <el-table
+          ref="permissionTable"
+          :data="permissions"
+          border
+          tooltip-effect="dark"
+          style="width: 100%"
+          @select="selectPermission"
+          @select-all="selectPermissionAll">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="name" label="name" width="280"></el-table-column>
+          <el-table-column prop="description" label="description"></el-table-column>
+        </el-table>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
+        <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
+                 class="new-user">
+          <el-form-item label="username" prop="username">
+            <el-input v-model="userFormData.data.username"></el-input>
+          </el-form-item>
+          <el-form-item label="password" prop="password">
+            <el-input v-model="userFormData.data.password"></el-input>
+          </el-form-item>
+          <el-form-item label="tel" prop="tel">
+            <el-input v-model="userFormData.data.tel"></el-input>
+          </el-form-item>
+          <el-form-item label="state" prop="state">
+            <el-switch on-text="" off-text="" v-model="userFormData.data.state"></el-switch>
+          </el-form-item>
+          <el-form-item label="role" prop="role">
+            <el-radio-group v-model="userFormData.data.role">
+              <el-radio v-for="role in roles" key="role.id" :label="role.id.toString()">{{role.name}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 
@@ -389,9 +392,8 @@
       }
     }
     .user-area {
-      padding: 15px;
       .box-card {
-        min-height: 85vh;
+        min-height: 90vh;
         h2 {
           margin-bottom: 5px;
         }

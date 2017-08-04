@@ -1,7 +1,7 @@
 <template>
   <div class="doctor-managemnet" v-loading.body="$store.state.loading">
+    <h2>Doctors management</h2>
     <el-card class="box-card">
-      <h2>Doctors management</h2>
       <float-button @click.native="addDoctor"/>
       <el-table style="width: 100%" border :data="doctorData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
@@ -99,15 +99,4 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 5px;
-    }
-    .add-doctor {
-      margin-bottom: 15px;
-    }
-  }
-</style>
+<style scoped lang="scss"></style>

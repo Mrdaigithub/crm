@@ -1,7 +1,7 @@
 <template>
   <div class="rank" v-loading.body="$store.state.loading">
+    <h2>Rank</h2>
     <el-card class="box-card">
-      <h2>Rank</h2>
       <el-row>
         <el-col :span='8'>
           <el-card class="rank-card">
@@ -80,13 +80,13 @@
 <style scoped lang="scss">
   .rank-card {
     margin: 0 25px;
-    .rank-list{
-      .rank-item{
+    .rank-list {
+      .rank-item {
         border-bottom: 1px solid #E9E9E9;
         padding: 10px 0;
         color: #5E5E5E;
         font-size: 14px;
-        .el-badge{
+        .el-badge {
           float: right
         }
       }

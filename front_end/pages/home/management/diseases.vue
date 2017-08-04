@@ -1,7 +1,7 @@
 <template>
   <div class="disease-management" v-loading.body="$store.state.loading">
+    <h2>Disease management</h2>
     <el-card class="box-card">
-      <h2>Disease management</h2>
       <el-tree
         ref="treeParent"
         :data="diseases"
@@ -90,12 +90,7 @@
 </script>
 
 <style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 20px
-    }
+  .disease-management{
     .el-tree{
       border: none
     }

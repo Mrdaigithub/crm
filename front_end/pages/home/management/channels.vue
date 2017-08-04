@@ -1,7 +1,7 @@
 <template>
   <div class="channel-managemnet" v-loading.body="$store.state.loading">
+    <h2>Channels management</h2>
     <el-card class="box-card">
-      <h2>Channels management</h2>
       <float-button @click.native="addChannel"/>
       <el-table style="width: 100%" border :data="channelData">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
@@ -102,15 +102,4 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .box-card {
-    margin: 15px;
-    min-height: 85vh;
-    h2 {
-      margin-bottom: 5px;
-    }
-    .add-channel {
-      margin-bottom: 15px;
-    }
-  }
-</style>
+<style scoped lang="scss"></style>

@@ -1,7 +1,7 @@
 <template>
   <div class="patients" v-loading.body="$store.state.loading">
+    <h2>Patient</h2>
     <el-card class="box-card">
-      <h2>Patient</h2>
       <float-button @click.native="addPatient"/>
       <el-button @click="exportDialogVisible = true">export</el-button>
       <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum"
@@ -646,7 +646,6 @@
       }
     }
   }
-
   .table-expands > .el-form-item {
     display: block;
     margin-bottom: 0

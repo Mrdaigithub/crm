@@ -3,7 +3,7 @@
     <top-bar/>
     <el-row>
       <menu-bar/>
-      <el-col :span="20" class="main">
+      <el-col :span="20" class="main scrollbar">
         <router-view></router-view>
       </el-col>
     </el-row>
@@ -48,14 +48,32 @@
     .main {
       height: 90vh;
       box-sizing: border-box;
-      overflow-y: scroll;
-      background-color: #f7f7f7;
+      background-color: #edf1f5;
+      h2 {
+        font-size: 18px;
+        text-indent: 20px;
+        line-height: 63px;
+        color: rgba(0, 0, 0, .5);
+        background-color: #fff;
+      }
       .box-card {
-        margin: 10px;
+        margin: 20px;
         min-height: 85vh;
-        h2 {
-          margin-bottom: 20px;
+      }
+    }
+    .scrollbar {
+      overflow: scroll;
+      &:hover {
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, .5);
         }
+      }
+      &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, .2);
       }
     }
   }
