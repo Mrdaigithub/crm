@@ -6,11 +6,11 @@
         <h3>Login</h3>
         <el-form :model="loginFrom" :rules="loginRules" ref="loginFrom">
           <el-form-item prop="username">
-            <el-input type="text" v-model="loginFrom.username" auto-complete="off" v-focus="true"
+            <el-input type="text" v-model="loginFrom.username" auto-complete="off" v-focus="true" icon="ali-account"
                       placeholder="username"></el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input type="password" v-model="loginFrom.password" auto-complete="off"
+            <el-input type="password" v-model="loginFrom.password" auto-complete="off" icon="ali-lock"
                       @keyup.native.enter="login('loginFrom')" placeholder="password"></el-input>
           </el-form-item>
           <el-form-item>
@@ -96,7 +96,7 @@
   .login {
     width: 100vw;
     height: 100vh;
-    background: url("/login_bg.jpg") no-repeat center;
+    background: url("/images/login_bg.jpg") no-repeat center;
     position: relative;
     .login-wrap {
       margin-top: 25vh;
@@ -108,7 +108,7 @@
         font-size: 30px;
         margin: 10px 20px 0 20px;
         text-indent: 45px;
-        background: url("/logo.png") no-repeat left center;
+        background: url("/images/logo.png") no-repeat left center;
         background-size: contain;
       }
       h3 {
