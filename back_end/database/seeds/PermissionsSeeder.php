@@ -13,29 +13,25 @@ class PermissionsSeeder extends Seeder
     {
         DB::table('permissions')->insert([
             'id' => '1',
-            'name' => 'Admin/Index/index',
-            'description' => '系统后台(必须)',
+            'name' => 'dashboard',
+            'description' => '控制面板',
+            'depth' => '0',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('permissions')->insert([
             'id' => '2',
-            'name' => 'Admin/Index/welcome',
-            'description' => '控制台',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('permissions')->insert([
-            'id' => '3',
-            'name' => 'Admin/Data/kf_order',
+            'name' => 'rank',
+            'depth' => '0',
             'description' => '排行',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
         DB::table('permissions')->insert([
-            'id' => '4',
-            'name' => 'Admin/List/index',
-            'description' => '信息列表(必须)',
+            'id' => '3',
+            'name' => 'patient',
+            'description' => '信息列表',
+            'depth' => '0',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

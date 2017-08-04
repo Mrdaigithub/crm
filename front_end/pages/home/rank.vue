@@ -1,5 +1,5 @@
 <template>
-  <div class="rank" v-loading.body="$store.state.loading">
+  <div class="rank">
     <h2>Rank</h2>
     <el-card class="box-card">
       <el-row>

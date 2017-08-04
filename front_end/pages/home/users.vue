@@ -1,5 +1,5 @@
 <template>
-  <div class="user" v-loading.body="$store.state.loading">
+  <div class="user">
     <h2>User list</h2>
     <el-card class="box-card">
       <el-row>

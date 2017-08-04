@@ -1,5 +1,5 @@
 <template>
-  <div class="channel-managemnet" v-loading.body="$store.state.loading">
+  <div class="channel-managemnet">
     <h2>Channels management</h2>
     <el-card class="box-card">
       <float-button @click.native="addChannel"/>

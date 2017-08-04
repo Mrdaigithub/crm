@@ -1,5 +1,5 @@
 <template>
-  <div class="diseases-data" v-loading.body="$store.state.loading">
+  <div class="diseases-data">
     <h2>Diseases data</h2>
     <el-card class="box-card">
       <el-card class="sub-box">

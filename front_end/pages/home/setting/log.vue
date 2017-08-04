@@ -1,5 +1,5 @@
 <template>
-  <div class="log" v-loading.body="$store.state.loading">
+  <div class="log">
     <h2>Log</h2>
     <el-card class="box-card">
       <el-pagination layout="prev, pager, next" :total="logData.total" :current-page="currentPage" :page-size="20"

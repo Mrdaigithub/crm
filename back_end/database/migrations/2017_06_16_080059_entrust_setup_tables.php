@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -36,8 +37,10 @@ class EntrustSetupTables extends Migration
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('description')->nullable();
+            $table->string('name', 50)->unique();
+            $table->string('description', 100)->nullable();
+            $table->string('parent_id')->nullable();
+            $table->string('depth')->default(0);
             $table->timestamps();
         });
 

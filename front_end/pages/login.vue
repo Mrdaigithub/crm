@@ -68,7 +68,7 @@
                   duration: 800,
                   onClose: function () {
                     sessionStorage.token = token
-                    self.$router.replace('/home/console')
+                    self.$router.replace('/home/dashboard')
                   }
                 })
               }

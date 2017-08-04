@@ -210,17 +210,6 @@ class MenuSeeder extends Seeder
             'lft' => '35',
             'rgt' => '36',
             'depth' => '2',
-            'name' => 'Parameter setting',
-            'url' => '/home/setting/parameter',
-            'created_at' => date('Y-m-d h:m:s'),
-            'updated_at' => date('Y-m-d h:m:s')
-        ]);
-        DB::table('menus')->insert([
-            'id' => '20',
-            'parent_id' => '18',
-            'lft' => '37',
-            'rgt' => '38',
-            'depth' => '2',
             'name' => 'Log',
             'url' => '/home/setting/log',
             'created_at' => date('Y-m-d h:m:s'),

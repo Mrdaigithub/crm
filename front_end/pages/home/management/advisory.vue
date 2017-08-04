@@ -1,5 +1,5 @@
 <template>
-  <div class="advisory-managemnet" v-loading.body="$store.state.loading">
+  <div class="advisory-managemnet">
     <h2>Advisory management</h2>
     <el-card class="box-card">
       <float-button @click.native="addAdvisory"/>

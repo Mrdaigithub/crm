@@ -3,7 +3,7 @@
     <top-bar/>
     <el-row>
       <menu-bar/>
-      <el-col :span="20" class="main scrollbar">
+      <el-col :span="20" class="main scrollbar" v-loading.body="$store.state.loading">
         <router-view></router-view>
       </el-col>
     </el-row>

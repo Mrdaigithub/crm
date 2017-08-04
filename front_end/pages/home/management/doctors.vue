@@ -1,5 +1,5 @@
 <template>
-  <div class="doctor-managemnet" v-loading.body="$store.state.loading">
+  <div class="doctor-managemnet">
     <h2>Doctors management</h2>
     <el-card class="box-card">
       <float-button @click.native="addDoctor"/>
