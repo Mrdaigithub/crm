@@ -40,8 +40,11 @@ module.exports = {
 
   plugins: ['~plugins/element-ui', '~plugins/router-protect'],
 
-  css: ['element-ui/lib/theme-default/index.css'],
+  css: ['element-ui/lib/theme-default/index.css', '~static/fonts/iconfont.css'],
   router: {
-    middleware: 'loading'
+    middleware: 'loading',
+    scrollBehavior: function (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
   }
 }
