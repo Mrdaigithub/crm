@@ -1,5 +1,5 @@
 <template>
-  <div class="console">
+  <div class="dashboard">
     <h2>{{msg}}</h2>
     <el-card class="box-card">
       {{msg}}
@@ -9,10 +9,10 @@
 
 <script>
   export default {
-    name: 'console',
+    name: 'dashboard',
     data () {
       return {
-        msg: 'Console'
+        msg: 'Dashboard'
       }
     }
   }

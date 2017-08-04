@@ -26,8 +26,8 @@ class MenuSeeder extends Seeder
             'lft' => '2',
             'rgt' => '3',
             'depth' => '1',
-            'name' => 'Console',
-            'url' => '/home/console',
+            'name' => 'Dashboard',
+            'url' => '/home/dashboard',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
