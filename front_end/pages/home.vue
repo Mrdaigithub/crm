@@ -2,7 +2,9 @@
   <div class="home">
     <top-bar/>
     <el-row>
-      <menu-bar/>
+      <el-col :span="4">
+        <menu-bar/>
+      </el-col>
       <el-col :span="20" class="main scrollbar" v-loading.body="$store.state.loading">
         <router-view></router-view>
       </el-col>
@@ -37,6 +39,19 @@
     padding: 0;
   }
 
+  .pull-left {
+    float: left;
+  }
+
+  .pull-right {
+    float: right;
+  }
+
+  .clearfix {
+    overflow: hidden;
+    clear: both;
+  }
+
   .home {
     font-family: 'Mogra', 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -63,17 +78,15 @@
     }
     .scrollbar {
       overflow: scroll;
-      &:hover {
-        &::-webkit-scrollbar-thumb {
-          background-color: rgba(0, 0, 0, .5);
-        }
-      }
       &::-webkit-scrollbar {
         width: 10px;
         height: 10px;
       }
       &::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, .2);
+        background-color: rgba(0, 0, 0, .3);
+      }
+      &::-webkit-scrollbar-corner {
+        background-color: transparent;
       }
     }
   }
