@@ -1,18 +1,21 @@
 <template>
   <div class="login">
-    <div id="loginBg"></div>
-    <el-row>
-      <el-col :span="8" :offset="8">
-        <el-form :model="loginFrom" :rules="loginRules" ref="loginFrom" label-width="100px">
-          <el-form-item label="username" prop="username">
-            <el-input type="text" v-model="loginFrom.username" auto-complete="off"></el-input>
+    <el-row type="flex" justify="center">
+      <el-col :span="8" class="login-wrap">
+        <h2>Crm</h2>
+        <h3>Login</h3>
+        <el-form :model="loginFrom" :rules="loginRules" ref="loginFrom">
+          <el-form-item prop="username">
+            <el-input type="text" v-model="loginFrom.username" auto-complete="off" v-focus="true"
+                      placeholder="username"></el-input>
           </el-form-item>
-          <el-form-item label="password" prop="password">
+          <el-form-item prop="password">
             <el-input type="password" v-model="loginFrom.password" auto-complete="off"
-                      @keyup.native.enter="login('loginFrom')"></el-input>
+                      @keyup.native.enter="login('loginFrom')" placeholder="password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login-btn" type="primary" @click="login('loginFrom')" :disabled="disabled">login</el-button>
+            <el-button class="login-btn" type="primary" @click="login('loginFrom')" :disabled="disabled">login
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -78,24 +81,48 @@
           }
         })
       }
+    },
+    directives: {
+      focus: {
+        inserted (el) {
+          el.querySelector('input').focus()
+        }
+      }
     }
   }
 </script>
 
 <style scoped lang="scss">
   .login {
+    width: 100vw;
+    height: 100vh;
+    background: url("/login_bg.jpg") no-repeat center;
     position: relative;
-    #loginBg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-    }
-    .el-form {
+    .login-wrap {
       margin-top: 25vh;
-      .login-btn {
-        width: 100%;
+      background-color: #fff;
+      h2 {
+        font-weight: normal;
+        color: #7d7d7d;
+        line-height: 40px;
+        font-size: 30px;
+        margin: 10px 20px 0 20px;
+        text-indent: 45px;
+        background: url("/logo.png") no-repeat left center;
+        background-size: contain;
+      }
+      h3 {
+        font-weight: normal;
+        color: #7d7d7d;
+        line-height: 35px;
+        font-size: 40px;
+        margin: 20px 20px 0 20px;
+      }
+      .el-form {
+        margin: 30px;
+        .login-btn {
+          width: 100%;
+        }
       }
     }
   }
