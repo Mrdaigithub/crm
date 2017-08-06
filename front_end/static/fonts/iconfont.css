@@ -1,9 +1,9 @@
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1501867069008'); /* IE9*/
-  src: url('iconfont.eot?t=1501867069008#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1501867069008') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1501867069008') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1501867069008#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1501982099492'); /* IE9*/
+  src: url('iconfont.eot?t=1501982099492#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1501982099492') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1501982099492') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1501982099492#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 [class*=" el-icon-ali"], [class^=el-icon-ali] {
@@ -22,9 +22,15 @@
 
 .el-icon-ali-more:before { content: "\e616"; }
 
+.el-icon-ali-reserve:before { content: "\e606"; }
+
 .el-icon-ali-account:before { content: "\e6b8"; }
 
 .el-icon-ali-logo:before { content: "\e62e"; }
+
+.el-icon-ali-proportion:before { content: "\e61c"; }
+
+.el-icon-ali-arrive:before { content: "\e619"; }
 
 .el-icon-ali-lock:before { content: "\e632"; }
 
@@ -36,7 +42,9 @@
 
 .el-icon-ali-rank:before { content: "\e60d"; }
 
-.el-icon-ali-patients:before { content: "\e61c"; }
+.el-icon-ali-patients:before { content: "\e61d"; }
+
+.el-icon-ali-cancel:before { content: "\e639"; }
 
 .el-icon-ali-logout:before { content: "\e6de"; }
 
