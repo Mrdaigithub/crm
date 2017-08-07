@@ -16,37 +16,6 @@ class PermissionController extends Controller
     use Helpers;
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int $id
@@ -54,32 +23,19 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = validator::make($parameters, [
+        $validator = validator::/**/make(['id' => $id], [
             'id' => 'numeric|exists:roles'
         ]);
         if ($validator->fails()) $this->response->errorbadrequest();
 
         $role = Role::find($id);
-        $permission_list = permission::all();
-        foreach ($permission_list as $permission) {
-            if ($role->hasPermission($permission['name'])) $permission['selected'] = true;
-            else $permission['selected'] = false;
-        }
-        return response()->json($permission_list);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $permission_parents = permission::where('depth', 1)->get();
+        return $permission_parents;
+//        foreach ($permission_list as $permission) {
+//            if ($role->hasPermission($permission['name'])) $permission['selected'] = true;
+//            else $permission['selected'] = false;
+//        }
+//        return response()->json($permission_list);
     }
 
     /**
@@ -113,16 +69,5 @@ class PermissionController extends Controller
             }
         }
         return response()->json($permission_list);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
