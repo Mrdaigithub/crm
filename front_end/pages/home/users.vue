@@ -52,21 +52,29 @@
         </el-col>
       </el-row>
       <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
-        <el-table
-          ref="permissionTable"
+        <tree
           :data="permissions"
-          border
-          tooltip-effect="dark"
-          style="width: 100%"
-          @select="selectPermission"
-          @select-all="selectPermissionAll">
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" label="name" width="280"></el-table-column>
-          <el-table-column prop="description" label="description"></el-table-column>
-        </el-table>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
-        </div>
+          :columns="columns"
+          node-key="id"
+          show-checkbox
+          default-expand-all
+          :expand-on-click-node="false"
+          ref="tree1"></tree>
+        <!--<el-table-->
+        <!--ref="permissionTable"-->
+        <!--:data="permissions"-->
+        <!--border-->
+        <!--tooltip-effect="dark"-->
+        <!--style="width: 100%"-->
+        <!--@select="selectPermission"-->
+        <!--@select-all="selectPermissionAll">-->
+        <!--<el-table-column type="selection" width="55"></el-table-column>-->
+        <!--<el-table-column prop="name" label="name" width="280"></el-table-column>-->
+        <!--<el-table-column prop="description" label="description"></el-table-column>-->
+        <!--</el-table>-->
+        <!--<div slot="footer" class="dialog-footer">-->
+        <!--<el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>-->
+        <!--</div>-->
       </el-dialog>
       <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
         <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
@@ -99,23 +107,111 @@
 
 <script>
   import FloatButton from '~components/FloatButton.vue'
+  import Tree from 'vue-treegrid/src/tree/tree.vue'
   import axios from '../../config/axios'
   import qs from 'qs'
 
   export default {
     name: 'user',
     components: {
-      FloatButton
+      FloatButton,
+      Tree
     },
     data () {
       return {
         roles: [],
         users: [],
-        permissions: [],
+        permissions: [{
+          id: 1,
+          name: '一级 1',
+          code: 123,
+          txtDesc: '123',
+          dropType: '123',
+          children: [{
+            id: 4,
+            name: '二级 1-1',
+            code: 123,
+            txtDesc: '123',
+            dropType: '123',
+            children: [{
+              id: 9,
+              name: '三级 1-1-1',
+              code: 123,
+              txtDesc: '123',
+              dropType: '123'
+            }, {
+              id: 10,
+              name: '三级 1-1-2',
+              code: 123,
+              txtDesc: '123',
+              dropType: '123'
+            }]
+          }]
+        }, {
+          id: 2,
+          name: '一级 2',
+          code: 123,
+          txtDesc: '123',
+          dropType: '123',
+          children: [{
+            id: 5,
+            name: '二级 2-1',
+            code: 123,
+            txtDesc: '123',
+            dropType: '123'
+          }, {
+            id: 6,
+            name: '二级 2-2',
+            code: 123,
+            txtDesc: '123',
+            dropType: '123'
+          }]
+        }, {
+          id: 3,
+          name: '一级 3',
+          code: 123,
+          txtDesc: '123',
+          dropType: '123',
+          children: [{
+            id: 7,
+            name: '二级 3-1',
+            code: 123,
+            txtDesc: '123',
+            dropType: '123'
+          }, {
+            id: 8,
+            name: '二级 3-2',
+            code: 123,
+            txtDesc: '123',
+            dropType: '123'
+          }]
+        }],
+        columns: [{
+          minWidth: 300,
+          label: '名称',
+          name: 'name'
+        }, {
+          minWidth: 100,
+          label: '编码',
+          name: 'code'
+        }, {
+          minWidth: 300,
+          label: '描述',
+          name: 'txtDesc'
+        }, {
+          minWidth: 100,
+          label: '类型',
+          name: 'dropType'
+        }, {
+          width: 240,
+          minWidth: 240,
+          label: '操作',
+          renderContent: this.renderContent
+        }],
         currentRoleId: 'all',
         currentUser: {},
         userDialogVisible: false,
-        permissionDialogVisible: false,
+        permissionDialogVisible: true,
         dialogState: 'new',
         userFormData: {
           data: {
@@ -345,6 +441,7 @@
         let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')])
         self.roles = roles['roles']
         self.users = users['users']
+        console.log(self.$refs['tree1'].setCheckedKeys([9]))
         self.$store.state.loading = false
       }())
     }
