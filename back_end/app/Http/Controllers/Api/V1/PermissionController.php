@@ -30,12 +30,11 @@ class PermissionController extends Controller
 
         $role = Role::find($id);
         $permission_parents = permission::where('depth', 1)->get();
-        return $permission_parents;
-//        foreach ($permission_list as $permission) {
-//            if ($role->hasPermission($permission['name'])) $permission['selected'] = true;
-//            else $permission['selected'] = false;
-//        }
-//        return response()->json($permission_list);
+        $res = $permission_parents->map(function ($item, $key){
+            $item->children = $item->where('parentid', $item->id)->get();
+            return $item;
+        });
+        return $res->all();
     }
 
     /**
