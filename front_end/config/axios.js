@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {Message} from 'element-ui'
-import NProgress from 'nprogress'
+import { Message } from 'element-ui'
+// import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 // const router = require('~router')
 
@@ -26,6 +26,58 @@ const errors = {
   400018: '用户所属的权限组不存在',
   400019: '用户启用状态错误',
   400020: '用户不存在',
+  400021: '病种不存在',
+  400022: '病种名称存在非法字符',
+  400023: '医生名称存在非法字符',
+  400024: '医生名称已存在',
+  400025: '医生不存在',
+  400026: '医生启用状态错误',
+  400027: '渠道名称缺失',
+  400028: '渠道名称存在非法字符',
+  400029: '渠道已存在',
+  400030: '渠道不存在',
+  400031: '渠道启用状态错误',
+  400032: '咨询方式名称存在非法字符',
+  400033: '咨询方式已存在',
+  400034: '咨询方式不存在',
+  400035: '病患名缺失',
+  400036: '病患名存在非法字符',
+  400037: '病患性别错误',
+  400038: '病患性别错误',
+  400039: '病患电话格式错误',
+  400040: '病患微信号错误',
+  400041: '病患状态错误',
+  400042: '病患搜索关键词错误',
+  400043: '病患访问页面url错误',
+  400044: '病患标记错误',
+  400045: '病患消费错误',
+  400046: '病患首次状态错误',
+  400047: '病患预约时间缺失',
+  400048: '病患预约时间错误',
+  400049: '病患到诊时间错误',
+  400050: '病患所属咨询方式缺失',
+  400051: '病患所属咨询方式错误',
+  400052: '病患所属咨询方式不存在',
+  400053: '病患所属渠道缺失',
+  400054: '病患所属渠道错误',
+  400055: '病患所属渠道不存在',
+  400056: '病患所属病种缺失',
+  400057: '病患所属病种错误',
+  400058: '病患所属病种不存在',
+  400059: '病患所属医生缺失',
+  400060: '病患所属医生错误',
+  400061: '病患所属医生不存在',
+  400062: '病患所属经办人不存在',
+  400063: '更改的病患ID错误',
+  400064: '更改的病患不存在',
+  400065: '统计类型不存在',
+  400066: '统计类型错误',
+  400067: '日期类型不存在',
+  400068: '日期类型错误',
+  400069: '起始日期不存在',
+  400070: '起始日期错误',
+  400071: '截至日期不存在',
+  400072: '截至日期错误',
   401000: '用戶名缺失',
   401001: '密码缺失',
   401002: '用戶名过短',
@@ -36,9 +88,11 @@ const errors = {
   401007: '密码存在非法字符',
   401008: '用戶不存在',
   401009: '密码错误',
+  401010: '权限详情参数不存在',
   500000: '网络错误',
   500001: '保存失败',
-  500002: '无法删除存在子用户的权限组'
+  500002: '无法删除存在子用户的权限组',
+  500003: '无法删除存在子病种的病种类'
 }
 
 let axiosInstance = axios.create({
@@ -49,7 +103,6 @@ let axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    NProgress.start()
     if (sessionStorage.token) {
       config.headers.common['Authorization'] = `Bearer ${sessionStorage.token}`
     }
@@ -59,14 +112,12 @@ axiosInstance.interceptors.request.use(
     Message.error({
       message: 'Internal Error'
     })
-    NProgress.done()
     return Promise.reject(err)
   })
 
 axiosInstance.interceptors.response.use(
   response => {
     // if (response.headers.authorization) sessionStorage.token = response.headers.authorization.replace(/Bearer\s/,'');
-    NProgress.done()
     return response.data
   },
   error => {
@@ -74,7 +125,6 @@ axiosInstance.interceptors.response.use(
       let errorCode = error.response.data.message
       Message.error(errors[errorCode])
     }
-    NProgress.done()
     return Promise.reject(error.response.data)
   })
 

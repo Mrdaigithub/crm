@@ -88,7 +88,7 @@
           :default-checked-keys="defaultCheckedPermissionsKeys"
           :indent="36"
           :props="permissionsProps"
-          @check-change="test">
+          @check-change="selectPermission">
         </el-tree>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
@@ -100,15 +100,13 @@
 
 <script>
   import FloatButton from '~components/FloatButton.vue'
-  import Tree from 'vue-treegrid/src/tree/tree.vue'
   import axios from '../../config/axios'
   import qs from 'qs'
 
   export default {
     name: 'user',
     components: {
-      FloatButton,
-      Tree
+      FloatButton
     },
     data () {
       return {
@@ -325,11 +323,17 @@
             self.permissionsData = permissionsData
           })
       },
-      selectPermission (selection, row) {
-        for (let permission of this.permissions) {
-          if (permission.id === row.id) {
-            permission.selected = !permission.selected
-            break
+      selectPermission (data, checked) {
+        for (let pItem of this.permissionsData) {
+          if (pItem.id === data.id) {
+            pItem.state = checked
+            return
+          }
+          for (let item of pItem.children) {
+            if (item.id === data.id) {
+              item.state = checked
+              return
+            }
           }
         }
       },
@@ -346,13 +350,10 @@
       },
       savePermission () {
         let self = this
-        axios.put(`permissions/${self.currentRoleId}`, qs.stringify({permissions: self.permissions}))
+        axios.put(`permissions/${self.currentRoleId}`, qs.stringify({permissions: self.permissionsData}))
           .then(res => {
-            this.permissionDialogVisible = false
+//            this.permissionDialogVisible = false
           })
-      },
-      test (data, checked, indeterminate) {
-        console.log(checked)
       }
     },
     mounted () {
