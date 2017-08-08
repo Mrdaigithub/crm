@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-
-use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Http\Controllers\Controller;
@@ -23,10 +21,8 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        $validator = validator::make(['id' => $id], [
-            'id' => 'numeric|exists:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
 
         $role = Role::find($id);
         $permission = new Permission();
@@ -57,27 +53,21 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $parameters = [
-            'id' => $id
-        ];
-        $validator = validator::make($parameters, [
-            'id' => 'numeric|exists:roles'
-        ]);
-        if ($validator->fails()) $this->response->errorbadrequest();
+        if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+        if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
+        if (!key_exists('permissions', $request->all())) $this->response->errorBadRequest(401010);
 
         $role = Role::find($id);
-        $permission_list = $request->all()['permissions'];
-
-        foreach ($permission_list as $permission) {
-            if ($role->hasPermission($permission['name']) && $permission['selected'] === 'false') {
-                $role->detachPermission(Permission::find($permission['id']));
-                $permission['selected'] = false;
+        $permission = new Permission();
+        $permissions = collect($request->only('permissions')['permissions']);
+        collect($permissions)->each(function ($item) use ($role, $permission) {
+            if (count($item['children'])) {
+                foreach ($item['children'] as $child) {
+                    if ($child['state'] && !$role->hasPermission($child['name'])) $role->attachPermission($child['id']);
+                    if (!$child['state'] && $role->hasPermission($child['name'])) $role->detachPermission($child['id']);
+                }
             }
-            if (!$role->hasPermission($permission['name']) && $permission['selected'] === 'true') {
-                $role->attachPermission(Permission::find($permission['id']));
-                $permission['selected'] = true;
-            }
-        }
-        return response()->json($permission_list);
+        });
+        return $this->show($id);
     }
 }
