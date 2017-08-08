@@ -601,11 +601,6 @@
     mounted () {
       this.currentPage = 1
       this.fetchPatients()
-      if (!this.$store.state.users) this.$store.dispatch('getUsers')
-      if (!this.$store.state.advisories) this.$store.dispatch('getAdvisories')
-      if (!this.$store.state.channels) this.$store.dispatch('getChannels')
-      if (!this.$store.state.doctors) this.$store.dispatch('getDoctors')
-      if (!this.$store.state.diseases.length) this.$store.dispatch('getDiseases')
     }
   }
 </script>

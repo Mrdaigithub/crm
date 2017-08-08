@@ -42,10 +42,11 @@ const store = () => new Vuex.Store({
     }
   },
   actions: {
-    getUsers ({commit}) {
+    getUsers ({commit}, callback = () => {}) {
       axios.get('/users')
         .then(res => {
           commit('getUsers', res.users)
+          callback()
         })
     },
     getOneself ({commit}) {

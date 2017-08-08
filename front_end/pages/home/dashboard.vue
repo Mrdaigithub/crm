@@ -342,6 +342,11 @@
             }
           ]
         })
+        if (!self.$store.state.users) self.$store.dispatch('getUsers')
+        if (!self.$store.state.advisories) self.$store.dispatch('getAdvisories')
+        if (!self.$store.state.channels) self.$store.dispatch('getChannels')
+        if (!self.$store.state.doctors) self.$store.dispatch('getDoctors')
+        if (!self.$store.state.diseases.length) self.$store.dispatch('getDiseases')
       })()
     }
   }

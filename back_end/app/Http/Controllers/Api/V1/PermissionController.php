@@ -26,21 +26,14 @@ class PermissionController extends Controller
 
         $role = Role::find($id);
         $permission = new Permission();
-        $res =
-            $permission
-                ->where('depth', 1)
-                ->get()
-                ->map(function ($item) use ($role, $permission) {
-                    $item->children =
-                        $item
-                            ->where('parentid', $item->id)
-                            ->get()
-                            ->map(function ($c_item) use ($role, $permission) {
-                                $c_item->state = $role->hasPermission($c_item->name);
-                                return $c_item;
-                            });
-                    return $item;
-                });
+        $res = $permission->where('depth', 1)->get()->map(function ($item) use ($role, $permission) {
+            $item->state = $role->hasPermission($item->name);
+            $item->children = $item->where('parentid', $item->id)->get()->map(function ($c_item) use ($role, $permission) {
+                $c_item->state = $role->hasPermission($c_item->name);
+                return $c_item;
+            });
+            return $item;
+        });
         return $res->all();
     }
 

@@ -14,12 +14,14 @@
             <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
               {{role.name}}
               <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
-              <el-button type="danger" size="mini" icon="delete" class="role-edit-btn"
-                         @click="removeRole(role.id)"></el-button>
-              <el-button type="default" size="mini" icon="edit" class="role-remove-btn"
-                         @click="editRole(role.id)"></el-button>
-              <el-button type="default" size="mini" icon="setting" class="setting-permission-btn"
-                         @click="editPermission(role.id)"></el-button>
+              <div class="role-btns">
+                <el-button type="danger" size="mini" icon="delete" class="role-edit-btn"
+                           @click="removeRole(role.id)"></el-button>
+                <el-button type="default" size="mini" icon="edit" class="role-remove-btn"
+                           @click="editRole(role.id)"></el-button>
+                <el-button type="default" size="mini" icon="setting" class="setting-permission-btn"
+                           @click="editPermission(role.id)"></el-button>
+              </div>
             </div>
             <hr>
             <div class="add-role" @click="addRole">Add new role</div>
@@ -51,31 +53,6 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
-        <tree
-          :data="permissions"
-          :columns="columns"
-          node-key="id"
-          show-checkbox
-          default-expand-all
-          :expand-on-click-node="false"
-          ref="tree1"></tree>
-        <!--<el-table-->
-        <!--ref="permissionTable"-->
-        <!--:data="permissions"-->
-        <!--border-->
-        <!--tooltip-effect="dark"-->
-        <!--style="width: 100%"-->
-        <!--@select="selectPermission"-->
-        <!--@select-all="selectPermissionAll">-->
-        <!--<el-table-column type="selection" width="55"></el-table-column>-->
-        <!--<el-table-column prop="name" label="name" width="280"></el-table-column>-->
-        <!--<el-table-column prop="description" label="description"></el-table-column>-->
-        <!--</el-table>-->
-        <!--<div slot="footer" class="dialog-footer">-->
-        <!--<el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>-->
-        <!--</div>-->
-      </el-dialog>
       <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
         <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
                  class="new-user">
@@ -101,6 +78,22 @@
           <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
         </div>
       </el-dialog>
+      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
+        <el-tree
+          :data="permissionsData"
+          show-checkbox
+          highlight-current
+          default-expand-all
+          node-key="id"
+          :default-checked-keys="defaultCheckedPermissionsKeys"
+          :indent="36"
+          :props="permissionsProps"
+          @check-change="test">
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
+        </div>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -121,97 +114,10 @@
       return {
         roles: [],
         users: [],
-        permissions: [{
-          id: 1,
-          name: '一级 1',
-          code: 123,
-          txtDesc: '123',
-          dropType: '123',
-          children: [{
-            id: 4,
-            name: '二级 1-1',
-            code: 123,
-            txtDesc: '123',
-            dropType: '123',
-            children: [{
-              id: 9,
-              name: '三级 1-1-1',
-              code: 123,
-              txtDesc: '123',
-              dropType: '123'
-            }, {
-              id: 10,
-              name: '三级 1-1-2',
-              code: 123,
-              txtDesc: '123',
-              dropType: '123'
-            }]
-          }]
-        }, {
-          id: 2,
-          name: '一级 2',
-          code: 123,
-          txtDesc: '123',
-          dropType: '123',
-          children: [{
-            id: 5,
-            name: '二级 2-1',
-            code: 123,
-            txtDesc: '123',
-            dropType: '123'
-          }, {
-            id: 6,
-            name: '二级 2-2',
-            code: 123,
-            txtDesc: '123',
-            dropType: '123'
-          }]
-        }, {
-          id: 3,
-          name: '一级 3',
-          code: 123,
-          txtDesc: '123',
-          dropType: '123',
-          children: [{
-            id: 7,
-            name: '二级 3-1',
-            code: 123,
-            txtDesc: '123',
-            dropType: '123'
-          }, {
-            id: 8,
-            name: '二级 3-2',
-            code: 123,
-            txtDesc: '123',
-            dropType: '123'
-          }]
-        }],
-        columns: [{
-          minWidth: 300,
-          label: '名称',
-          name: 'name'
-        }, {
-          minWidth: 100,
-          label: '编码',
-          name: 'code'
-        }, {
-          minWidth: 300,
-          label: '描述',
-          name: 'txtDesc'
-        }, {
-          minWidth: 100,
-          label: '类型',
-          name: 'dropType'
-        }, {
-          width: 240,
-          minWidth: 240,
-          label: '操作',
-          renderContent: this.renderContent
-        }],
         currentRoleId: 'all',
         currentUser: {},
         userDialogVisible: false,
-        permissionDialogVisible: true,
+        permissionDialogVisible: false,
         dialogState: 'new',
         userFormData: {
           data: {
@@ -238,6 +144,11 @@
             ],
             role: [{required: true, message: 'please select a role', trigger: 'blur'}]
           }
+        },
+        permissionsData: [],
+        permissionsProps: {
+          children: 'children',
+          label: 'description'
         }
       }
     },
@@ -253,6 +164,17 @@
           }
           return showUsersData
         }
+      },
+      defaultCheckedPermissionsKeys () {
+        if (!this.permissionsData.length) return []
+        let checkedKeys = []
+        this.permissionsData.forEach(pItem => {
+          if (pItem.state) checkedKeys = checkedKeys.concat(pItem.id)
+          checkedKeys = checkedKeys.concat(pItem.children.map(item => {
+            if (item.state) return item.id
+          }))
+        })
+        return checkedKeys
       }
     },
     methods: {
@@ -399,13 +321,8 @@
         let self = this
         this.permissionDialogVisible = true
         axios.get(`permissions/${roleId}`)
-          .then(permissions => {
-            self.permissions = permissions
-            this.permissions.forEach((permission, index) => {
-              this.$nextTick(() => {
-                this.$refs['permissionTable'].toggleRowSelection(this.permissions[index], permission.selected)
-              })
-            })
+          .then(permissionsData => {
+            self.permissionsData = permissionsData
           })
       },
       selectPermission (selection, row) {
@@ -433,6 +350,9 @@
           .then(res => {
             this.permissionDialogVisible = false
           })
+      },
+      test (data, checked, indeterminate) {
+        console.log(checked)
       }
     },
     mounted () {
@@ -441,7 +361,6 @@
         let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')])
         self.roles = roles['roles']
         self.users = users['users']
-        console.log(self.$refs['tree1'].setCheckedKeys([9]))
         self.$store.state.loading = false
       }())
     }
@@ -449,7 +368,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
   .user {
     .role-area {
       .box-card {
@@ -470,13 +389,23 @@
         }
         .role-item {
           padding: 10px 0;
+          position: relative;
           &:hover {
             color: #62a8ea;
             background-color: #f3f7f9;
+            .role-btns {
+              display: block;
+            }
           }
-          .role-remove-btn, .role-edit-btn, .setting-permission-btn {
-            float: right;
-            margin-left: 1px;
+          .role-btns {
+            display: none;
+            padding: 10px 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            .role-remove-btn, .role-edit-btn, .setting-permission-btn {
+              margin-left: 1px;
+            }
           }
         }
         .add-role {
