@@ -23,17 +23,28 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        $validator = validator::/**/make(['id' => $id], [
+        $validator = validator::make(['id' => $id], [
             'id' => 'numeric|exists:roles'
         ]);
         if ($validator->fails()) $this->response->errorbadrequest();
 
         $role = Role::find($id);
-        $permission_parents = permission::where('depth', 1)->get();
-        $res = $permission_parents->map(function ($item, $key){
-            $item->children = $item->where('parentid', $item->id)->get();
-            return $item;
-        });
+        $permission = new Permission();
+        $res =
+            $permission
+                ->where('depth', 1)
+                ->get()
+                ->map(function ($item) use ($role, $permission) {
+                    $item->children =
+                        $item
+                            ->where('parentid', $item->id)
+                            ->get()
+                            ->map(function ($c_item) use ($role, $permission) {
+                                $c_item->state = $role->hasPermission($c_item->name);
+                                return $c_item;
+                            });
+                    return $item;
+                });
         return $res->all();
     }
 
@@ -62,7 +73,7 @@ class PermissionController extends Controller
                 $role->detachPermission(Permission::find($permission['id']));
                 $permission['selected'] = false;
             }
-            if (!$role->hasPermission($permission['name']) && $permission['selected'] === 'true'){
+            if (!$role->hasPermission($permission['name']) && $permission['selected'] === 'true') {
                 $role->attachPermission(Permission::find($permission['id']));
                 $permission['selected'] = true;
             }

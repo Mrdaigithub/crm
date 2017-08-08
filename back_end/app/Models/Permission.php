@@ -4,5 +4,5 @@ use Zizaco\Entrust\EntrustPermission;
 
 class Permission extends EntrustPermission
 {
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['depth' ,'parentid','created_at', 'updated_at'];
 }
