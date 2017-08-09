@@ -80,6 +80,7 @@
       </el-dialog>
       <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
         <el-tree
+          v-loading.body="permissionLoading"
           :data="permissionsData"
           show-checkbox
           highlight-current
@@ -147,7 +148,8 @@
         permissionsProps: {
           children: 'children',
           label: 'description'
-        }
+        },
+        permissionLoading: false
       }
     },
     computed: {
@@ -318,9 +320,11 @@
       editPermission (roleId) {
         let self = this
         this.permissionDialogVisible = true
+        this.permissionLoading = true
         axios.get(`permissions/${roleId}`)
           .then(permissionsData => {
             self.permissionsData = permissionsData
+            this.permissionLoading = false
           })
       },
       selectPermission (data, checked) {
@@ -352,7 +356,7 @@
         let self = this
         axios.put(`permissions/${self.currentRoleId}`, qs.stringify({permissions: self.permissionsData}))
           .then(res => {
-//            this.permissionDialogVisible = false
+            this.permissionDialogVisible = false
           })
       }
     },
