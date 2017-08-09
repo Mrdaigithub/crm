@@ -6,7 +6,7 @@
     border-radius: 50%;
     position: fixed;
     right: 60px;
-    bottom: 50px;
+    bottom: 80px;
     z-index: 999;
     border:none;
     background-color: #ff4081;

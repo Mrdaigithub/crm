@@ -6,10 +6,9 @@
         ref="treeParent"
         :data="diseases"
         :props="defaultProps"
-        :show-checkbox="false"
+        highlight-current
         node-key="id"
         default-expand-all
-        :expand-on-click-node="false"
         :render-content="renderContent">
       </el-tree>
     </el-card>
@@ -64,16 +63,14 @@
       },
       renderContent (h, {node, data, store}) {
         return (
-          <span style="width:100%">
-          <span>
-          <span>{node.label}</span>
-        </span>
-        <span style="float: right margin-right: 20px">
-          <el-button size="mini" type="primary" icon="plus" on-click={ () => this.appendDisease(store, data) }></el-button>
-        <el-button size="mini" icon="edit" on-click={ () => this.editDsiease(store, data) }></el-button>
-        <el-button size="mini" type="danger" icon="delete" on-click={ () => this.removeDsiease(store, data) }></el-button>
-        </span>
-        </span>)
+          <span style="width:100%;display:inline; overflow:hidden">
+            <span>{node.label}</span>
+            <span style="float: right">
+              <el-button size="mini" type="primary" icon="plus" on-click={ () => this.appendDisease(store, data) }></el-button>
+              <el-button size="mini" icon="edit" on-click={ () => this.editDsiease(store, data) }></el-button>
+              <el-button size="mini" type="danger" icon="delete" on-click={ () => this.removeDsiease(store, data) }></el-button>
+            </span>
+          </span>)
       }
     },
     mounted () {

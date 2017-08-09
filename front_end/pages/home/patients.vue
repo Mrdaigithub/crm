@@ -3,7 +3,9 @@
     <h2>Patient</h2>
     <el-card class="box-card">
       <float-button @click.native="addPatient"/>
-      <el-button @click="exportDialogVisible = true">export</el-button>
+      <div class="form-group">
+        <el-button @click="exportDialogVisible = true" type="primary">export</el-button>
+      </div>
       <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum"
                 @sort-change="sortChange" border>
         <el-table-column type="expand">
@@ -63,8 +65,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
-                     @current-change="changePage"></el-pagination>
+      <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage" @current-change="changePage" class="pagination"></el-pagination>
     </el-card>
     <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
       <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">

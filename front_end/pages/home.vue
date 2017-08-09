@@ -74,6 +74,12 @@
       .box-card {
         margin: 20px;
         min-height: 85vh;
+        .form-group{
+          margin:30px 0 17px 0;
+        }
+        .pagination{
+          margin:35px 0 25px 0;
+        }
       }
     }
     .scrollbar {

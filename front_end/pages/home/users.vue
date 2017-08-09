@@ -29,7 +29,6 @@
         </el-col>
         <el-col :span="18" class="user-area">
           <el-card class="box-card">
-            <h2>User List</h2>
             <float-button @click.native="initUserFormData('new')"/>
             <el-table :data="showUsersData" border style="width: 100%">
               <el-table-column prop="id" label="id" width="70"></el-table-column>
@@ -78,8 +77,9 @@
           <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
         </div>
       </el-dialog>
-      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" size="large">
+      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" top="5%">
         <el-tree
+          class="permissions-tree scrollbar"
           v-loading.body="permissionLoading"
           :data="permissionsData"
           show-checkbox
@@ -432,6 +432,9 @@
           margin-bottom: 15px;
         }
       }
+    }
+    .permissions-tree{
+      height:65vh;
     }
   }
 </style>

@@ -3,7 +3,7 @@
     <h2>Diseases data</h2>
     <el-card class="box-card">
       <el-card class="sub-box">
-        <el-form :model="diseasesFrom" ref="diseasesFrom" :inline="true">
+        <el-form class="form-group" :model="diseasesFrom" ref="diseasesFrom" :inline="true">
           <el-form-item prop="statisticalType">
             <el-select v-model="diseasesFrom.statisticalType">
               <el-option label="year" value="year"></el-option>
@@ -212,7 +212,6 @@
     .sub-box {
       margin: 40px 0;
       h3 {
-        margin-top: 40px;
         margin-bottom: 15px;
       }
       #yearChart, #monthChart {
