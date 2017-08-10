@@ -28,7 +28,7 @@ class PermissionController extends Controller
         $permission = new Permission();
         $res = $permission->where('depth', 1)->get()->map(function ($item) use ($role, $permission) {
             $item->state = $role->hasPermission($item->name);
-            $item->children = $item->where('parentid', $item->id)->get()->map(function ($c_item) use ($role, $permission) {
+            $item->children = $item->where('parent_id', $item->id)->get()->map(function ($c_item) use ($role, $permission) {
                 $c_item->state = $role->hasPermission($c_item->name);
                 return $c_item;
             });
@@ -59,7 +59,7 @@ class PermissionController extends Controller
             if (key_exists('children', $item) && count($item['children'])) {
                 foreach ($item['children'] as $child) {
                     if ($child['state'] === 'true' && !$role->hasPermission($child['name'])) $role->attachPermission($child['id']);
-                    if (!$child['state'] === 'false' && $role->hasPermission($child['name'])) $role->detachPermission($child['id']);
+                    if ($child['state'] === 'false' && $role->hasPermission($child['name'])) $role->detachPermission($child['id']);
                 }
             }
         });

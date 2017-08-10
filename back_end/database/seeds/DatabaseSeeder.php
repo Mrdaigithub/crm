@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
          $this->call(MenuSeeder::class);
          $this->call(ManagementSeeder::class);
          $this->call(PatientsSeeder::class);
-
         Model::reguard();
     }
 }

@@ -17,8 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user/', 'Api\V1\UserController@index');
-
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
 

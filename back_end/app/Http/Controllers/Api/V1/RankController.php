@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
+use JWTAuth, JWTException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Validator;
 use Dingo\Api\Routing\Helpers;
 
 class RankController extends Controller
@@ -20,6 +19,7 @@ class RankController extends Controller
      */
     public function show($type)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('rank')) $this->response->errorForbidden(403001);
         $res = [];
         $users = User::all();
 

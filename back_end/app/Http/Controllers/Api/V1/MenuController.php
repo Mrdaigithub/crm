@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
-
-use Illuminate\Http\Request;
 use App\Models\Menu;
-
-use App\Http\Requests;
+use JWTAuth, JWTException;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class MenuController extends Controller
 {
+    function __construct()
+    {
+        $this->u_self = JWTAuth::parseToken()->authenticate();
+        $this->r_self = $this->u_self->roles[0];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,17 +25,25 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return Menu::root()->getDescendants()->toHierarchy();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $menu = Menu::root()->descendants();
+        if (!$this->r_self->hasPermission('dashboard')) $menu = $this->clear_menu_nodes('Dashboard', $menu);
+        if (!$this->r_self->hasPermission('rank')) $menu = $this->clear_menu_nodes('Rank', $menu);
+        if (!$this->r_self->hasPermission('allow_patients_module')) $menu = $this->clear_menu_nodes('Patients', $menu);
+        if (!$this->r_self->hasPermission('allow_data_module')) {
+            $menu = $this->clear_menu_nodes('data', $menu);
+        } else {
+            if (!$this->r_self->hasPermission('data/total')) $menu = $this->clear_menu_nodes('Total data', $menu);
+            if (!$this->r_self->hasPermission('data/user')) $menu = $this->clear_menu_nodes('Users data', $menu);
+            if (!$this->r_self->hasPermission('data/disease')) $menu = $this->clear_menu_nodes('Diseases data', $menu);
+            if (!$this->r_self->hasPermission('data/channel')) $menu = $this->clear_menu_nodes('Channels data', $menu);
+            if (!$this->r_self->hasPermission('data/doctor')) $menu = $this->clear_menu_nodes('Doctors data', $menu);
+            if (!$this->r_self->hasPermission('data/patient')) $menu = $this->clear_menu_nodes('Patients data', $menu);
+        }
+        if (!$this->r_self->hasPermission('allow_info_module')) $menu = $this->clear_menu_nodes('Info', $menu);
+        if (!$this->r_self->hasPermission('allow_users_module')) $menu = $this->clear_menu_nodes('Users list', $menu);
+        if (!$this->r_self->hasPermission('allow_setting_module')) $menu = $this->clear_menu_nodes('System setting', $menu);
+        $menu = $menu->get()->toHierarchy();
+        return $menu;
     }
 
     /**
@@ -72,47 +84,18 @@ class MenuController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 删除无权限访问的菜单节点
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param $n_name
+     * @param $menu
+     * @return mixed
      */
-    public function show($id)
+    private function clear_menu_nodes($n_name, $menu)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $withoutNodes = Menu::where('name', $n_name)->first()->descendantsAndSelf()->get();
+        $withoutNodes->each(function ($withoutNode) use ($menu) {
+            $menu = $menu->withoutNode($withoutNode);
+        });
+        return $menu;
     }
 }
