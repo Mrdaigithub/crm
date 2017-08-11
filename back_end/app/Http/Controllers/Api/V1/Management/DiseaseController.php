@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Management;
 
 use Illuminate\Http\Request;
+use JWTAuth, JWTException;
 use App\Http\Controllers\Controller;
 use App\Models\Management\Disease;
 use Validator;
@@ -12,6 +13,11 @@ class DiseaseController extends Controller
 {
     use Helpers;
 
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_info_module')) $this->response->errorForbidden(403012);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,32 +25,7 @@ class DiseaseController extends Controller
      */
     public function index()
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/disease')) $this->response->errorForbidden(403008);
-
         return Disease::root()->getDescendants()->toHierarchy();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $diseases = [
-            ['id' => 1, 'name' => 'root', 'children' => [
-                ['id' => 2, 'name' => 'disease1', 'children' => [
-                    ['id' => 3, 'name' => 'disease1-1'],
-                ]],
-                ['id' => 4, 'name' => 'disease2', 'children' => [
-                    ['id' => 5, 'name' => 'disease2-1'],
-                    ['id' => 6, 'name' => 'disease2-2'],
-                ]]
-            ]]
-        ];
-
-        return response()->json(Disease::buildTree($diseases));
     }
 
     /**
@@ -56,6 +37,8 @@ class DiseaseController extends Controller
      */
     public function store($pid, $name)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/disease/add')) $this->response->errorForbidden(403013);
+
         $parameters = ['id'=>$pid, 'name'=>$name];
         if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
         if (Validator::make($parameters, ['name' => 'string'])->fails()) $this->response->errorBadRequest(400022);
@@ -73,6 +56,8 @@ class DiseaseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/disease/edit')) $this->response->errorForbidden(403015);
+
         $parameters = $request->all();
         $parameters['id'] = $id;
         if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
@@ -92,6 +77,8 @@ class DiseaseController extends Controller
      */
     public function destroy($id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/disease/remove')) $this->response->errorForbidden(403014);
+
         $parameters['id'] = $id;
         if (Validator::make($parameters, ['id' => 'exists:diseases'])->fails()) $this->response->errorBadRequest(400021);
 

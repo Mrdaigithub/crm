@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Management;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use JWTAuth, JWTException;
 use App\Models\Management\Doctor;
 use Validator;
 use Dingo\Api\Routing\Helpers;
@@ -11,6 +12,11 @@ use Dingo\Api\Routing\Helpers;
 class DoctorsController extends Controller
 {
     use Helpers;
+
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_info_module')) $this->response->errorForbidden(403012);
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,6 +36,8 @@ class DoctorsController extends Controller
      */
     public function create($name)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/doctor/add')) $this->response->errorForbidden(403016);
+
         if (Validator::make(['name' => $name], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400023);
         if (Validator::make(['name' => $name], ['name' => 'unique:doctors'])->fails()) $this->response->errorBadRequest(400024);
 
@@ -48,6 +56,8 @@ class DoctorsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/doctor/edit')) $this->response->errorForbidden(403018);
+
         $parameters = $request->all();
         $parameters['id'] = $id;
         if (Validator::make($parameters, ['id' => 'exists:doctors'])->fails()) $this->response->errorBadRequest(400025);
@@ -70,8 +80,9 @@ class DoctorsController extends Controller
      */
     public function destroy($id)
     {
-        if (Validator::make(['id' => $id], ['id' => 'exists:doctors'])->fails()) $this->response->errorBadRequest(400025);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/doctor/remove')) $this->response->errorForbidden(403017);
 
+        if (Validator::make(['id' => $id], ['id' => 'exists:doctors'])->fails()) $this->response->errorBadRequest(400025);
         $doctor = Doctor::find($id);
         $doctor->delete();
     }

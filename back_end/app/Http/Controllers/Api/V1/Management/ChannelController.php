@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Management;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use JWTAuth, JWTException;
 use App\Models\Management\Channel;
 use Validator;
 use Dingo\Api\Routing\Helpers;
@@ -11,6 +12,11 @@ use Dingo\Api\Routing\Helpers;
 class ChannelController extends Controller
 {
     use Helpers;
+
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_info_module')) $this->response->errorForbidden(403012);
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,6 +36,8 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/channel/add')) $this->response->errorForbidden(403019);
+
         if (Validator::make(['name' => $request['name']], ['name' => 'required'])->fails()) $this->response->errorBadRequest(400027);
         if (Validator::make(['name' => $request['name']], ['name' => 'string'])->fails()) $this->response->errorBadRequest(400028);
         if (Validator::make(['name' => $request['name']], ['name' => 'unique:channels'])->fails()) $this->response->errorBadRequest(400029);
@@ -49,6 +57,8 @@ class ChannelController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/channel/edit')) $this->response->errorForbidden(403021);
+
         $parameters = $request->all();
         $parameters['id'] = $id;
         if (Validator::make($parameters, ['id' => 'exists:channels'])->fails()) $this->response->errorBadRequest(400030);
@@ -71,8 +81,9 @@ class ChannelController extends Controller
      */
     public function destroy($id)
     {
-        if (Validator::make(['id' => $id], ['id' => 'exists:channels'])->fails()) $this->response->errorBadRequest(400030);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('info/channel/remove')) $this->response->errorForbidden(403020);
 
+        if (Validator::make(['id' => $id], ['id' => 'exists:channels'])->fails()) $this->response->errorBadRequest(400030);
         Channel::find($id)->delete();
     }
 }
