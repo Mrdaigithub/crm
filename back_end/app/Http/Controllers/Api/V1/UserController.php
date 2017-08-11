@@ -39,6 +39,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/add')) $this->response->errorForbidden(403030);
+
         $parameters = $request->all();
         if (Validator::make($parameters, ['username' => 'required'])->fails()) $this->response->errorBadRequest(400005);
         if (Validator::make($parameters, ['username' => 'min:4'])->fails()) $this->response->errorBadRequest(400006);
@@ -103,6 +106,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/edit')) $this->response->errorForbidden(403032);
+
         $parameters = $request->all();
         $parameters['id'] = $id;
         if (Validator::make($parameters, ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);
@@ -144,6 +150,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/remove')) $this->response->errorForbidden(403031);
+
         if (Validator::make(['id' => $id], ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);
 
         $user = User::find($id);
