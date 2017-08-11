@@ -20,8 +20,10 @@ class ChannelsController extends Controller
      */
     public function index()
     {
-        $parameters = Input::all();
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/channel')) $this->response->errorForbidden(403009);
 
+        $parameters = Input::all();
         if (!key_exists('statistical_type', $parameters)) $parameters['statistical_type'] = 'month';
         if (Validator::make($parameters, ['statistical_type' => 'required'])->fails()) $this->response->errorBadRequest(400067);
         if (Validator::make($parameters, ['statistical_type' => ['regex:/^(year|month|day)$/']])->fails()) $this->response->errorBadRequest(400068);

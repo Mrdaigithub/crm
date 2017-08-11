@@ -26,6 +26,7 @@ class ExportController extends Controller
      */
     public function index()
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('patients/excel')) $this->response->errorForbidden(403004);
         $parameters = Input::all();
         $patients = new Patient();
 

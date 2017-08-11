@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use DB;
+use Validator;
 use Dingo\Api\Routing\Helpers;
 
 class PatientController extends Controller
@@ -154,6 +155,9 @@ class PatientController extends Controller
         if (Validator::make($parameters, ['user_id' => 'exists:users,id'])->fails()) $this->response->errorBadRequest(400064);
 
         $patient = Patient::find($parameters['id']);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('patients/oth/info/edit')
+            && $patient->user[0]->id === JWTAuth::parseToken()->authenticate()->id) $this->response->errorForbidden(403003);
+
         if (key_exists('name', $parameters)) $patient->name = $parameters['name'];
         if (key_exists('sex', $parameters)) $patient->sex = $parameters['sex'];
         if (key_exists('age', $parameters)) $patient->age = $parameters['age'];
@@ -171,14 +175,14 @@ class PatientController extends Controller
         if (key_exists('channel_id', $parameters)) DB::update('update patient_channel set channel_id = ? where patient_id = ?', [$parameters['channel_id'], $parameters['id']]);
         if (key_exists('disease_id', $parameters)) DB::update('update patient_disease set disease_id = ? where patient_id = ?', [$parameters['disease_id'], $parameters['id']]);
         if (key_exists('doctor_id', $parameters)) DB::update('update patient_doctor set doctor_id = ? where patient_id = ?', [$parameters['doctor_id'], $parameters['id']]);
-        if (key_exists('user_id', $parameters)) DB::update('update patient_user set user_id = ? where patient_id = ?', [$parameters['user_id'], $parameters['id']]);
+
         $patient->advisory;
         $patient->channel;
         $patient->disease;
         $patient->doctor;
         $patient->user;
-        if (!$patient->save()) $this->response->errorInternal();
-        return response()->json($patient);
+        if (!$patient->save()) $this->response->errorInternal(500001);
+        return $patient;
     }
 
     /**

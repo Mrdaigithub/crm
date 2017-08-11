@@ -19,6 +19,9 @@ class PatientsController extends Controller
      */
     public function index()
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/patient')) $this->response->errorForbidden(403011);
+
         $parameters = Input::all();
         if (!key_exists('statistical_type', $parameters)) $parameters['statistical_type'] = 'month';
         if (Validator::make($parameters, ['statistical_type' => 'required'])->fails()) $this->response->errorBadRequest(400067);

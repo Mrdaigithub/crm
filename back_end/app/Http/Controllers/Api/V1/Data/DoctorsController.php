@@ -22,6 +22,9 @@ class DoctorsController extends Controller
      */
     public function index()
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/doctor')) $this->response->errorForbidden(403010);
+
         $parameters = Input::all();
         if (!key_exists('statistical_type', $parameters)) $parameters['statistical_type'] = 'month';
         if (Validator::make($parameters, ['statistical_type' => 'required'])->fails()) $this->response->errorBadRequest(400067);
