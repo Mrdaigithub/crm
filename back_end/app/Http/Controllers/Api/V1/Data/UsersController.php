@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Data;
 
 use App\Http\Controllers\Controller;
+use JWTAuth, JWTException;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Support\Facades\Input;
@@ -12,6 +13,12 @@ use Dingo\Api\Routing\Helpers;
 class UsersController extends Controller
 {
     use Helpers;
+
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/total')) $this->response->errorForbidden(403006);
+    }
 
     /**
      * Display a listing of the resource.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Data;
 
 use App\Http\Controllers\Controller;
+use JWTAuth, JWTException;
 use App\Models\Patient;
 use App\Models\Management\Channel;
 use Illuminate\Support\Facades\Input;
@@ -13,6 +14,12 @@ class ChannelsController extends Controller
 {
     use Helpers;
 
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/channel')) $this->response->errorForbidden(403009);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,9 +27,6 @@ class ChannelsController extends Controller
      */
     public function index()
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/channel')) $this->response->errorForbidden(403009);
-
         $parameters = Input::all();
         if (!key_exists('statistical_type', $parameters)) $parameters['statistical_type'] = 'month';
         if (Validator::make($parameters, ['statistical_type' => 'required'])->fails()) $this->response->errorBadRequest(400067);

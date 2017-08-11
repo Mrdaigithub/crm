@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Data;
 
+use JWTAuth, JWTException;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use Validator;
@@ -11,6 +12,12 @@ class TotalController extends Controller
 {
     use Helpers;
 
+    function __construct()
+    {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/total')) $this->response->errorForbidden(403006);
+    }
+
     /**
      * Display the data by year.
      *
@@ -18,9 +25,6 @@ class TotalController extends Controller
      */
     public function show_by_year()
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/total')) $this->response->errorForbidden(403006);
-
         $current_year_date = date('Y', time());
         $current_year_patients = Patient::whereBetween('created_at', ["$current_year_date-01-01", "$current_year_date-12-31"])->get();
         $old_year_date = date('Y', time()) - 1;
