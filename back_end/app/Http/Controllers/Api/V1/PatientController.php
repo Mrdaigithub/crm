@@ -21,41 +21,25 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('patients/info/get')) $this->response->errorForbidden(403002);
+
         $parameters = $request->all();
         $parameters['page'] = array_key_exists('page', $parameters) ? $parameters['page'] : 1;
         $parameters['limit'] = array_key_exists('limit', $parameters) ? $parameters['limit'] : 10;
         $parameters['sortby'] = array_key_exists('sortby', $parameters) ? $parameters['sortby'] : 'id';
         $parameters['order'] = array_key_exists('order', $parameters) ? $parameters['order'] : 'asc';
-        $patient_paginate = Patient::orderBy($parameters['sortby'], $parameters['order'])->paginate($parameters['limit']);
-//        $patient_paginate = collect($patient_paginate);
-//        $patient_paginate = $patient_paginate->map(function ($item) {
-//           $item->user = $item->user;
-//           $item->disease = $item->disease;
-//           $item->doctor = $item->doctor;
-//           $item->channel = $item->channel;
-//           $item->advisory = $item->advisory;
-//           return $item;
-//        });
-//        $patient_paginate['data'] = collect($patient_paginate['data'])->map(function ($item) {
-//            $item->user = collect($item)->user;
-//            return $item;
-//        });
-//        print_r($patient_paginate['data']);
-//        $patient_paginate = $patient_paginate->paginate($parameters['limit']);
-//        return $patient_paginate;
-//        $patient_paginate = Patient::orderBy($parameters['sortby'], $parameters['order'])->paginate($parameters['limit']);
-//        $patient_paginate['data'] = array_map(function ($e) {
-//            $props = ['user', 'disease', 'doctor', 'channel', 'advisory'];
-//            foreach ($props as $prop) {
-//                $item = Patient::find($e['id'])[$prop];
-//                if (count($item->toArray())) $e[$prop] = $item->toArray()[0];
-//                else {
-//                    if ($prop === 'user') $e[$prop] = ['id' => '', 'username' => ''];
-//                    else $e[$prop] = ['id' => '', 'name' => ''];
-//                }
-//            }
-//            return $e;
-//        }, $patient_paginate['data']);
+        $patient_paginate =
+            Patient::orderBy($parameters['sortby'], $parameters['order'])
+                ->with('user')
+                ->with('disease')
+                ->with('doctor')
+                ->with('channel')
+                ->with('advisory');
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('patients/oth/info/get')) {
+            $patient_paginate = $patient_paginate->whereHas('user', function ($query) {
+                $query->where('id', JWTAuth::parseToken()->authenticate()->id);
+            });
+        }
+        $patient_paginate = $patient_paginate->paginate($parameters['limit']);
         return $patient_paginate;
     }
 
