@@ -19,6 +19,9 @@ class DiseaseController extends Controller
      */
     public function index()
     {
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_data_module')) $this->response->errorForbidden(403005);
+        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('data/disease')) $this->response->errorForbidden(403008);
+
         return Disease::root()->getDescendants()->toHierarchy();
     }
 
