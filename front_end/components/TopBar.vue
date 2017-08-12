@@ -1,7 +1,7 @@
 <template>
   <el-row class="top-bar" type="flex" justify="space-between">
     <el-col :span="4" class="logo">
-      <h1 @click="toDashbord"><i class="el-icon-ali-logo"></i></h1>
+      <h1><i class="el-icon-ali-logo"></i></h1>
     </el-col>
     <el-col :span="3" class="user-area">
       <el-dropdown trigger="click" class="user-profile">
@@ -24,9 +24,6 @@
   export default {
     name: 'topBar',
     methods: {
-      toDashbord () {
-        this.$router.push('/home/dashboard')
-      },
       logout () {
         let self = this
         axios.get('/logout')
@@ -51,7 +48,6 @@
       font-size: 66px;
       text-indent: 10px;
       color: #fff;
-      cursor: pointer;
     }
     .user-area{
       .user-menu{

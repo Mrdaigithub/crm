@@ -23,6 +23,9 @@ const store = () => new Vuex.Store({
     getOneself (state, oneself) {
       state.oneself = oneself
     },
+    getPermissions (state, permissions) {
+      state.permissions = permissions
+    },
     getMenu (state, menus) {
       state.menus = menus
     },
@@ -55,10 +58,17 @@ const store = () => new Vuex.Store({
           commit('getOneself', res.user)
         })
     },
-    getMenu ({commit}) {
+    getPermissions ({commit}, uid) {
+      axios.get(`/permissions/${uid}`)
+        .then(res => {
+          commit('getPermissions', res.permissions)
+        })
+    },
+    getMenu ({commit}, callback = () => {}) {
       axios.get('/menus')
         .then(res => {
           commit('getMenu', res.menuses)
+          callback()
         })
     },
     getAdvisories ({commit}) {

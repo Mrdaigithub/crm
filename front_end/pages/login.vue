@@ -70,7 +70,16 @@
                   duration: 800,
                   onClose: function () {
                     sessionStorage.token = token
-                    self.$router.replace('/home/dashboard')
+                    self.$store.dispatch('getMenu', function () {
+                      let menus = []
+                      let url = ''
+                      for (let item in self.$store.state.menus) {
+                        menus.push(self.$store.state.menus[item])
+                      }
+                      if (menus[0].url) url = menus[0].url
+                      else url = menus[0].children[0].url
+                      self.$router.replace(url)
+                    })
                   }
                 })
               }

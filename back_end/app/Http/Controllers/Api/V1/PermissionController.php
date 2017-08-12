@@ -47,7 +47,6 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
         if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/permission/edit')) $this->response->errorForbidden(403029);
 
         if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);

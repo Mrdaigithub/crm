@@ -39,7 +39,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
         if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/add')) $this->response->errorForbidden(403030);
 
         $parameters = $request->all();
@@ -106,7 +105,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
         if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/edit')) $this->response->errorForbidden(403032);
 
         $parameters = $request->all();
@@ -150,7 +148,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_users_module')) $this->response->errorForbidden(403025);
         if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('users/user/remove')) $this->response->errorForbidden(403031);
 
         if (Validator::make(['id' => $id], ['id' => 'exists:users'])->fails()) $this->response->errorBadRequest(400020);

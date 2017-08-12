@@ -85,8 +85,8 @@
           show-checkbox
           highlight-current
           default-expand-all
-          node-key="id"
           :default-checked-keys="defaultCheckedPermissionsKeys"
+          node-key="id"
           :indent="36"
           :props="permissionsProps"
           @check-change="selectPermission">
@@ -169,10 +169,10 @@
         if (!this.permissionsData.length) return []
         let checkedKeys = []
         this.permissionsData.forEach(pItem => {
-          if (pItem.state) checkedKeys = checkedKeys.concat(pItem.id)
-          checkedKeys = checkedKeys.concat(pItem.children.map(item => {
-            if (item.state) return item.id
-          }))
+          if (pItem.state && !pItem.children.length) checkedKeys = checkedKeys.concat(pItem.id)
+          pItem.children.forEach(item => {
+            if (item.state) checkedKeys = checkedKeys.concat(item.id)
+          })
         })
         return checkedKeys
       }
@@ -433,8 +433,8 @@
         }
       }
     }
-    .permissions-tree{
-      height:65vh;
+    .permissions-tree {
+      height: 65vh;
     }
   }
 </style>
