@@ -1,58 +1,60 @@
 <template>
-  <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        NUXT
-      </h1>
-      <h2 class="subtitle">
-        Universal Vue.js Application
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+  <div class="welcome-page">
+    <h1><i class="el-icon-ali-logo"></i></h1>
+    <p>客户关系管理系统<br>
+      <small class="version">alpha V 0.0.1</small>
+    </p>
+    <el-button class="btn" @click="start">开始使用</el-button>
+  </div>
 </template>
 
 <script>
-  import Logo from '~components/Logo.vue'
-
   export default {
-    components: {
-      Logo
+    methods: {
+      start () {
+        this.$router.push('/login')
+      }
+    },
+    mounted () {
+      if (sessionStorage.token) delete sessionStorage.token
     }
   }
 </script>
 
-<style>
-  .container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+<style lang="scss">
+  @keyframes turn {
+    0% {
+      transform: rotateY(0deg);
+    }
+    0% {
+      transform: rotateY(360deg);
+    }
+  }
+
+  .welcome-page {
+    overflow: hidden;
+    height: 100vh;
     text-align: center;
-  }
-
-  .title {
-    font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-    display: block;
-    font-weight: 300;
-    font-size: 100px;
-    color: #35495e;
-    letter-spacing: 1px;
-  }
-
-  .subtitle {
-    font-weight: 300;
-    font-size: 42px;
-    color: #526488;
-    word-spacing: 5px;
-    padding-bottom: 15px;
-  }
-
-  .links {
-    padding-top: 15px;
+    background: radial-gradient(#00ac9e 10%, #009688 43%);
+    h1 {
+      animation: turn 6s;
+      margin-top: 15vh;
+      line-height: 40vh;
+      color: #fff;
+      font-size: 240px;
+    }
+    p {
+      color: #fff;
+      font-size: 30px;
+      .version {
+        font-size: 26px;
+      }
+    }
+    .btn {
+      margin-top: 15vh;
+      background-color: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+    }
   }
 </style>
