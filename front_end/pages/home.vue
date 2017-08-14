@@ -18,17 +18,9 @@
 
   export default {
     name: 'home',
-    data () {
-      return {
-        oneself: {}
-      }
-    },
     components: {
       TopBar,
       MenuBar
-    },
-    mounted () {
-      if (!this.$store.oneself) this.$store.dispatch('getOneself')
     }
   }
 </script>

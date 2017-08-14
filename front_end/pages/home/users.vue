@@ -85,7 +85,7 @@
           show-checkbox
           highlight-current
           default-expand-all
-          :default-checked-keys="defaultCheckedPermissionsKeys"
+          :default-checked-keys="[2,3]"
           node-key="id"
           :indent="36"
           :props="permissionsProps"
@@ -363,9 +363,16 @@
     mounted () {
       let self = this
       !(async function () {
-        let [roles, users] = await Promise.all([axios.get('/roles'), axios.get('/users')])
-        self.roles = roles['roles']
-        self.users = users['users']
+        if (!self.$store.state.users) {
+          let [{roles}, {users}] = await Promise.all([axios.get('/roles'), axios.get('/users')])
+          self.roles = roles
+          self.$store.state.users = users
+          self.users = self.$store.state.users
+        } else {
+          let {roles} = await axios.get('/roles')
+          self.roles = roles
+          self.users = self.$store.state.users
+        }
         self.$store.state.loading = false
       }())
     }

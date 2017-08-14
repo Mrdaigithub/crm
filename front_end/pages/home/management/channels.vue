@@ -3,13 +3,11 @@
     <h2>Channels management</h2>
     <el-card class="box-card">
       <float-button @click.native="addChannel"/>
-      <el-table style="width: 100%" border :data="channelData">
+      <el-table style="width: 100%" border :data="channels">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
-            <el-switch v-model="scope.row.state" on-text="" off-text=""
-                       @change="toggleChannelState(scope.$index, scope.row)"></el-switch>
             <el-button size="small" icon="edit"
                        @click="editChannelName(scope.$index, scope.row)">
             </el-button>
@@ -35,16 +33,12 @@
     },
     data () {
       return {
-        channels: []
+        channels: this.$store.state.channels ? this.$store.state.channels : []
       }
     },
-    computed: {
-      channelData () {
-        if (!this.channels) return []
-        return this.channels.map(channel => {
-          channel.state = !!channel.state
-          return channel
-        })
+    watch: {
+      channels (channels) {
+        this.$store.commit('getChannels', channels)
       }
     },
     methods: {
@@ -93,11 +87,13 @@
     },
     mounted () {
       let self = this
-      axios.get('/management/channels')
-        .then(res => {
-          self.channels = res.channels
-          self.$store.state.loading = false
-        })
+      !(async function () {
+        if (!self.$store.state.doctors) {
+          let {channels} = await axios.get('/management/channels')
+          self.channels = channels
+        }
+        self.$store.state.loading = false
+      }())
     }
   }
 </script>

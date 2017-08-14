@@ -14,7 +14,7 @@ const store = () => new Vuex.Store({
     advisories: null,
     channels: null,
     doctors: null,
-    diseases: []
+    diseases: null
   },
   mutations: {
     getUsers (state, users) {

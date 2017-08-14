@@ -3,7 +3,7 @@
     <h2>Advisory management</h2>
     <el-card class="box-card">
       <float-button @click.native="addAdvisory"/>
-      <el-table style="width: 100%" border :data="advisories">
+      <el-table style="width: 100%" border :data="$store.state.advisories ? $store.state.advisories : []">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
@@ -30,7 +30,12 @@
     },
     data () {
       return {
-        advisories: []
+        advisories: this.$store.state.advisories ? this.$store.state.advisories : []
+      }
+    },
+    watch: {
+      advisories (advisories) {
+        this.$store.commit('getAdvisories', advisories)
       }
     },
     methods: {
@@ -72,11 +77,13 @@
     },
     mounted () {
       let self = this
-      axios.get('/management/advisories')
-        .then(res => {
-          self.advisories = res.advisories
-          self.$store.state.loading = false
-        })
+      !(async function () {
+        if (!self.$store.state.advisories) {
+          let {advisories} = await axios.get('/management/advisories')
+          self.advisories = advisories
+        }
+        self.$store.state.loading = false
+      }())
     }
   }
 </script>

@@ -14,7 +14,8 @@
                       @keyup.native.enter="login('loginFrom')" placeholder="密码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login-btn" type="primary" @click="login('loginFrom')" :disabled="disabled">login
+            <el-button class="login-btn" type="primary" @click="login('loginFrom')" :disabled="disabled"
+                       :loading="btnLoading">login
             </el-button>
           </el-form-item>
         </el-form>
@@ -46,7 +47,8 @@
             {min: 4, message: '密码过短', trigger: 'blur'},
             {max: 15, message: '密码过长', trigger: 'blur'}
           ]
-        }
+        },
+        btnLoading: false
       }
     },
     computed: {
@@ -57,20 +59,23 @@
     methods: {
       login (formName) {
         let self = this
+        self.btnLoading = true
         this.$refs[formName].validate((valid) => {
           if (valid) {
             !(async function () {
-              let token = (await axios.post('/login', qs.stringify({
+              let {token} = (await axios.post('/login', qs.stringify({
                 username: self.loginFrom.username,
                 password: self.loginFrom.password
-              }))).token
+              })))
               if (token) {
                 self.$message.success({
                   message: '登陆成功',
                   duration: 800,
                   onClose: function () {
                     sessionStorage.token = token
-                    self.$store.dispatch('getMenu', function () {
+                    !(async function () {
+                      let {menuses} = await axios.get('/menus')
+                      self.$store.commit('getMenu', menuses)
                       let menus = []
                       let url = ''
                       for (let item in self.$store.state.menus) {
@@ -79,7 +84,8 @@
                       if (menus[0].url) url = menus[0].url
                       else url = menus[0].children[0].url
                       self.$router.replace(url)
-                    })
+                      self.btnLoading = false
+                    }())
                   }
                 })
               }
@@ -88,6 +94,7 @@
             this.$message.error({
               message: 'Unauthorized'
             })
+            self.btnLoading = false
             return false
           }
         })

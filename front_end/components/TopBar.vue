@@ -32,6 +32,9 @@
             self.$router.replace('login')
           })
       }
+    },
+    mounted () {
+      if (!this.$store.oneself) this.$store.dispatch('getOneself')
     }
   }
 </script>

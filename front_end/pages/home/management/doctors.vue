@@ -3,13 +3,11 @@
     <h2>Doctors management</h2>
     <el-card class="box-card">
       <float-button @click.native="addDoctor"/>
-      <el-table style="width: 100%" border :data="doctorData">
+      <el-table style="width: 100%" border :data="doctors">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="name" label="name"></el-table-column>
         <el-table-column label="tools">
           <template scope="scope">
-            <el-switch v-model="scope.row.state" on-text="" off-text=""
-                       @change="toggleDoctorState(scope.$index, scope.row)"></el-switch>
             <el-button size="small" icon="edit" @click="editDoctorName(scope.$index, scope.row)"></el-button>
             <el-button size="small" type="danger" icon="delete"
                        @click="removeDoctor(scope.$index, scope.row)"></el-button>
@@ -32,16 +30,12 @@
     },
     data () {
       return {
-        doctors: []
+        doctors: this.$store.state.doctors ? this.$store.state.doctors : []
       }
     },
-    computed: {
-      doctorData () {
-        if (!this.doctors) return []
-        return this.doctors.map(doctor => {
-          doctor.state = !!doctor.state
-          return doctor
-        })
+    watch: {
+      doctors (doctors) {
+        this.$store.commit('getDoctors', doctors)
       }
     },
     methods: {
@@ -73,12 +67,6 @@
               })
           })
       },
-      toggleDoctorState (index, row) {
-        axios.patch(`/management/doctors/${row.id}`, qs.stringify({
-          state: row.state ? 0 : 1
-        }))
-          .then(res => {})
-      },
       removeDoctor (index, row) {
         let self = this
         axios.delete(`/management/doctors/${row.id}`)
@@ -89,11 +77,13 @@
     },
     mounted () {
       let self = this
-      axios.get('/management/doctors')
-        .then(res => {
-          self.doctors = res.doctors
-          self.$store.state.loading = false
-        })
+      !(async function () {
+        if (!self.$store.state.doctors) {
+          let {doctors} = await axios.get('/management/doctors')
+          self.doctors = doctors
+        }
+        self.$store.state.loading = false
+      }())
     }
   }
 </script>
