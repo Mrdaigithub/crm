@@ -4,6 +4,6 @@ export default ({app}) => {
   })
 
   app.router.afterEach(route => {
-    if (!sessionStorage.token && route.name !== 'login') app.router.replace('/login')
+    if (!sessionStorage.token && route.name !== 'index') app.router.replace('/login')
   })
 }
