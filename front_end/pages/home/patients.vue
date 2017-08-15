@@ -12,13 +12,13 @@
           <template scope="props">
             <el-form label-position="left" inline class="table-expands">
               <el-form-item label="disease: ">
-                <span>{{ props.row.disease.name }}</span>
+                <span>{{ props.row.disease.length ? props.row.disease[0].name : '暂无' }}</span>
               </el-form-item>
               <el-form-item label="doctor: ">
-                <span>{{ props.row.doctor.name }}</span>
+                <span>{{ props.row.doctor.length ? props.row.doctor[0].name : '暂无' }}</span>
               </el-form-item>
               <el-form-item label="channel: ">
-                <span>{{ props.row.channel.name }}</span>
+                <span>{{ props.row.channel.length ? props.row.channel[0].name : '暂无' }}</span>
               </el-form-item>
               <el-form-item label="age: ">
                 <span>{{ props.row.age }}</span>
@@ -42,7 +42,7 @@
         <el-table-column prop="arrive_date" label="arrive date" width="180" sortable="custom"></el-table-column>
         <el-table-column label="user" width="100">
           <template scope="scope">
-            <p>{{ scope.row.user.username }}</p>
+            <p>{{ scope.row.user[0].username }}</p>
           </template>
         </el-table-column>
         <el-table-column prop="price" label="price" width="120" sortable="custom"></el-table-column>
@@ -626,8 +626,26 @@
       let self = this
       this.currentPage = 1
       !(async function () {
-        let permission = await axios.get('/permissions/0')
+//        let permission = await axios.get('/permissions/0')
+//        self.$store.commit('getPermissions', permission)
+        let [
+          permission,
+          {advisories},
+          {channels},
+          {doctors},
+          {diseases}
+        ] = await Promise.all([
+          axios.get('/permissions/0'),
+          axios.get('/management/advisories'),
+          axios.get('/management/channels'),
+          axios.get('/management/doctors'),
+          axios.get('/management/diseases')
+        ])
         self.$store.commit('getPermissions', permission)
+        self.$store.commit('getAdvisories', advisories)
+        self.$store.commit('getChannels', channels)
+        self.$store.commit('getDoctors', doctors)
+        self.$store.commit('getDiseases', diseases)
         self.fetchPatients()
       }())
     }
