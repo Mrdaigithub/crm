@@ -2,15 +2,15 @@
   <div class="disease-management">
     <h2>Disease management</h2>
     <el-card class="box-card">
-      <!--<el-tree-->
-        <!--ref="treeParent"-->
-        <!--:data="diseasesData"-->
-        <!--:props="defaultProps"-->
-        <!--highlight-current-->
-        <!--node-key="id"-->
-        <!--default-expand-all-->
-        <!--:render-content="renderContent">-->
-      <!--</el-tree>-->
+      <el-tree
+        ref="treeParent"
+        :data="diseases"
+        :props="defaultProps"
+        highlight-current
+        node-key="id"
+        default-expand-all
+        :render-content="renderContent">
+      </el-tree>
     </el-card>
   </div>
 </template>
@@ -19,19 +19,13 @@
   import axios from '../../../config/axios'
   import qs from 'qs'
   export default {
-    name: 'diseasesManagement',
     data () {
       return {
-        diseases: [],
+        diseases: [{id: 1, name: 'root', children: []}],
         defaultProps: {
           children: 'children',
           label: 'name'
         }
-      }
-    },
-    computed: {
-      diseasesData () {
-        return {id: 1, name: 'root', children: this.diseases}
       }
     },
     methods: {
@@ -70,33 +64,24 @@
       renderContent (h, {node, data, store}) {
         return (
           <span style="width:100%;display:inline; overflow:hidden">
-            <span>{node.label}</span>
-            <span style="float: right">
-              <el-button size="mini" type="primary" icon="plus" on-click={ () => this.appendDisease(store, data) }></el-button>
-              <el-button size="mini" icon="edit" on-click={ () => this.editDsiease(store, data) }></el-button>
-              <el-button size="mini" type="danger" icon="delete" on-click={ () => this.removeDsiease(store, data) }></el-button>
-            </span>
-          </span>)
+          <span>{node.label}</span>
+        <span style="float: right">
+          <el-button size="mini" type="primary" icon="plus" on-click={ () => this.appendDisease(store, data) }></el-button>
+        <el-button size="mini" icon="edit" on-click={ () => this.editDsiease(store, data) }></el-button>
+        <el-button size="mini" type="danger" icon="delete" on-click={ () => this.removeDsiease(store, data) }></el-button>
+        </span>
+        </span>)
       }
     },
     mounted () {
       let self = this
-      !(async function () {
-        if (!self.$store.state.diseases) {
-          let {diseases} = await axios.get('/management/diseases')
-          for (let disease in diseases) {
-            self.diseases.push(diseases[disease])
+      axios.get('/management/diseases')
+        .then(res => {
+          for (let disease in res.diseases) {
+            self.diseases[0].children.push(res.diseases[disease])
+            self.$store.state.loading = false
           }
-        }
-        self.$store.state.loading = false
-      }())
-//      axios.get('/management/diseases')
-//        .then(res => {
-//          for (let disease in res.diseases) {
-//            self.diseases[0].children.push(res.diseases[disease])
-//            self.$store.state.loading = false
-//          }
-//        })
+        })
     }
   }
 </script>

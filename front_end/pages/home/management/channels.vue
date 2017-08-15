@@ -88,7 +88,7 @@
     mounted () {
       let self = this
       !(async function () {
-        if (!self.$store.state.doctors) {
+        if (!self.$store.state.channels) {
           let {channels} = await axios.get('/management/channels')
           self.channels = channels
         }

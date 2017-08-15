@@ -65,7 +65,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage" @current-change="changePage" class="pagination"></el-pagination>
+      <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
+                     @current-change="changePage" class="pagination"></el-pagination>
     </el-card>
     <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
       <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
@@ -400,6 +401,18 @@
           patient.sex = patient.sex ? 'woman' : 'man'
           return patient
         })
+        if (!this.hasPermission('patients/full_tel/get')) {
+          patientData.map(item => {
+            if (item.tel === '') return ''
+            let tel = ''
+            let beforeTel = item.tel.slice(0, 3)
+            let afterTel = item.tel.slice(-3)
+            for (let i = 0; i < item.tel.length - 6; i++) {
+              tel += '*'
+            }
+            item.tel = beforeTel + tel + afterTel
+          })
+        }
         return patientData
       },
       patientTotal () {
@@ -597,11 +610,26 @@
             self.repeatPatients = res
             if (self.repeatPatients.length > 0) self.repeatDialogVisible = true
           })
+      },
+      hasPermission (pName) {
+        let permissions = this.$store.state.permissions
+        if (permissions.find(item => item.name === pName && item.state)) return true
+        else {
+          for (let item of permissions) {
+            if (item.children.find(cItem => cItem.name === pName && cItem.state)) return true
+          }
+        }
+        return false
       }
     },
     mounted () {
+      let self = this
       this.currentPage = 1
-      this.fetchPatients()
+      !(async function () {
+        let permission = await axios.get('/permissions/0')
+        self.$store.commit('getPermissions', permission)
+        self.fetchPatients()
+      }())
     }
   }
 </script>
@@ -642,6 +670,7 @@
       }
     }
   }
+
   .table-expands > .el-form-item {
     display: block;
     margin-bottom: 0

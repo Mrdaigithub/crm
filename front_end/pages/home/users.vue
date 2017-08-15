@@ -85,7 +85,7 @@
           show-checkbox
           highlight-current
           default-expand-all
-          :default-checked-keys="[2,3]"
+          :default-checked-keys="defaultCheckedPermissionsKeys"
           node-key="id"
           :indent="36"
           :props="permissionsProps"

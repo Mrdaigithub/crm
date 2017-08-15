@@ -22,10 +22,13 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
-        if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
-
-        $role = Role::find($id);
+        if ($id == 0) {
+            $role = JWTAuth::parseToken()->authenticate()->roles[0];
+        } else {
+            if (Validator::make(['id' => $id], ['id' => 'numeric'])->fails()) $this->response->errorBadRequest(400000);
+            if (Validator::make(['id' => $id], ['id' => 'exists:roles'])->fails()) $this->response->errorBadRequest(400003);
+            $role = Role::find($id);
+        }
         $permission = new Permission();
         $res = $permission->where('depth', 1)->get()->map(function ($item) use ($role, $permission) {
             $item->state = $role->hasPermission($item->name);

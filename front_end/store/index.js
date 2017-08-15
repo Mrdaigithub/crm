@@ -10,6 +10,7 @@ const store = () => new Vuex.Store({
     loading: true,
     users: null,
     oneself: {},
+    permissions: null,
     menus: null,
     advisories: null,
     channels: null,
