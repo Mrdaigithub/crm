@@ -2,9 +2,9 @@
   <div class="welcome-page">
     <h1><i class="el-icon-ali-logo"></i></h1>
     <p>客户关系管理系统<br>
-      <small class="version">alpha V 0.1.3</small>
+      <small class="version">alpha V 0.1.4</small>
     </p>
-    <el-button class="btn" @click="start">开始使用</el-button>
+    <el-button class="btn" @click="start" :loading="btnLoading">{{btnLoading ? '应用初始化' : '开始使用'}}</el-button>
   </div>
 </template>
 
@@ -16,8 +16,14 @@
         this.$router.push('/login')
       }
     },
+    data () {
+      return {
+        btnLoading: true
+      }
+    },
     mounted () {
       if (sessionStorage.token) delete sessionStorage.token
+      this.btnLoading = false
     }
   }
 </script>
@@ -56,6 +62,9 @@
       background-color: transparent;
       color: #fff;
       border: 2px solid #fff;
+      &:before{
+        background-color: transparent;
+      }
     }
   }
 </style>
