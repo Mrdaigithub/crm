@@ -4,10 +4,16 @@
     <el-card class="box-card">
       <float-button @click.native="addPatient"/>
       <div class="form-group">
-        <el-button @click="exportDialogVisible = true" type="primary">export</el-button>
+        <el-button @click="exportDialogVisible = true" type="primary" :disabled="!hasPermission('patients/excel')">
+          export
+        </el-button>
       </div>
-      <el-table :data="patientData" style="width: 100%" show-summary :summary-method="getPriceSum"
-                @sort-change="sortChange" border>
+      <el-table :data="patientData"
+                style="width: 100%"
+                show-summary
+                :summary-method="getPriceSum"
+                @sort-change="sortChange"
+                border>
         <el-table-column type="expand">
           <template scope="props">
             <el-form label-position="left" inline class="table-expands">
@@ -50,23 +56,27 @@
           <template scope="scope">
             <el-select v-model="scope.row.state" :disabled="scope.row.state === 2"
                        @change="changeState(scope.row.id, scope.row.state, scope.$index)">
-              <el-option :value="0" label="untreated"></el-option>
-              <el-option :value="1" label="wait"></el-option>
-              <el-option :value="2" label="confirm"></el-option>
-              <el-option :value="3" label="cancel"></el-option>
+              <el-option :value="0" label="untreated" :disabled="!hasPermission('patients/state/edit')"></el-option>
+              <el-option :value="1" label="wait" :disabled="!hasPermission('patients/arrive_state/edit')"></el-option>
+              <el-option :value="2" label="confirm" :disabled="!hasPermission('patients/state/edit')"></el-option>
+              <el-option :value="3" label="cancel" :disabled="!hasPermission('patients/state/edit')"></el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="tools" width="130">
           <template scope="scope">
-            <el-button size="small" icon="edit" @click="editPatient(scope.$index, scope.row)"></el-button>
+            <el-button size="small" icon="edit" @click="editPatient(scope.$index, scope.row)"
+                       :disabled="!hasPermission('patients/oth/info/edit') && scope.row.user[0].id!==$store.state.oneself.id"></el-button>
             <el-button size="small" type="danger" icon="delete"
                        @click="removePatient(scope.$index, scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination layout="prev, pager, next" :total="patientTotal" :current-page="currentPage"
-                     @current-change="changePage" class="pagination"></el-pagination>
+      <el-pagination layout="prev, pager, next"
+                     :total="patientTotal"
+                     :current-page="currentPage"
+                     @current-change="changePage"
+                     class="pagination"></el-pagination>
     </el-card>
     <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
       <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
@@ -79,45 +89,64 @@
               <el-form-item prop="name">
                 <el-input v-model="editForm.data.name" placeholder="name" @blur="checkedRepeatName"></el-input>
               </el-form-item>
-              <el-form-item prop="tel">
+              <el-form-item prop="tel" v-if="'tel' in editForm.data">
                 <el-input v-model="editForm.data.tel" placeholder="tel"></el-input>
               </el-form-item>
               <el-form-item prop="price">
-                <el-input v-model.number="editForm.data.price" placeholder="price"></el-input>
+                <el-input v-model.number="editForm.data.price" placeholder="price"
+                          :disabled="!hasPermission('patients/price/edit') && operationState==='edit'"></el-input>
               </el-form-item>
               <el-form-item prop="advisoryDate" required>
                 <el-date-picker v-model="editForm.data.advisoryDate"
                                 type="datetime"
                                 placeholder="advisory date"
                                 align="right"
+                                :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'"
                                 format="yy-MM-dd hh:mm:ss"></el-date-picker>
               </el-form-item>
               <el-form-item prop="advisoryId">
-                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory">
-                  <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
+                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory"
+                           :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'">
+                  <el-option v-for="advisory of $store.state.advisories"
+                             :label="advisory.name"
+                             :value="advisory.id"
                              :key="advisory.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="channelId">
-                <el-select v-model="editForm.data.channelId" placeholder="select channel">
+                <el-select v-model="editForm.data.channelId" placeholder="select channel"
+                           :disabled="!hasPermission('patients/channel/edit') && operationState==='edit'">
                   <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
                              :key="channel.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="doctorId">
-                <el-select v-model="editForm.data.doctorId" placeholder="select doctor">
-                  <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
+                <el-select v-model="editForm.data.doctorId" placeholder="select doctor"
+                           :disabled="!hasPermission('patients/doctor/edit') && operationState==='edit'">
+                  <el-option v-for="doctor of $store.state.doctors"
+                             :label="doctor.name"
+                             :value="doctor.id"
                              :key="doctor.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="diseaseId">
-                <el-select v-model="editForm.data.diseaseId" placeholder="select disease">
+                <el-select v-model="editForm.data.diseaseId" placeholder="select disease"
+                           :disabled="!hasPermission('patients/disease/edit') && operationState==='edit'">
                   <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
                                    v-if="disease.children.length">
                     <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
                   </el-option-group>
                   <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
                              :value="disease.id" v-if="!disease.children.length"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="userId">
+                <el-select v-model="editForm.data.userId" placeholder="select user"
+                           :disabled="!hasPermission('patients/oth/info/add')">
+                  <el-option v-for="user of $store.state.users"
+                             :label="user.username"
+                             :value="user.id"
+                             :key="user.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-card>
@@ -144,10 +173,12 @@
                 </el-select>
               </el-form-item>
               <el-form-item prop="wechat">
-                <el-input v-model="editForm.data.wechat" placeholder="wechat"></el-input>
+                <el-input v-model="editForm.data.wechat" placeholder="wechat"
+                          :disabled="!hasPermission('patients/wechat/edit') && operationState==='edit'"></el-input>
               </el-form-item>
               <el-form-item prop="keyword">
-                <el-input v-model="editForm.data.keyword" placeholder="keyword"></el-input>
+                <el-input v-model="editForm.data.keyword" placeholder="keyword"
+                          :disabled="!hasPermission('patients/keyword/edit') && operationState==='edit'"></el-input>
               </el-form-item>
               <el-form-item prop="pageurl">
                 <el-input v-model="editForm.data.pageurl" placeholder="www.pageurl.com">
@@ -284,21 +315,14 @@
         operationState: 'new',
         editForm: {
           data: {
-            name: '',
-            tel: '',
             advisoryDate: '',
             advisoryId: '',
             channelId: '',
             doctorId: '',
             diseaseId: '',
-            price: '',
-            age: '',
+            userId: '',
             sex: '',
-            first: '',
-            wechat: '',
-            keyword: '',
-            pageurl: '',
-            mark: ''
+            first: ''
           },
           rules: {
             name: {required: true, message: 'please enter patient name', trigger: 'blur'},
@@ -439,6 +463,47 @@
       }
     },
     methods: {
+      fetchPatients (callback = () => {}) {
+        this.stateClock = true
+        let self = this
+        !(async function () {
+          self.$store.state.loading = true
+          self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
+          setTimeout(() => {
+            self.stateClock = false
+            self.$store.state.loading = false
+            callback()
+          }, 0)
+        }())
+      },
+      changePage (currentPage) {
+        this.currentPage = currentPage
+        this.fetchPatients()
+      },
+      sortChange (args) {
+        this.sortby = args.prop ? args.prop : 'id'
+        if (args.order === 'ascending' || !args.order) this.order = 'asc'
+        else this.order = 'desc'
+        this.fetchPatients()
+      },
+      getPriceSum ({columns, data}) {
+        const sums = []
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = 'Price'
+            return
+          } else if (column.label === 'price') {
+            const values = data.map(item => Number(item[column.property]))
+            const priceSum = values.reduce((prev, curr) => {
+              return prev + curr
+            }, 0)
+            sums[index] = `$ ${priceSum}`
+          } else {
+            sums[index] = ''
+          }
+        })
+        return sums
+      },
       addPatient () {
         this.operationState = 'new'
         this.initPatientFormData()
@@ -475,50 +540,36 @@
         })).then(res => {
         })
       },
-      changePage (currentPage) {
-        this.currentPage = currentPage
-        this.fetchPatients()
-      },
-      fetchPatients (callback = () => {}) {
-        this.stateClock = true
-        let self = this
-        !(async function () {
-          self.$store.state.loading = true
-          self.patients = await axios.get(`/patients?page=${self.currentPage}&sortby=${self.sortby}&order=${self.order}`)
-          setTimeout(() => {
-            self.stateClock = false
-            self.$store.state.loading = false
-            callback()
-          }, 0)
-        }())
-      },
       initPatientFormData (index = null, row = null) {
         if (this.operationState === 'new') {
           this.editForm.data.name = 'patient13'
-          this.editForm.data.tel = ''
+          this.editForm.data.tel = '15265498564'
           this.editForm.data.advisoryDate = ''
-          this.editForm.data.advisoryId = ''
-          this.editForm.data.channelId = ''
-          this.editForm.data.doctorId = ''
-          this.editForm.data.diseaseId = ''
-          this.editForm.data.price = ''
+          this.editForm.data.advisoryId = 1
+          this.editForm.data.channelId = 1
+          this.editForm.data.doctorId = 1
+          this.editForm.data.diseaseId = 3
+          this.editForm.data.userId = this.$store.state.oneself.id
+          this.editForm.data.state = 0
+          this.editForm.data.price = '300'
           this.editForm.data.age = ''
-          this.editForm.data.sex = ''
-          this.editForm.data.first = ''
+          this.editForm.data.sex = '1'
+          this.editForm.data.first = '0'
           this.editForm.data.wechat = ''
           this.editForm.data.keyword = ''
-          this.editForm.data.pageurl = ''
+          this.editForm.data.pageurl = 'www.google.com.hk'
           this.editForm.data.mark = ''
         }
         if (this.operationState === 'edit') {
           this.editForm.data.id = row.id
           this.editForm.data.name = row.name
-          this.editForm.data.tel = row.tel
+          if (this.hasPermission('patients/full_tel/get')) this.editForm.data.tel = row.tel
           this.editForm.data.advisoryDate = new Date(row['advisory_date'])
-          this.editForm.data.advisoryId = row.advisory.id
-          this.editForm.data.channelId = row.channel.id
-          this.editForm.data.diseaseId = row.disease.id
-          this.editForm.data.doctorId = row.doctor.id
+          this.editForm.data.advisoryId = row.advisory[0].id
+          this.editForm.data.channelId = row.channel[0].id
+          this.editForm.data.diseaseId = row.disease[0].id
+          this.editForm.data.doctorId = row.doctor[0].id
+          this.editForm.data.userId = row.user[0].id
           this.editForm.data.price = row.price
           this.editForm.data.age = row.age
           this.editForm.data.sex = row.sex === 'man' ? '0' : '1'
@@ -532,26 +583,26 @@
       },
       savePatient (formName) {
         let self = this
-        let postPatientData = {
-          id: this.editForm.data.id,
-          name: this.editForm.data.name,
-          tel: this.editForm.data.tel,
-          state: 0,
-          advisory_date: this.editForm.data.advisoryDate,
-          advisory_id: this.editForm.data.advisoryId,
-          channel_id: this.editForm.data.channelId,
-          disease_id: this.editForm.data.diseaseId,
-          doctor_id: this.editForm.data.doctorId,
-          user_id: this.$store.state.oneself.id
-        }
-        postPatientData.price = this.editForm.data.price ? this.editForm.data.price : 0
-        if (this.editForm.data.age) postPatientData.age = this.editForm.data.age
-        if (this.editForm.data.sex) postPatientData.sex = this.editForm.data.sex
-        if (this.editForm.data.first) postPatientData.first = this.editForm.data.first
-        if (this.editForm.data.wechat) postPatientData.wechat = this.editForm.data.wechat
-        if (this.editForm.data.keyword) postPatientData.keyword = this.editForm.data.keyword
-        if (this.editForm.data.pageurl) postPatientData.pageurl = this.editForm.data.pageurl.match(/^https?:\/\//) ? this.editForm.data.pageurl : `http://${this.editForm.data.pageurl}`
-        if (this.editForm.data.mark) postPatientData.mark = this.editForm.data.mark
+        let postPatientData = {}
+        if ('id' in this.editForm.data) postPatientData.id = this.editForm.data.id
+        if ('name' in this.editForm.data) postPatientData.name = this.editForm.data.name
+        if ('state' in this.editForm.data) postPatientData.state = this.editForm.data.state
+        if ('price' in this.editForm.data) postPatientData.price = this.editForm.data.price
+        if ('tel' in this.editForm.data) postPatientData.tel = this.editForm.data.tel
+        if ('age' in this.editForm.data) postPatientData.age = this.editForm.data.age
+        if ('sex' in this.editForm.data) postPatientData.sex = this.editForm.data.sex
+        if ('first' in this.editForm.data) postPatientData.first = this.editForm.data.first
+        if ('wechat' in this.editForm.data) postPatientData.wechat = this.editForm.data.wechat
+        if ('keyword' in this.editForm.data) postPatientData.keyword = this.editForm.data.keyword
+        if ('pageurl' in this.editForm.data) postPatientData.pageurl = this.editForm.data.pageurl.match(/^https?:\/\//) ? this.editForm.data.pageurl : `http://${this.editForm.data.pageurl}`
+        if ('mark' in this.editForm.data) postPatientData.mark = this.editForm.data.mark
+        if ('advisoryDate' in this.editForm.data) postPatientData.advisory_date = this.editForm.data.advisoryDate
+        if ('advisoryId' in this.editForm.data) postPatientData.advisory_id = this.editForm.data.advisoryId
+        if ('channelId' in this.editForm.data) postPatientData.channel_id = this.editForm.data.channelId
+        if ('diseaseId' in this.editForm.data) postPatientData.disease_id = this.editForm.data.diseaseId
+        if ('doctorId' in this.editForm.data) postPatientData.doctor_id = this.editForm.data.doctorId
+        if ('userId' in this.editForm.data) postPatientData.user_id = this.editForm.data.userId
+        if ('state' in this.editForm.data) postPatientData.state = this.editForm.data.state
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.operationState === 'new') {
@@ -563,7 +614,8 @@
                     self.addDialogVisible = false
                   })
                 })
-            } else if (this.operationState === 'edit') {
+            }
+            if (this.operationState === 'edit') {
               axios.patch(`/patients/${postPatientData.id}`, qs.stringify(postPatientData))
                 .then(res => {
                   self.currentPage = self.patients['last_page']
@@ -578,30 +630,6 @@
           }
         })
       },
-      getPriceSum ({columns, data}) {
-        const sums = []
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = 'Price'
-            return
-          } else if (column.label === 'price') {
-            const values = data.map(item => Number(item[column.property]))
-            const priceSum = values.reduce((prev, curr) => {
-              return prev + curr
-            }, 0)
-            sums[index] = `$ ${priceSum}`
-          } else {
-            sums[index] = ''
-          }
-        })
-        return sums
-      },
-      sortChange (args) {
-        this.sortby = args.prop ? args.prop : 'id'
-        if (args.order === 'ascending' || !args.order) this.order = 'asc'
-        else this.order = 'desc'
-        this.fetchPatients()
-      },
       checkedRepeatName () {
         let self = this
         if (!this.editForm.data.name) return
@@ -612,40 +640,43 @@
           })
       },
       hasPermission (pName) {
-        let permissions = this.$store.state.permissions
-        if (permissions.find(item => item.name === pName && item.state)) return true
-        else {
-          for (let item of permissions) {
-            if (item.children.find(cItem => cItem.name === pName && cItem.state)) return true
+        let self = this
+        if (self.$store.state.permissions) {
+          if (self.$store.state.permissions.find(item => item.name === pName && item.state)) return true
+          else {
+            for (let item of self.$store.state.permissions) {
+              if (item.children.find(cItem => cItem.name === pName && cItem.state)) return true
+            }
           }
+          return false
         }
-        return false
       }
     },
     mounted () {
       let self = this
       this.currentPage = 1
       !(async function () {
-//        let permission = await axios.get('/permissions/0')
-//        self.$store.commit('getPermissions', permission)
         let [
           permission,
           {advisories},
           {channels},
           {doctors},
-          {diseases}
+          {diseases},
+          {users}
         ] = await Promise.all([
           axios.get('/permissions/0'),
           axios.get('/management/advisories'),
           axios.get('/management/channels'),
           axios.get('/management/doctors'),
-          axios.get('/management/diseases')
+          axios.get('/management/diseases'),
+          axios.get('/users')
         ])
         self.$store.commit('getPermissions', permission)
         self.$store.commit('getAdvisories', advisories)
         self.$store.commit('getChannels', channels)
         self.$store.commit('getDoctors', doctors)
         self.$store.commit('getDiseases', diseases)
+        self.$store.commit('getUsers', users)
         self.fetchPatients()
       }())
     }

@@ -65,7 +65,7 @@ class PermissionsSeeder extends Seeder
         DB::table('permissions')->insert([
             'id' => 7,
             'name' => 'patients/full_tel/get',
-            'description' => '允许查看客户完整电话',
+            'description' => '允许查看修改客户完整电话',
             'parent_id' => 3,
             'depth' => 2,
             'created_at' => date('Y-m-d h:m:s'),

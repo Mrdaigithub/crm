@@ -2,7 +2,7 @@
   <div class="welcome-page">
     <h1><i class="el-icon-ali-logo"></i></h1>
     <p>客户关系管理系统<br>
-      <small class="version">alpha V 0.1.4</small>
+      <small class="version">alpha V 0.2.5</small>
     </p>
     <el-button class="btn" @click="start" :loading="btnLoading">{{btnLoading ? '应用初始化' : '开始使用'}}</el-button>
   </div>

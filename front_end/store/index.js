@@ -40,6 +40,7 @@ const store = () => new Vuex.Store({
       state.doctors = doctors
     },
     getDiseases (state, diseases) {
+      state.diseases = []
       for (let disease in diseases) {
         state.diseases.push(diseases[disease])
       }

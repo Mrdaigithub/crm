@@ -13,11 +13,6 @@ class ChannelController extends Controller
 {
     use Helpers;
 
-    function __construct()
-    {
-        if (!JWTAuth::parseToken()->authenticate()->roles[0]->hasPermission('allow_info_module')) $this->response->errorForbidden(403012);
-    }
-
     /**
      * Display a listing of the resource.
      *
