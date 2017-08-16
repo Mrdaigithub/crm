@@ -1,12 +1,12 @@
 <template>
   <div class="doctor-managemnet">
-    <h2>Doctors management</h2>
+    <h2>医生管理</h2>
     <el-card class="box-card">
       <float-button @click.native="addDoctor"/>
       <el-table style="width: 100%" border :data="doctors">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
-        <el-table-column prop="name" label="name"></el-table-column>
-        <el-table-column label="tools">
+        <el-table-column prop="name" label="医生名称"></el-table-column>
+        <el-table-column label="操作">
           <template scope="scope">
             <el-button size="small" icon="edit" @click="editDoctorName(scope.$index, scope.row)"></el-button>
             <el-button size="small" type="danger" icon="delete"
@@ -41,10 +41,9 @@
     methods: {
       addDoctor () {
         let self = this
-        this.$prompt('Please enter a doctor name', 'Tips', {
+        this.$prompt('医生名称', {
           showCancelButton: false,
-          confirmButtonText: 'Create',
-          inputPlaceholder: 'new doctor name'
+          confirmButtonText: '创建'
         })
           .then(({value}) => {
             axios.get(`/management/doctors/create/${value}`)
@@ -55,9 +54,9 @@
       },
       editDoctorName (index, row) {
         let self = this
-        this.$prompt('Please enter a doctor name', 'Tips', {
+        this.$prompt('医生名称', {
           showCancelButton: false,
-          confirmButtonText: 'Submit',
+          confirmButtonText: '更改',
           inputValue: row.name
         })
           .then(({value}) => {

@@ -10,8 +10,8 @@
           <span class="el-dropdown-link">{{$store.state.oneself.username}}</span>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <el-dropdown-item class="user-dropdown-item"><i class="el-icon-setting"></i> setting</el-dropdown-item>
-          <el-dropdown-item @click.native="logout"><i class="el-icon-ali-logout"></i> logout</el-dropdown-item>
+          <el-dropdown-item class="user-dropdown-item"><i class="el-icon-setting"></i> 用户设置</el-dropdown-item>
+          <el-dropdown-item @click.native="logout"><i class="el-icon-ali-logout"></i> 退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>

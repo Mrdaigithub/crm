@@ -114,7 +114,7 @@
   .login {
     width: 100vw;
     height: 100vh;
-    background: url("/images/login_bg.jpg") no-repeat center;
+    background: radial-gradient(#00ac9e 10%, #009688 43%);
     position: relative;
     .login-wrap {
       margin-top: 25vh;

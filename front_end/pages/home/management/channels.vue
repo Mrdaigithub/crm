@@ -1,12 +1,12 @@
 <template>
   <div class="channel-managemnet">
-    <h2>Channels management</h2>
+    <h2>渠道管理</h2>
     <el-card class="box-card">
       <float-button @click.native="addChannel"/>
       <el-table style="width: 100%" border :data="channels">
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
-        <el-table-column prop="name" label="name"></el-table-column>
-        <el-table-column label="tools">
+        <el-table-column prop="name" label="渠道名称"></el-table-column>
+        <el-table-column label="操作">
           <template scope="scope">
             <el-button size="small" icon="edit"
                        @click="editChannelName(scope.$index, scope.row)">
@@ -44,10 +44,9 @@
     methods: {
       addChannel () {
         let self = this
-        this.$prompt('Please enter a channel name', 'Tips', {
+        this.$prompt('渠道名称', {
           showCancelButton: false,
-          confirmButtonText: 'Create',
-          inputPlaceholder: 'new channel name'
+          confirmButtonText: '创建'
         })
           .then(({value}) => {
             axios.post('/management/channels', qs.stringify({name: value}))
@@ -58,9 +57,9 @@
       },
       editChannelName (index, row) {
         let self = this
-        this.$prompt('Please enter a role name', 'Tips', {
+        this.$prompt('渠道名称', {
           showCancelButton: false,
-          confirmButtonText: 'Submit',
+          confirmButtonText: '更改',
           inputValue: row.name
         })
           .then(({value}) => {

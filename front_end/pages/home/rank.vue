@@ -1,12 +1,12 @@
 <template>
   <div class="rank">
-    <h2>Rank</h2>
+    <h2>排行</h2>
     <el-card class="box-card">
       <el-row>
         <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
-              <span>Advisory top</span>
+              <span>预约榜</span>
             </div>
             <div class="rank-list">
               <div v-for="advisoryTop of advisoryTopData" class="rank-item">
@@ -19,7 +19,7 @@
         <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
-              <span>Arrive top</span>
+              <span>到诊榜</span>
             </div>
             <div class="rank-list">
               <div v-for="arriveTop of arriveTopData" class="rank-item">
@@ -32,7 +32,7 @@
         <el-col :span='8'>
           <el-card class="rank-card">
             <div slot="header" class="clearfix">
-              <span>Lose top</span>
+              <span>流失榜</span>
             </div>
             <div class="rank-list">
               <div v-for="loseTop of loseTopData" class="rank-item">

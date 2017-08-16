@@ -1,16 +1,16 @@
 <template>
   <div class="user">
-    <h2>User list</h2>
+    <h2>操作用户列表</h2>
     <el-card class="box-card">
       <el-row>
         <el-col :span="6" class="role-area">
           <el-card class="box-card">
             <div slot="header" class="clearfix role-header">
             <span style="line-height: 36px" @click="currentRoleId = 'all'">
-              All users<el-badge class="mark" :value="users.length"/>
+              所有用户<el-badge class="mark" :value="users.length"/>
             </span>
             </div>
-            <div class="role-item-title">Role</div>
+            <div class="role-item-title">权限组</div>
             <div v-for="role in roles" class="role-item" :key="role.id" @click="currentRoleId = role.id">
               {{role.name}}
               <el-badge class="mark" :value="getRoleUserLength(role.id)"/>
@@ -24,7 +24,7 @@
               </div>
             </div>
             <hr>
-            <div class="add-role" @click="addRole">Add new role</div>
+            <div class="add-role" @click="addRole">添加新的权限组</div>
           </el-card>
         </el-col>
         <el-col :span="18" class="user-area">
@@ -32,12 +32,12 @@
             <float-button @click.native="initUserFormData('new')"/>
             <el-table :data="showUsersData" border style="width: 100%">
               <el-table-column prop="id" label="id" width="70"></el-table-column>
-              <el-table-column prop="username" label="username" width="120"></el-table-column>
-              <el-table-column prop="tel" label="tel" width="120"></el-table-column>
-              <el-table-column prop="created_at" label="created_at" width="190"></el-table-column>
-              <el-table-column prop="updated_at" label="updated_at" width="190"></el-table-column>
+              <el-table-column prop="username" label="用户名" width="120"></el-table-column>
+              <el-table-column prop="tel" label="电话号码" width="120"></el-table-column>
+              <el-table-column prop="created_at" label="创建时间" width="190"></el-table-column>
+              <el-table-column prop="updated_at" label="更改时间" width="190"></el-table-column>
               <el-table-column prop="ip" label="ip" width="150"></el-table-column>
-              <el-table-column label="tools" width="120" fixed="right">
+              <el-table-column label="操作" width="120" fixed="right">
                 <template scope="scope">
                   <el-button
                     size="small"
@@ -52,32 +52,31 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog title="Edit user info" :visible.sync="userDialogVisible" size="small">
+      <el-dialog title="编辑用户信息" :visible.sync="userDialogVisible" size="tiny">
         <el-form :model="userFormData.data" :rules="userFormData.rules" ref="userFormData" label-width="100px"
                  class="new-user">
-          <el-form-item label="username" prop="username">
+          <el-form-item label="用户名" prop="username">
             <el-input v-model="userFormData.data.username"></el-input>
           </el-form-item>
-          <el-form-item label="password" prop="password">
+          <el-form-item label="密码" prop="password">
             <el-input v-model="userFormData.data.password"></el-input>
           </el-form-item>
-          <el-form-item label="tel" prop="tel">
+          <el-form-item label="电话号码" prop="tel">
             <el-input v-model="userFormData.data.tel"></el-input>
           </el-form-item>
-          <el-form-item label="state" prop="state">
-            <el-switch on-text="" off-text="" v-model="userFormData.data.state"></el-switch>
-          </el-form-item>
-          <el-form-item label="role" prop="role">
+          <el-form-item label="权限组" prop="role">
             <el-radio-group v-model="userFormData.data.role">
-              <el-radio v-for="role in roles" key="role.id" :label="role.id.toString()">{{role.name}}</el-radio>
+              <div v-for="role in roles" key="role.id" class="select-role-item">
+                <el-radio :label="role.id.toString()">{{role.name}}</el-radio>
+              </div>
             </el-radio-group>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">S a v e</el-button>
+          <el-button type="primary" @click="saveUser('userFormData')" style="width: 100%">确认</el-button>
         </div>
       </el-dialog>
-      <el-dialog title="Permission" :visible.sync="permissionDialogVisible" top="5%">
+      <el-dialog title="权限详情" :visible.sync="permissionDialogVisible" top="5%">
         <el-tree
           class="permissions-tree scrollbar"
           v-loading.body="permissionLoading"
@@ -92,7 +91,7 @@
           @check-change="selectPermission">
         </el-tree>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="savePermission" style="width: 100%">submit</el-button>
+          <el-button type="primary" @click="savePermission" style="width: 100%">确认</el-button>
         </div>
       </el-dialog>
     </el-card>
@@ -208,8 +207,8 @@
             rIndex = index
           }
         })
-        this.$prompt('enter a new role name', 'Tips', {
-          confirmButtonText: 'submit',
+        this.$prompt('新的用户名', {
+          confirmButtonText: '确认',
           showCancelButton: false,
           inputPattern: /\w{4,20}/,
           inputValidator: function (val) {
@@ -442,6 +441,9 @@
     }
     .permissions-tree {
       height: 65vh;
+    }
+    .select-role-item{
+      line-height: 20px;
     }
   }
 </style>

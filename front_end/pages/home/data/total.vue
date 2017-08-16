@@ -1,9 +1,9 @@
 <template>
   <div class="total-data">
-    <h2>Total data</h2>
+    <h2>总体数据</h2>
     <el-card class="box-card">
       <el-card class="sub-box">
-        <h3>Patients Data by year</h3>
+        <h3>客户年数据</h3>
         <el-table stripe :data="yearData">
           <el-table-column
             prop="date"
@@ -31,7 +31,7 @@
         <div id="yearChart"></div>
       </el-card>
       <el-card class="sub-box">
-        <h3>Patients Data by month</h3>
+        <h3>客户月数据</h3>
         <el-table stripe :data="monthData">
           <el-table-column
             prop="date"

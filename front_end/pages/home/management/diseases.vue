@@ -1,6 +1,6 @@
 <template>
   <div class="disease-management">
-    <h2>Disease management</h2>
+    <h2>病种管理</h2>
     <el-card class="box-card">
       <el-tree
         ref="treeParent"
@@ -30,10 +30,9 @@
     },
     methods: {
       appendDisease (store, data) {
-        this.$prompt('Please enter a disease name', 'Tips', {
+        this.$prompt('病种名称', {
           showCancelButton: false,
-          confirmButtonText: 'Create',
-          inputPlaceholder: 'new disease name'
+          confirmButtonText: '创建'
         })
           .then(({value}) => {
             axios.get(`/management/diseases/${data.id}/${value}`)
@@ -49,10 +48,9 @@
           })
       },
       editDsiease (store, data) {
-        this.$prompt('Please enter a disease name', 'Tips', {
+        this.$prompt('病种名称', {
           showCancelButton: false,
-          confirmButtonText: 'Create',
-          inputPlaceholder: 'new disease name'
+          confirmButtonText: '更改'
         })
           .then(({value}) => {
             axios.patch(`/management/diseases/${data.id}`, qs.stringify({name: value}))

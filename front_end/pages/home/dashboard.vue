@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h2>Dashboard</h2>
+    <h2>仪表盘</h2>
     <main>
       <el-row type="flex" justify="space-between" class="top-card-list">
         <el-col class="top-card-item">

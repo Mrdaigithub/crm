@@ -26,7 +26,7 @@ class MenuSeeder extends Seeder
             'lft' => '2',
             'rgt' => '3',
             'depth' => '1',
-            'name' => 'Dashboard',
+            'name' => '仪表盘',
             'url' => '/home/dashboard',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -37,7 +37,7 @@ class MenuSeeder extends Seeder
             'lft' => '4',
             'rgt' => '5',
             'depth' => '1',
-            'name' => 'Rank',
+            'name' => '排行',
             'url' => '/home/rank',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -48,7 +48,7 @@ class MenuSeeder extends Seeder
             'lft' => '6',
             'rgt' => '7',
             'depth' => '1',
-            'name' => 'Patients',
+            'name' => '客户列表',
             'url' => '/home/patients',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -59,7 +59,7 @@ class MenuSeeder extends Seeder
             'lft' => '8',
             'rgt' => '9',
             'depth' => '1',
-            'name' => 'Users list',
+            'name' => '操作用户列表',
             'url' => '/home/users',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -70,7 +70,7 @@ class MenuSeeder extends Seeder
             'lft' => '10',
             'rgt' => '23',
             'depth' => '1',
-            'name' => 'Data',
+            'name' => '数据中心',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -80,7 +80,7 @@ class MenuSeeder extends Seeder
             'lft' => '11',
             'rgt' => '12',
             'depth' => '2',
-            'name' => 'Total data',
+            'name' => '总体数据',
             'url' => '/home/data/total',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -91,7 +91,7 @@ class MenuSeeder extends Seeder
             'lft' => '13',
             'rgt' => '14',
             'depth' => '2',
-            'name' => 'Users data',
+            'name' => '用户数据',
             'url' => '/home/data/users',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -102,7 +102,7 @@ class MenuSeeder extends Seeder
             'lft' => '15',
             'rgt' => '16',
             'depth' => '2',
-            'name' => 'Diseases data',
+            'name' => '病种数据',
             'url' => '/home/data/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -113,7 +113,7 @@ class MenuSeeder extends Seeder
             'lft' => '17',
             'rgt' => '18',
             'depth' => '2',
-            'name' => 'Channels data',
+            'name' => '渠道数据',
             'url' => '/home/data/channels',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -124,7 +124,7 @@ class MenuSeeder extends Seeder
             'lft' => '19',
             'rgt' => '20',
             'depth' => '2',
-            'name' => 'Doctors data',
+            'name' => '医生数据',
             'url' => '/home/data/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -135,7 +135,7 @@ class MenuSeeder extends Seeder
             'lft' => '21',
             'rgt' => '22',
             'depth' => '2',
-            'name' => 'Patients data',
+            'name' => '客户数据',
             'url' => '/home/data/patients',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -146,7 +146,7 @@ class MenuSeeder extends Seeder
             'lft' => '24',
             'rgt' => '33',
             'depth' => '1',
-            'name' => 'Project info',
+            'name' => '信息管理',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -156,7 +156,7 @@ class MenuSeeder extends Seeder
             'lft' => '25',
             'rgt' => '26',
             'depth' => '2',
-            'name' => 'Diseases management',
+            'name' => '病种管理',
             'url' => '/home/management/diseases',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -167,7 +167,7 @@ class MenuSeeder extends Seeder
             'lft' => '27',
             'rgt' => '28',
             'depth' => '2',
-            'name' => 'Doctor management',
+            'name' => '医生管理',
             'url' => '/home/management/doctors',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -178,7 +178,7 @@ class MenuSeeder extends Seeder
             'lft' => '29',
             'rgt' => '30',
             'depth' => '2',
-            'name' => 'Channel management',
+            'name' => '渠道管理',
             'url' => '/home/management/channels',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -189,7 +189,7 @@ class MenuSeeder extends Seeder
             'lft' => '31',
             'rgt' => '32',
             'depth' => '2',
-            'name' => 'Advisory management',
+            'name' => '咨询方式管理',
             'url' => '/home/management/advisory',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
@@ -200,7 +200,7 @@ class MenuSeeder extends Seeder
             'lft' => '34',
             'rgt' => '39',
             'depth' => '1',
-            'name' => 'System setting',
+            'name' => '系统设置',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -210,7 +210,7 @@ class MenuSeeder extends Seeder
             'lft' => '35',
             'rgt' => '36',
             'depth' => '2',
-            'name' => 'Log',
+            'name' => '行为日志',
             'url' => '/home/setting/log',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
