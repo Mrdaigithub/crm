@@ -1,25 +1,25 @@
 <template>
   <div class="doctors-data">
-    <h2>Doctors data</h2>
+    <h2>医生数据</h2>
     <el-card class="box-card">
       <el-card class="sub-box">
-        <el-form class="form-group" :model="doctorsFrom" ref="doctorsFrom" :inline="true">
+        <el-form class="form-group" :model="doctorsForm" ref="doctorsForm" :inline="true">
           <el-form-item prop="statisticalType">
-            <el-select v-model="doctorsFrom.statisticalType">
-              <el-option label="year" value="year"></el-option>
-              <el-option label="month" value="month"></el-option>
-              <el-option label="day" value="day"></el-option>
+            <el-select v-model="doctorsForm.statisticalType">
+              <el-option label="以年为基准" value="year"></el-option>
+              <el-option label="以月为基准" value="month"></el-option>
+              <el-option label="以日为基准" value="day"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="dateType">
-            <el-select v-model="doctorsFrom.dateType">
-              <el-option label="created_at" value="created_at"></el-option>
-              <el-option label="arrive_date" value="arrive_date"></el-option>
+            <el-select v-model="doctorsForm.dateType">
+              <el-option label="创建时间" value="created_at"></el-option>
+              <el-option label="到诊时间" value="arrive_date"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="dateRange">
             <el-date-picker
-              v-model="doctorsFrom.dateRange"
+              v-model="doctorsForm.dateRange"
               type="daterange"
               :picker-options="pickerOptions"
               placeholder="date range"
@@ -27,31 +27,29 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item prop="state">
-            <el-select v-model="doctorsFrom.state">
-              <el-option :value="0" label="untreated"></el-option>
-              <el-option :value="1" label="wait"></el-option>
-              <el-option :value="2" label="confirm"></el-option>
-              <el-option :value="3" label="cancel"></el-option>
+            <el-select v-model="doctorsForm.state">
+              <el-option :value="0" label="暂未处理"></el-option>
+              <el-option :value="1" label="等待"></el-option>
+              <el-option :value="2" label="已确认"></el-option>
+              <el-option :value="3" label="已取消"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchdoctorsData('doctorsFrom')">
-              Search
+            <el-button type="primary" @click="searchdoctorsData('doctorsForm')">
+              生成数据
             </el-button>
           </el-form-item>
         </el-form>
         <h3>Patients Data by year</h3>
-        <el-table
-          :data="doctorsData"
-          style="width: 100%">
+        <el-table :data="doctorsData" style="width: 100%">
+          <el-table-column prop="date" label="日期"></el-table-column>
           <el-table-column
             v-for="key in col"
             :key="key"
             :prop="key"
             :label="key">
           </el-table-column>
-          <el-table-column
-            label="Sum" fixed="right">
+          <el-table-column label="总计" fixed="right">
             <template scope="scope">
               <p>{{getSum(scope.row)}}</p>
             </template>
@@ -77,7 +75,7 @@
             return time.getTime() > Date.now()
           },
           shortcuts: [{
-            text: 'one week',
+            text: '一周',
             onClick (picker) {
               const end = new Date()
               const start = new Date()
@@ -85,7 +83,7 @@
               picker.$emit('pick', [start, end])
             }
           }, {
-            text: 'one month',
+            text: '一个月',
             onClick (picker) {
               const end = new Date()
               const start = new Date()
@@ -93,7 +91,7 @@
               picker.$emit('pick', [start, end])
             }
           }, {
-            text: 'three month',
+            text: '三个月',
             onClick (picker) {
               const end = new Date()
               const start = new Date()
@@ -102,7 +100,7 @@
             }
           }]
         },
-        doctorsFrom: {
+        doctorsForm: {
           statisticalType: 'month',
           dateType: 'created_at',
           dateRange: [new Date((new Date()).getTime() - 3600 * 1000 * 24 * 90), new Date()],
@@ -114,12 +112,12 @@
     },
     computed: {
       startDate () {
-        if (!this.doctorsFrom.dateRange[0]) return
-        return this.doctorsFrom.dateRange[0].toLocaleDateString().replace(/\//g, '-')
+        if (!this.doctorsForm.dateRange[0]) return
+        return this.doctorsForm.dateRange[0].toLocaleDateString().replace(/\//g, '-')
       },
       endDate () {
-        if (!this.doctorsFrom.dateRange[1]) return
-        return this.doctorsFrom.dateRange[1].toLocaleDateString().replace(/\//g, '-')
+        if (!this.doctorsForm.dateRange[1]) return
+        return this.doctorsForm.dateRange[1].toLocaleDateString().replace(/\//g, '-')
       },
       col () {
         if (!this.sdoctorsData) return []
@@ -127,7 +125,6 @@
         Object.keys(this.sdoctorsData.data[0]).forEach(item => {
           if (item !== 'date') res.push(item)
         })
-        res.unshift('date')
         return res
       },
       doctorsData () {
@@ -156,8 +153,8 @@
     methods: {
       fetchdoctorsData () {
         let self = this
-        let url = `/data/doctors?statistical_type=${self.doctorsFrom.statisticalType}&date_type=${self.doctorsFrom.dateType}&start_date=${self.startDate}&end_date=${self.endDate}`
-        if (/0|1|2|3/.test(self.doctorsFrom.state.toString())) url += `&state=${self.doctorsFrom.state}`
+        let url = `/data/doctors?statistical_type=${self.doctorsForm.statisticalType}&date_type=${self.doctorsForm.dateType}&start_date=${self.startDate}&end_date=${self.endDate}`
+        if (/0|1|2|3/.test(self.doctorsForm.state.toString())) url += `&state=${self.doctorsForm.state}`
         self.$store.state.loading = true
         axios.get(url)
           .then(res => {
@@ -191,8 +188,8 @@
         }
         return sum
       },
-      searchdoctorsData (doctorsFrom) {
-        this.$refs[doctorsFrom].validate(valid => {
+      searchdoctorsData (doctorsForm) {
+        this.$refs[doctorsForm].validate(valid => {
           if (valid) {
             this.fetchdoctorsData()
           } else {

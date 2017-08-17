@@ -1,11 +1,11 @@
 <template>
   <div class="patients">
-    <h2>Patient</h2>
+    <h2>客户列表</h2>
     <el-card class="box-card">
       <float-button @click.native="addPatient"/>
       <div class="form-group">
         <el-button @click="exportDialogVisible = true" type="primary" :disabled="!hasPermission('patients/excel')">
-          export
+          导出数据
         </el-button>
       </div>
       <el-table :data="patientData"
@@ -78,117 +78,103 @@
                      @current-change="changePage"
                      class="pagination"></el-pagination>
     </el-card>
-    <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%">
-      <el-form :model="editForm.data" :rules="editForm.rules" ref="editForm" label-width="130px" label-position="left">
+    <el-dialog title="" :visible.sync="addDialogVisible" size="large" top="5%" class="addDialog">
+      <el-form :model="editForm.data"
+               :rules="editForm.rules"
+               ref="editForm"
+               label-width="130px"
+               label-position="top" class="scrollbar">
         <el-row>
-          <el-col :span="10">
-            <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix">
-                <h2>Base info</h2>
-              </div>
-              <el-form-item prop="name">
-                <el-input v-model="editForm.data.name" placeholder="name" @blur="checkedRepeatName"></el-input>
-              </el-form-item>
-              <el-form-item prop="tel" v-if="'tel' in editForm.data">
-                <el-input v-model="editForm.data.tel" placeholder="tel"></el-input>
-              </el-form-item>
-              <el-form-item prop="price">
-                <el-input v-model.number="editForm.data.price" placeholder="price"
-                          :disabled="!hasPermission('patients/price/edit') && operationState==='edit'"></el-input>
-              </el-form-item>
-              <el-form-item prop="advisoryDate" required>
-                <el-date-picker v-model="editForm.data.advisoryDate"
-                                type="datetime"
-                                placeholder="advisory date"
-                                align="right"
-                                :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'"
-                                format="yy-MM-dd hh:mm:ss"></el-date-picker>
-              </el-form-item>
-              <el-form-item prop="advisoryId">
-                <el-select v-model="editForm.data.advisoryId" placeholder="select advisory"
-                           :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'">
-                  <el-option v-for="advisory of $store.state.advisories"
-                             :label="advisory.name"
-                             :value="advisory.id"
-                             :key="advisory.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="channelId">
-                <el-select v-model="editForm.data.channelId" placeholder="select channel"
-                           :disabled="!hasPermission('patients/channel/edit') && operationState==='edit'">
-                  <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
-                             :key="channel.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="doctorId">
-                <el-select v-model="editForm.data.doctorId" placeholder="select doctor"
-                           :disabled="!hasPermission('patients/doctor/edit') && operationState==='edit'">
-                  <el-option v-for="doctor of $store.state.doctors"
-                             :label="doctor.name"
-                             :value="doctor.id"
-                             :key="doctor.id"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="diseaseId">
-                <el-select v-model="editForm.data.diseaseId" placeholder="select disease"
-                           :disabled="!hasPermission('patients/disease/edit') && operationState==='edit'">
-                  <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                                   v-if="disease.children.length">
-                    <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
-                  </el-option-group>
-                  <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
-                             :value="disease.id" v-if="!disease.children.length"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="userId">
-                <el-select v-model="editForm.data.userId" placeholder="select user"
-                           :disabled="!hasPermission('patients/oth/info/add')">
-                  <el-option v-for="user of $store.state.users"
-                             :label="user.username"
-                             :value="user.id"
-                             :key="user.id"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-card>
+          <el-col :span="11">
+            <el-form-item prop="name" label="名称">
+              <el-input v-model="editForm.data.name" @blur="checkedRepeatName"></el-input>
+            </el-form-item>
+            <el-form-item prop="tel" label="电话" v-if="'tel' in editForm.data">
+              <el-input v-model="editForm.data.tel"></el-input>
+            </el-form-item>
+            <el-form-item prop="price" label="金额">
+              <el-input v-model.number="editForm.data.price"
+                        :disabled="!hasPermission('patients/price/edit') && operationState==='edit'"></el-input>
+            </el-form-item>
+            <el-form-item prop="age" label="年龄">
+              <el-input v-model.number="editForm.data.age" type="age" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item prop="wechat" label="微信">
+              <el-input v-model="editForm.data.wechat" :disabled="!hasPermission('patients/wechat/edit') && operationState==='edit'"></el-input>
+            </el-form-item>
+            <el-form-item prop="keyword" label="关键词">
+              <el-input v-model="editForm.data.keyword" :disabled="!hasPermission('patients/keyword/edit') && operationState==='edit'"></el-input>
+            </el-form-item>
+            <el-form-item prop="pageurl" label="页面url">
+              <el-input v-model="editForm.data.pageurl">
+                <template slot="prepend">http://</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="advisoryDate" label="预约时间" required>
+              <el-date-picker v-model="editForm.data.advisoryDate"
+                              type="datetime"
+                              placeholder="advisory date"
+                              align="right"
+                              :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'"
+                              format="yy-MM-dd hh:mm:ss"></el-date-picker>
+            </el-form-item>
           </el-col>
-          <el-col :span="13" :offset="1">
-            <el-card style="min-height: 68vh">
-              <div slot="header" class="clearfix">
-                <h2>Detail info</h2>
-              </div>
-              <el-form-item prop="age">
-                <el-input v-model.number="editForm.data.age" type="age" auto-complete="off"
-                          placeholder="age"></el-input>
-              </el-form-item>
-              <el-form-item prop="sex">
-                <el-select v-model="editForm.data.sex" placeholder="sex">
-                  <el-option label="man" value="0"></el-option>
-                  <el-option label="woman" value="1"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="first">
-                <el-select v-model="editForm.data.first" placeholder="first">
-                  <el-option label="first" value="1"></el-option>
-                  <el-option label="more" value="0"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="wechat">
-                <el-input v-model="editForm.data.wechat" placeholder="wechat"
-                          :disabled="!hasPermission('patients/wechat/edit') && operationState==='edit'"></el-input>
-              </el-form-item>
-              <el-form-item prop="keyword">
-                <el-input v-model="editForm.data.keyword" placeholder="keyword"
-                          :disabled="!hasPermission('patients/keyword/edit') && operationState==='edit'"></el-input>
-              </el-form-item>
-              <el-form-item prop="pageurl">
-                <el-input v-model="editForm.data.pageurl" placeholder="www.pageurl.com">
-                  <template slot="prepend">http://</template>
-                </el-input>
-              </el-form-item>
-              <el-form-item prop="mark">
-                <el-input type="textarea" :rows="4" v-model="editForm.data.mark" placeholder="mark"></el-input>
-              </el-form-item>
-            </el-card>
+          <el-col :span="11" :offset="1">
+            <el-form-item label="性别" prop="sex">
+              <el-select v-model="editForm.data.sex">
+                <el-option label="man" value="0"></el-option>
+                <el-option label="woman" value="1"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属用户" prop="userId">
+              <el-select v-model="editForm.data.userId" :disabled="!hasPermission('patients/oth/info/add')">
+                <el-option v-for="user of $store.state.users"
+                           :label="user.username"
+                           :value="user.id"
+                           :key="user.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="初诊" prop="first">
+              <el-select v-model="editForm.data.first">
+                <el-option label="first" value="1"></el-option>
+                <el-option label="more" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="咨询方式" prop="advisoryId">
+              <el-select v-model="editForm.data.advisoryId" :disabled="!hasPermission('patients/advisory_date/edit') && operationState==='edit'">
+                <el-option v-for="advisory of $store.state.advisories"
+                           :label="advisory.name"
+                           :value="advisory.id"
+                           :key="advisory.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="渠道" prop="channelId">
+              <el-select v-model="editForm.data.channelId" :disabled="!hasPermission('patients/channel/edit') && operationState==='edit'">
+                <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
+                           :key="channel.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="医生" prop="doctorId">
+              <el-select v-model="editForm.data.doctorId" :disabled="!hasPermission('patients/doctor/edit') && operationState==='edit'">
+                <el-option v-for="doctor of $store.state.doctors"
+                           :label="doctor.name"
+                           :value="doctor.id"
+                           :key="doctor.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="病种" prop="diseaseId">
+              <el-select v-model="editForm.data.diseaseId" :disabled="!hasPermission('patients/disease/edit') && operationState==='edit'">
+                <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                                 v-if="disease.children.length">
+                  <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
+                </el-option-group>
+                <el-option v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
+                           :value="disease.id" v-if="!disease.children.length"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户标注" prop="mark">
+              <el-input type="textarea" :rows="4" v-model="editForm.data.mark" placeholder="客户标注"></el-input>
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -202,46 +188,48 @@
           <el-row>
             <el-col :span="9">
               <el-form-item prop="name">
-                <el-input v-model="exportForm.data.name" placeholder="name"></el-input>
+                <el-input v-model="exportForm.data.name" placeholder="姓名"></el-input>
               </el-form-item>
               <el-form-item prop="tel">
-                <el-input v-model="exportForm.data.tel" placeholder="tel"></el-input>
+                <el-input v-model="exportForm.data.tel" placeholder="电话"></el-input>
               </el-form-item>
               <el-form-item prop="state">
-                <el-select v-model="exportForm.data.state" placeholder="select state">
-                  <el-option :value="0" label="untreated"></el-option>
-                  <el-option :value="1" label="wait"></el-option>
-                  <el-option :value="2" label="confirm"></el-option>
-                  <el-option :value="3" label="cancel"></el-option>
+                <el-select v-model="exportForm.data.state" placeholder="客户状态">
+                  <el-option :value="0" label="暂未处理"></el-option>
+                  <el-option :value="1" label="等待"></el-option>
+                  <el-option :value="2" label="已确认"></el-option>
+                  <el-option :value="3" label="已取消"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="dateType">
-                <el-select v-model="exportForm.data.dateType" placeholder="select date type">
-                  <el-option label="created_at" value="created_at"></el-option>
-                  <el-option label="arrive_date" value="arrive_date"></el-option>
+                <el-select v-model="exportForm.data.dateType" placeholder="日期类型">
+                  <el-option label="创建日期" value="created_at"></el-option>
+                  <el-option label="到诊日期" value="arrive_date"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="dateRange">
-                <el-date-picker v-model="exportForm.data.dateRange" type="daterange"
-                                :picker-options="exportForm.pickerOptions" placeholder="date range" format="yyyy-MM-dd">
+                <el-date-picker v-model="exportForm.data.dateRange"
+                                type="daterange"
+                                :picker-options="exportForm.pickerOptions"
+                                format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="11" :offset="3">
               <el-form-item prop="userId">
-                <el-select v-model="exportForm.data.userId" placeholder="select user">
+                <el-select v-model="exportForm.data.userId" placeholder="所属用户">
                   <el-option v-for="user of $store.state.users" :label="user.username" :value="user.id"
                              :key="user.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="channelId">
-                <el-select v-model="exportForm.data.channelId" placeholder="select channel">
+                <el-select v-model="exportForm.data.channelId" placeholder="渠道">
                   <el-option v-for="channel of $store.state.channels" :label="channel.name" :value="channel.id"
                              :key="channel.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="diseaseId">
-                <el-select v-model="exportForm.data.diseaseId" placeholder="select disease">
+                <el-select v-model="exportForm.data.diseaseId" placeholder="病种">
                   <el-option-group v-for="disease of $store.state.diseases" :key="disease.id" :label="disease.name"
                                    v-if="disease.children.length">
                     <el-option v-for="d of disease.children" :key="d.id" :label="d.name" :value="d.id"></el-option>
@@ -251,13 +239,13 @@
                 </el-select>
               </el-form-item>
               <el-form-item prop="doctorId">
-                <el-select v-model="exportForm.data.doctorId" placeholder="select doctor">
+                <el-select v-model="exportForm.data.doctorId" placeholder="医生">
                   <el-option v-for="doctor of $store.state.doctors" :label="doctor.name" :value="doctor.id"
                              :key="doctor.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item prop="advisoryId">
-                <el-select v-model="exportForm.data.advisoryId" placeholder="select advisory">
+                <el-select v-model="exportForm.data.advisoryId" placeholder="咨询方式">
                   <el-option v-for="advisory of $store.state.advisories" :label="advisory.name" :value="advisory.id"
                              :key="advisory.id"></el-option>
                 </el-select>
@@ -268,7 +256,7 @@
       </el-card>
       <span slot="footer" class="dialog-footer">
         <a :href="exportUrl" target="_blank">
-          <el-button style="width: 100%" type="primary" @click="exportDialogVisible = false">Export</el-button>
+          <el-button style="width: 100%" type="primary" @click="exportDialogVisible = false">导出数据</el-button>
         </a>
       </span>
     </el-dialog>
@@ -276,16 +264,16 @@
       <header>{{repeatDialogTitle}}</header>
       <div class="repeat-patient-list">
         <div class="repeat-patient-item" v-for="repeatPatient of repeatPatients">
-          <p>name: {{repeatPatient.name}}</p>
-          <p>tel: {{repeatPatient.tel}}</p>
-          <p>sex: {{repeatPatient.sex}}</p>
-          <p>arrive_date: {{repeatPatient['arrive_date']}}</p>
-          <p>created_at: {{repeatPatient['created_at']}}</p>
+          <p>姓名: {{repeatPatient.name}}</p>
+          <p>电话: {{repeatPatient.tel}}</p>
+          <p>性别: {{repeatPatient.sex}}</p>
+          <p>创建时间: {{repeatPatient['created_at']}}</p>
+          <p>到诊时间: {{repeatPatient['arrive_date']}}</p>
           <hr>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="repeatDialogVisible=false">ok</el-button>
+        <el-button type="primary" @click="repeatDialogVisible=false">知道了</el-button>
       </span>
     </el-dialog>
   </div>
@@ -325,48 +313,60 @@
             first: ''
           },
           rules: {
-            name: {required: true, message: 'please enter patient name', trigger: 'blur'},
+            name: {required: true, message: '请输入客户名称', trigger: 'blur'},
             tel: [
-              {required: true, message: 'please enter patient tel', trigger: 'blur'},
+              {required: true, message: '请输入客户电话', trigger: 'blur'},
               {
                 pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/,
-                message: 'tel error',
-                trigger: 'change'
+                message: '电话格式为11位有效数字',
+                trigger: 'blur'
               }
             ],
-            price: {pattern: /^(\d*)$/, message: 'must number', trigger: 'blur'},
-            age: {pattern: /^\d*$/, message: 'must age', trigger: 'blur'},
-            advisoryDate: {required: true, type: 'date', message: 'please select date', trigger: 'change'},
+            price: {pattern: /^(\d*)$/, message: '格式错误', trigger: 'blur'},
+            age: {pattern: /^\d*$/, message: '格式错误', trigger: 'blur'},
+            advisoryDate: {required: true, type: 'date', message: '选择预约时间', trigger: 'change'},
             pageurl: {
               pattern: /^((http|ftp|https):\/\/)?[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&amp;:/~+#]*[\w\-@?^=%&amp;/~+#])?$/i,
-              message: 'must url',
+              message: '格式错误',
+              trigger: 'blur'
+            },
+            userId: {
+              required: true,
+              validator: (rule, value, callback) => {
+                if (value) callback()
+                else callback('请选择所属用户')
+              },
               trigger: 'blur'
             },
             advisoryId: {
+              required: true,
               validator: (rule, value, callback) => {
                 if (value) callback()
-                else callback('please select advisory')
+                else callback('请选择咨询方式')
               },
               trigger: 'blur'
             },
             channelId: {
+              required: true,
               validator: (rule, value, callback) => {
                 if (value) callback()
-                else callback('select a channel')
+                else callback('请选择渠道')
               },
               trigger: 'blur'
             },
             doctorId: {
+              required: true,
               validator: (rule, value, callback) => {
                 if (value) callback()
-                else callback('select a doctor')
+                else callback('请选择医生')
               },
               trigger: 'blur'
             },
             diseaseId: {
+              required: true,
               validator: (rule, value, callback) => {
                 if (value) callback()
-                else callback('select a disease')
+                else callback('请选择医生')
               },
               trigger: 'blur'
             }
@@ -390,7 +390,7 @@
               return time.getTime() > Date.now()
             },
             shortcuts: [{
-              text: 'one week',
+              text: '一周',
               onClick (picker) {
                 const end = new Date()
                 const start = new Date()
@@ -398,7 +398,7 @@
                 picker.$emit('pick', [start, end])
               }
             }, {
-              text: 'one month',
+              text: '一个月',
               onClick (picker) {
                 const end = new Date()
                 const start = new Date()
@@ -406,7 +406,7 @@
                 picker.$emit('pick', [start, end])
               }
             }, {
-              text: 'three month',
+              text: '三个月',
               onClick (picker) {
                 const end = new Date()
                 const start = new Date()
@@ -459,7 +459,7 @@
       },
       repeatDialogTitle () {
         if (!this.repeatPatients) return `Tip! has 0 repeat patient`
-        return `Tip! has ${this.repeatPatients.length} repeat patient`
+        return `注意! 已有 ${this.repeatPatients.length} 条重复记录`
       }
     },
     methods: {
@@ -542,22 +542,22 @@
       },
       initPatientFormData (index = null, row = null) {
         if (this.operationState === 'new') {
-          this.editForm.data.name = 'patient13'
-          this.editForm.data.tel = '15265498564'
+          this.editForm.data.name = ''
+          this.editForm.data.tel = ''
           this.editForm.data.advisoryDate = ''
-          this.editForm.data.advisoryId = 1
-          this.editForm.data.channelId = 1
-          this.editForm.data.doctorId = 1
-          this.editForm.data.diseaseId = 3
+          this.editForm.data.advisoryId = ''
+          this.editForm.data.channelId = ''
+          this.editForm.data.doctorId = ''
+          this.editForm.data.diseaseId = ''
           this.editForm.data.userId = this.$store.state.oneself.id
           this.editForm.data.state = 0
-          this.editForm.data.price = '300'
+          this.editForm.data.price = ''
           this.editForm.data.age = ''
-          this.editForm.data.sex = '1'
-          this.editForm.data.first = '0'
+          this.editForm.data.sex = ''
+          this.editForm.data.first = ''
           this.editForm.data.wechat = ''
           this.editForm.data.keyword = ''
-          this.editForm.data.pageurl = 'www.google.com.hk'
+          this.editForm.data.pageurl = ''
           this.editForm.data.mark = ''
         }
         if (this.operationState === 'edit') {
@@ -684,6 +684,14 @@
 </script>
 
 <style lang="scss">
+  .addDialog{
+    .scrollbar{
+      height:70vh;
+    }
+    .el-date-editor.el-input, .el-select{
+      width: 100%;
+    }
+  }
   .repeatDialog {
     .el-dialog {
       .el-dialog__header, .el-dialog__body {
@@ -696,6 +704,16 @@
       .el-dialog__body {
         max-height: 60vh;
         overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, .3);
+        }
+        &::-webkit-scrollbar-corner {
+          background-color: transparent;
+        }
         header {
           font-size: 18px;
           line-height: 36px;
@@ -719,7 +737,6 @@
       }
     }
   }
-
   .table-expands > .el-form-item {
     display: block;
     margin-bottom: 0

@@ -3,26 +3,26 @@
     <h2>总体数据</h2>
     <el-card class="box-card">
       <el-card class="sub-box">
-        <h3>客户年数据</h3>
+        <h3>年数据</h3>
         <el-table stripe :data="yearData">
           <el-table-column
             prop="date"
-            label="date">
+            label="年份">
           </el-table-column>
           <el-table-column
             prop="advisory"
-            label="advisory patients">
+            label="预约">
           </el-table-column>
           <el-table-column
             prop="arrive"
-            label="arrive patients">
+            label="到诊">
           </el-table-column>
           <el-table-column
             prop="lose"
-            label="lose patients">
+            label="流失">
           </el-table-column>
           <el-table-column
-            label="proportion">
+            label="到诊占比">
             <template scope="scope">
               <p>{{getProportion(scope.row)}}</p>
             </template>
@@ -31,26 +31,26 @@
         <div id="yearChart"></div>
       </el-card>
       <el-card class="sub-box">
-        <h3>客户月数据</h3>
+        <h3>月数据</h3>
         <el-table stripe :data="monthData">
           <el-table-column
             prop="date"
-            label="date">
+            label="月份">
           </el-table-column>
           <el-table-column
             prop="advisory"
-            label="advisory patients">
+            label="预约">
           </el-table-column>
           <el-table-column
             prop="arrive"
-            label="arrive patients">
+            label="到诊">
           </el-table-column>
           <el-table-column
             prop="lose"
-            label="lose patients">
+            label="流失">
           </el-table-column>
           <el-table-column
-            label="proportion">
+            label="到诊占比">
             <template scope="scope">
               <p>{{getProportion(scope.row)}}</p>
             </template>
@@ -136,7 +136,7 @@
             }
           },
           legend: {
-            data: ['Advisory', 'Arrive', 'Lose'],
+            data: ['预约', '到诊', '流失'],
             bottom: 0
           },
           xAxis: {
@@ -145,17 +145,17 @@
           yAxis: {},
           series: [
             {
-              name: 'Advisory',
+              name: '预约',
               type: 'bar',
               data: self.yearSeriesAdvisory
             },
             {
-              name: 'Arrive',
+              name: '到诊',
               type: 'bar',
               data: self.yearSeriesArrive
             },
             {
-              name: 'Lose',
+              name: '流失',
               type: 'bar',
               data: self.yearSeriesLose
             }
@@ -169,7 +169,7 @@
             }
           },
           legend: {
-            data: ['Advisory', 'Arrive', 'Lose'],
+            data: ['预约', '到诊', '流失'],
             bottom: 0
           },
           xAxis: {
@@ -178,17 +178,17 @@
           yAxis: {},
           series: [
             {
-              name: 'Advisory',
+              name: '预约',
               type: 'bar',
               data: self.monthSeriesAdvisory
             },
             {
-              name: 'Arrive',
+              name: '到诊',
               type: 'bar',
               data: self.monthSeriesArrive
             },
             {
-              name: 'Lose',
+              name: '流失',
               type: 'bar',
               data: self.monthSeriesLose
             }

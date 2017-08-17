@@ -9,7 +9,7 @@
     bottom: 80px;
     z-index: 999;
     border:none;
-    background-color: #ff4081;
+    background-color: #009688;
     transition: .2s;
     .material-icons{
       font-weight: normal;
