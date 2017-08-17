@@ -28,6 +28,7 @@ class MenuSeeder extends Seeder
             'depth' => '1',
             'name' => '仪表盘',
             'url' => '/home/dashboard',
+            'icon' => 'el-icon-ali-dashboard',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -39,6 +40,7 @@ class MenuSeeder extends Seeder
             'depth' => '1',
             'name' => '排行',
             'url' => '/home/rank',
+            'icon' => 'el-icon-ali-rank',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -50,6 +52,7 @@ class MenuSeeder extends Seeder
             'depth' => '1',
             'name' => '客户列表',
             'url' => '/home/patients',
+            'icon' => 'el-icon-ali-patients',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -59,8 +62,9 @@ class MenuSeeder extends Seeder
             'lft' => '8',
             'rgt' => '9',
             'depth' => '1',
-            'name' => '操作用户列表',
+            'name' => '用户列表',
             'url' => '/home/users',
+            'icon' => 'el-icon-ali-users',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -71,6 +75,7 @@ class MenuSeeder extends Seeder
             'rgt' => '23',
             'depth' => '1',
             'name' => '数据中心',
+            'icon' => 'el-icon-ali-data',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -147,6 +152,7 @@ class MenuSeeder extends Seeder
             'rgt' => '33',
             'depth' => '1',
             'name' => '信息管理',
+            'icon' => 'el-icon-ali-project',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);
@@ -201,6 +207,7 @@ class MenuSeeder extends Seeder
             'rgt' => '39',
             'depth' => '1',
             'name' => '系统设置',
+            'icon' => 'el-icon-ali-lock',
             'created_at' => date('Y-m-d h:m:s'),
             'updated_at' => date('Y-m-d h:m:s')
         ]);

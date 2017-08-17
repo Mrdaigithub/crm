@@ -26,22 +26,22 @@ class MenuController extends Controller
     public function index()
     {
         $menu = Menu::root()->descendants();
-        if (!$this->r_self->hasPermission('dashboard')) $menu = $this->clear_menu_nodes('Dashboard', $menu);
-        if (!$this->r_self->hasPermission('rank')) $menu = $this->clear_menu_nodes('Rank', $menu);
-        if (!$this->r_self->hasPermission('allow_patients_module')) $menu = $this->clear_menu_nodes('Patients', $menu);
+        if (!$this->r_self->hasPermission('dashboard')) $menu = $this->clear_menu_nodes('仪表盘', $menu);
+        if (!$this->r_self->hasPermission('rank')) $menu = $this->clear_menu_nodes('排行', $menu);
+        if (!$this->r_self->hasPermission('allow_patients_module')) $menu = $this->clear_menu_nodes('客户列表', $menu);
         if (!$this->r_self->hasPermission('allow_data_module')) {
-            $menu = $this->clear_menu_nodes('data', $menu);
+            $menu = $this->clear_menu_nodes('数据中心', $menu);
         } else {
-            if (!$this->r_self->hasPermission('data/total')) $menu = $this->clear_menu_nodes('Total data', $menu);
-            if (!$this->r_self->hasPermission('data/user')) $menu = $this->clear_menu_nodes('Users data', $menu);
-            if (!$this->r_self->hasPermission('data/disease')) $menu = $this->clear_menu_nodes('Diseases data', $menu);
-            if (!$this->r_self->hasPermission('data/channel')) $menu = $this->clear_menu_nodes('Channels data', $menu);
-            if (!$this->r_self->hasPermission('data/doctor')) $menu = $this->clear_menu_nodes('Doctors data', $menu);
-            if (!$this->r_self->hasPermission('data/patient')) $menu = $this->clear_menu_nodes('Patients data', $menu);
+            if (!$this->r_self->hasPermission('data/total')) $menu = $this->clear_menu_nodes('总体数据', $menu);
+            if (!$this->r_self->hasPermission('data/user')) $menu = $this->clear_menu_nodes('用户数据', $menu);
+            if (!$this->r_self->hasPermission('data/disease')) $menu = $this->clear_menu_nodes('病种数据', $menu);
+            if (!$this->r_self->hasPermission('data/channel')) $menu = $this->clear_menu_nodes('渠道数据', $menu);
+            if (!$this->r_self->hasPermission('data/doctor')) $menu = $this->clear_menu_nodes('医生数据', $menu);
+            if (!$this->r_self->hasPermission('data/patient')) $menu = $this->clear_menu_nodes('客户数据', $menu);
         }
-        if (!$this->r_self->hasPermission('allow_info_module')) $menu = $this->clear_menu_nodes('Info', $menu);
-        if (!$this->r_self->hasPermission('allow_users_module')) $menu = $this->clear_menu_nodes('Users list', $menu);
-        if (!$this->r_self->hasPermission('allow_setting_module')) $menu = $this->clear_menu_nodes('System setting', $menu);
+        if (!$this->r_self->hasPermission('allow_info_module')) $menu = $this->clear_menu_nodes('信息管理', $menu);
+        if (!$this->r_self->hasPermission('allow_users_module')) $menu = $this->clear_menu_nodes('用户列表', $menu);
+        if (!$this->r_self->hasPermission('allow_setting_module')) $menu = $this->clear_menu_nodes('系统设置', $menu);
         $menu = $menu->get()->toHierarchy();
         return $menu;
     }
